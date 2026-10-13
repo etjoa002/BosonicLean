@@ -1,0 +1,10 @@
+BosonicLean
+Copyright 2026 Erickson Tjoa
+
+Licensed under the Apache License, Version 2.0 (see LICENSE).
+
+The files BosonicLean/PhaseSpace/{ConstructionDefs, Contraction, Covariance, Defs, DirectSum,
+Examples, Positivity, Subsystem}.lean and BosonicLean/GaussianTNLean/MPS/{Fourier, Periodic,
+Product}.lean originate in the TNLean project (https://github.com/LionSR/TNLean), released under
+the Apache License, Version 2.0, and keep its attribution "TNLean contributors" in their headers.
+They have been modified since.

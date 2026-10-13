@@ -1,0 +1,146 @@
+\section{Covariance matrices}
+\label{sec:covariance}
+For $n\geq0$, use coordinates
+$(q_1,\ldots,q_n,p_1,\ldots,p_n)$ on $\R^{2n}$ and define
+\[
+ \Omega_n=\begin{pmatrix}0&I_n\\-I_n&0\end{pmatrix}.
+\]
+For a complex matrix $H$, the notation $H\succeq0$ means that $H=H^*$ and
+$z^*Hz\geq0$ for every complex column vector $z$. Here $H^*$ is the conjugate
+transpose. Real matrices are regarded as complex matrices when used in this
+inequality.
+
+\begin{definition}[Admissible covariance]\label{def:admissible}
+A real $2n\times2n$ matrix $\gamma$ is called \emph{admissible} if
+\begin{equation}\label{eq:admissibility}
+ \gamma^T=\gamma,\qquad \gamma-i\Omega_n\succeq0.
+\end{equation}
+\end{definition}
+These coordinates are dimensionless. For one mode the condition concerns the
+Hermitian matrix
+\[
+ \begin{pmatrix}a&c-i\\c+i&b\end{pmatrix},
+ \qquad \gamma=\begin{pmatrix}a&c\\c&b\end{pmatrix}.
+\]
+The imaginary part records the canonical pairing between position and momentum.
+The empty matrix is admissible when $n=0$.
+
+\subsection{Changes of coordinates}
+A real matrix $S$ is symplectic in these coordinates when
+$S\Omega_nS^T=\Omega_n$. Transforming a covariance in both indices gives
+$\gamma\mapsto S\gamma S^T$. This is a congruence transformation. Similarity
+has the form $A\mapsto SAS^{-1}$; the two formulas agree for orthogonal $S$,
+but symplecticity alone does not give $S^T=S^{-1}$.
+
+\begin{theorem}\label{thm:congruence}
+Let $n\geq0$ and let $S,\gamma$ be real $2n\times2n$ matrices. If $\gamma$
+is admissible and $S\Omega_nS^T=\Omega_n$, then $S\gamma S^T$ is admissible.
+\end{theorem}
+\begin{proof}
+Symmetry follows from $(S\gamma S^T)^T=S\gamma^TS^T=S\gamma S^T$.
+Put $H=\gamma-i\Omega_n$. Since $S$ is real,
+\[
+ S\gamma S^T-i\Omega_n=S(\gamma-i\Omega_n)S^T=SHS^*.
+\]
+This matrix is Hermitian, and for every $z\in\C^{2n}$,
+\[
+ z^*SHS^*z=(S^*z)^*H(S^*z)\geq0.
+\]
+The same identities hold for empty matrices.
+\end{proof}
+
+\subsection{Subsystems and independent sums}
+To select a subsystem, a position coordinate and its matching momentum
+coordinate must be selected together. A \emph{one-to-one map}, also called an
+\emph{injective map} or an \emph{injection}, is a map $e$ such that
+$e(i)=e(j)$ implies $i=j$. Thus a one-to-one map
+$e:\{1,\ldots,m\}\to\{1,\ldots,n\}$ selects distinct modes without
+repetitions, in the order
+\[
+ (q_{e(1)},\ldots,q_{e(m)},p_{e(1)},\ldots,p_{e(m)}).
+\]
+Write $E(q_j)=q_{e(j)}$ and $E(p_j)=p_{e(j)}$. The selected covariance has
+entries $\gamma'_{ab}=\gamma_{E(a),E(b)}$.
+
+\begin{theorem}\label{thm:subsystem}
+For all $m,n\geq0$, every such selection from an admissible $n$-mode covariance
+is an admissible $m$-mode covariance. The empty selection is included.
+\end{theorem}
+\begin{proof}
+Symmetry is inherited by restriction. The $qq$ and $pp$ blocks of $\Omega_n$
+vanish, and its $qp$ and $pq$ entries are $\delta_{ij}$ and $-\delta_{ij}$.
+Injectivity gives $\delta_{e(i),e(j)}=\delta_{ij}$, so restriction along $E$
+sends $\Omega_n$ to $\Omega_m$.
+
+Thus $H'=\gamma'-i\Omega_m$ is the selected principal submatrix of
+$H=\gamma-i\Omega_n$. It is Hermitian. Extending a vector $z\in\C^{2m}$
+by zero on the unselected coordinates gives $\widetilde z\in\C^{2n}$ and
+\[
+ z^*H'z=\widetilde z^{\,*}H\widetilde z\geq0.
+\]
+\end{proof}
+
+Conversely, independent covariance blocks can be combined without cross terms.
+\begin{definition}[Independent sum]\label{def:independent-sum}
+For arbitrary real matrices $A$ and $B$ of sizes $2n\times2n$ and
+$2m\times2m$, write their position/momentum blocks as $A_{qq},A_{qp},A_{pq},A_{pp}$
+and similarly for $B$. Define
+\begin{equation}\label{eq:independent-sum}
+ A\boxplus B=
+ \begin{pmatrix}
+ A_{qq}&0&A_{qp}&0\\
+ 0&B_{qq}&0&B_{qp}\\
+ A_{pq}&0&A_{pp}&0\\
+ 0&B_{pq}&0&B_{pp}
+ \end{pmatrix}
+\end{equation}
+in the order $(q_A,q_B,p_A,p_B)$. This is $\diag(A,B)$ reordered from
+$(q_A,p_A,q_B,p_B)$; the definition makes no symmetry assumption.
+\end{definition}
+
+\begin{theorem}\label{thm:sum}
+For all $n,m\geq0$ and all real matrices $A,B$ of the stated sizes,
+$A\boxplus B$ is admissible if and only if both $A$ and $B$ are admissible.
+\end{theorem}
+\begin{proof}
+The same coordinate permutation sends $\diag(\Omega_n,\Omega_m)$ to
+$\Omega_{n+m}$. Hence the uncertainty matrix of $A\boxplus B$ is the
+corresponding permutation of $\diag(A-i\Omega_n,B-i\Omega_m)$.
+When both blocks are admissible, symmetry is preserved and the quadratic
+form is the sum of two nonnegative quadratic forms. Hermiticity is inherited
+from the blocks. Conversely, restriction to either collection of matching
+position/momentum coordinates recovers that block and its uncertainty matrix.
+Theorem~\ref{thm:subsystem} applies. Empty blocks cause no exception.
+\end{proof}
+
+\subsection{One-mode diagonal matrices}
+The diagonal case gives explicit examples and fixes the scale of the uncertainty
+bound. Put $D(a,b)=\diag(a,b)$ in the order $(q,p)$.
+\begin{proposition}\label{prop:diagonal}
+For all $a,b\in\R$, the matrix $D(a,b)$ is admissible if and only if
+$a>0$ and $ab\geq1$.
+\end{proposition}
+\begin{proof}
+The uncertainty matrix is
+$H=\left(\begin{smallmatrix}a&-i\\i&b\end{smallmatrix}\right)$.
+If $H\succeq0$, the coordinate vectors give $a,b\geq0$. If $a=0$,
+the vector $(b+1,-i)^T$ gives the negative value $-b-2$; hence $a>0$.
+The vector $(i,a)^T$ then gives $0\leq a(ab-1)$, and therefore $ab\geq1$.
+
+For the converse, suppose $a>0$ and $ab\geq1$. Write $z=x+iy$, $w=u+iv$.
+The quadratic form is real and satisfies
+\begin{align*}
+ Q&=(\overline z,\overline w)H(z,w)^T
+   =a(x^2+y^2)+b(u^2+v^2)+2(xv-yu),\\
+ aQ&=(ax+v)^2+(ay-u)^2+(ab-1)(u^2+v^2)\geq0.
+\end{align*}
+Thus $Q\geq0$; Hermiticity of $H$ is immediate.
+\end{proof}
+
+In particular, $I_2=D(1,1)$ is admissible. More generally,
+$D(t,t^{-1})$ is admissible for every $t>0$. Its two variances in our covariance
+convention are $t/2$ and $1/(2t)$; their product is $1/4$.
+By contrast, $cI_2$ with $0\leq c<1$ is a positive semidefinite real matrix
+but is not admissible, since $c^2<1$.
+Theorem~\ref{thm:sum} combines admissible one-mode blocks into larger matrices.
+We now construct wave functions whose covariances give the one-mode equality case.

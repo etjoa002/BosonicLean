@@ -1,0 +1,166 @@
+\section{Normalized Gaussian wave functions}
+\label{sec:states}
+\begin{definition}[Schwartz space]\label{def:schwartz}
+Let $\mathcal D=\Sch$ be the Schwartz space: a smooth function $f$ belongs to
+$\mathcal D$ when
+\[
+ \sup_{x\in\R}|x|^r|f^{(k)}(x)|<\infty
+ \qquad (r,k\in\mathbb N_0).
+\]
+\end{definition}
+Use Lebesgue measure and put $\mathcal H=L^2(\R;\C)$. Elements of $\mathcal H$ are equivalence classes of functions: two functions
+represent the same element if they agree almost everywhere. Schwartz decay makes
+every $f\in\mathcal D$ square-integrable. The usual inclusion
+\[
+ J:\mathcal D\longrightarrow\mathcal H,\qquad Jf=[f],
+\]
+sends a Schwartz function to its class. It is injective: continuous functions
+that agree almost everywhere agree everywhere. We henceforth identify $f$ with $Jf$
+when taking an $L^2$ norm or inner product, writing
+\[
+ \|f\|_2=\|Jf\|_{\mathcal H},\qquad
+ \langle f,g\rangle=\int_\R\overline{f(x)}g(x)\,dx.
+\]
+The inner product is conjugate-linear in its first argument.
+
+\begin{definition}[Normalized representative]\label{def:state}
+A normalized state representative is a Schwartz function $f\in\mathcal D$
+with $\|f\|_2=1$.
+\end{definition}
+
+For $\hbar>0$, position and momentum act on the common invariant domain
+$\mathcal D$ by
+\[
+ (Xf)(x)=xf(x),\qquad (P_\hbar f)(x)=-i\hbar f'(x).
+\]
+Multiplication by $x$ and differentiation preserve Schwartz space. Their images
+therefore have well-defined $L^2$ norms and inner products.
+
+\begin{definition}[Means and covariance]\label{def:covariance}
+For an operator
+$A:\mathcal D\to\mathcal D$ and a normalized $f$, define
+\[
+ \mu_f(A)=\Rea\langle f,Af\rangle,\qquad
+ u_f(A)=Af-\mu_f(A)f.
+\]
+For the ordered pair $(R_1,R_2)=(X,P_\hbar)$, the covariance is
+\begin{equation}\label{eq:state-covariance}
+ (\gamma_f)_{jk}=2\Rea\langle u_f(R_j),u_f(R_k)\rangle.
+\end{equation}
+\end{definition}
+In particular, $(\gamma_f)_{jj}=2\|u_f(R_j)\|_2^2$ is twice the variance.
+These formulas involve only vectors in the common domain and their $L^2$ images.
+
+\subsection{Existence and normalization}
+For a width $s>0$, consider the positive real function
+\begin{equation}\label{eq:gaussian}
+ \psi_s(x)=\frac{1}{\sqrt{\sqrt\pi\,s}}
+            \exp\left(-\frac{x^2}{2s^2}\right).
+\end{equation}
+\begin{theorem}\label{thm:normalized}
+For every $s>0$, the function $\psi_s$ belongs to $\mathcal D$ and satisfies
+$\|\psi_s\|_2=1$. It determines a unique normalized state representative
+with the pointwise values in~\eqref{eq:gaussian}.
+\end{theorem}
+\begin{proof}
+Put $\phi(x)=e^{-x^2/2}$. Define the Hermite polynomials by
+\[
+ H_0(x)=1,\qquad H_{k+1}(x)=xH_k(x)-H_k'(x)\quad(k\geq0).
+\]
+The \emph{Hermite derivative identity} is
+\[
+ \phi^{(k)}(x)=(-1)^k H_k(x)\phi(x).
+\]
+It follows by induction from $\phi'=-x\phi$ and the product rule.
+For every $r\geq0$, $|x|^r\phi(x)\to0$ as $|x|\to\infty$.
+Continuity bounds this function globally. Expanding $H_k$ into monomials
+then bounds $|x|^r|\phi^{(k)}(x)|$ for each $r,k$.
+Dilation by $x\mapsto x/s$, inclusion of real values into $\C$, and
+multiplication by a constant preserve Schwartz space, so $\psi_s\in\mathcal D$.
+
+The Gaussian integral gives
+\[
+ \|\psi_s\|_2^2
+ =\frac{1}{\sqrt\pi\,s}\int_\R e^{-x^2/s^2}\,dx
+ =\frac{\sqrt\pi\,s}{\sqrt\pi\,s}=1.
+\]
+A function with the prescribed pointwise values is equal to $\psi_s$.
+\end{proof}
+The pointwise formula~\eqref{eq:gaussian} fixes the overall phase of $\psi_s$.
+
+\subsection{Action and moments}
+\begin{theorem}\label{thm:moments}
+For every $s,\hbar>0$,
+\begin{gather}
+ P_\hbar\psi_s=\frac{i\hbar}{s^2}X\psi_s,
+ \qquad \mu_{\psi_s}(X)=\mu_{\psi_s}(P_\hbar)=0,\label{eq:action}\\
+ \|X\psi_s\|_2^2=\frac{s^2}{2},\qquad
+ \|P_\hbar\psi_s\|_2^2=\frac{\hbar^2}{2s^2},\label{eq:seconds}\\
+ \langle X\psi_s,P_\hbar\psi_s\rangle=\frac{i\hbar}{2}.
+ \label{eq:cross}
+\end{gather}
+The first identity holds as an equality of Schwartz functions.
+\end{theorem}
+\begin{proof}
+Differentiating~\eqref{eq:gaussian} yields $\psi_s'=-(x/s^2)\psi_s$ and hence
+the momentum action. The integrand in
+$\langle \psi_s,X\psi_s\rangle$ is odd and integrable, so this complex
+inner product vanishes.
+
+Set $A=\|X\psi_s\|_2^2$. With $\langle\cdot,\cdot\rangle_\R$
+denoting the real part of the complex inner product, integration by parts gives
+\begin{equation}\label{eq:ibp}
+ 1-\frac{A}{s^2}
+ =\langle \psi_s,(X\psi_s)'\rangle_\R
+ =-\langle \psi_s',X\psi_s\rangle_\R
+ =\frac{A}{s^2}.
+\end{equation}
+The first equality uses $(X\psi_s)'=\psi_s+x\psi_s'$ and normalization.
+Schwartz decay removes the boundary term, and the derivative formula gives
+the last equality. Thus $A=s^2/2$.
+
+Complex linearity in the second argument now gives
+\[
+ \langle \psi_s,P_\hbar\psi_s\rangle=0,\qquad
+ \langle X\psi_s,P_\hbar\psi_s\rangle
+ =\frac{i\hbar}{s^2}A=\frac{i\hbar}{2}.
+\]
+Finally, $\|P_\hbar\psi_s\|_2^2=(\hbar^2/s^4)A=\hbar^2/(2s^2)$.
+\end{proof}
+
+\subsection{Covariance and units}
+\begin{theorem}\label{thm:covariance}
+For every $s,\hbar>0$, the covariance of $\psi_s$ is
+\[
+ \gamma_{\psi_s}=\begin{pmatrix}s^2&0\\0&\hbar^2/s^2\end{pmatrix}.
+\]
+If $T=\diag(s^{-1},s/\hbar)$ and
+$\widetilde\gamma=T\gamma_{\psi_s}T^T$, then $\widetilde\gamma=I_2$
+and $\widetilde\gamma$ is admissible in the sense
+of~\eqref{eq:admissibility}.
+\end{theorem}
+\begin{proof}
+The means vanish, so the centered vectors in~\eqref{eq:state-covariance}
+are $X\psi_s$ and $P_\hbar\psi_s$. Equations~\eqref{eq:seconds}
+give the diagonal entries. The cross moment~\eqref{eq:cross} is purely
+imaginary, as is its complex conjugate, so both off-diagonal entries vanish.
+Diagonal multiplication gives $\widetilde\gamma=I_2$.
+Proposition~\ref{prop:diagonal}, with $a=b=1$, proves admissibility.
+\end{proof}
+
+The matrix $T$ converts position and momentum to the dimensionless quantities
+$X/s$ and $sP_\hbar/\hbar$. The covariance before this change of units retains
+$\hbar$; the admissibility criterion of Section~\ref{sec:covariance} is expressed
+in dimensionless coordinates. With $\hbar=1$ and $t=s^2$, the original covariance is
+$D(t,t^{-1})$, realizing the diagonal equality cases above.
+
+\begin{corollary}\label{cor:physical}
+Let $m,\omega,\hbar>0$ and set $s=\sqrt{\hbar/(m\omega)}$. Then
+\[
+ \gamma_{\psi_s}=\diag\left(\frac{\hbar}{m\omega},\hbar m\omega\right).
+\]
+\end{corollary}
+\begin{proof}
+Positivity gives $s>0$ and $s^2=\hbar/(m\omega)$. Substitution into
+Theorem~\ref{thm:covariance} gives the formula.
+\end{proof}

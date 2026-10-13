@@ -1,0 +1,268 @@
+\section{Contraction of covariance matrices}
+\label{sec:contraction}
+We now turn to constructing Gaussian matrix product states from local Gaussian
+resources~\cite[Secs.~3 and~6]{schuch}. At each site, we distinguish physical
+modes, which form the final system, from auxiliary virtual modes. Neighbouring
+sites are joined by EPR measurements on their virtual modes, and we seek the
+covariance of the physical modes conditioned on the measurement outcomes.
+At the covariance level, this construction leads to a Schur complement.
+We first establish the general matrix result, then explain EPR measurements
+and apply it to a periodic chain. The idealizations involved in the measurement
+description will be distinguished from the finite covariance matrices used below.
+
+\begin{theorem}\label{thm:admissible-positive}
+Every admissible $2n\times2n$ covariance matrix is positive definite:
+$x^T\gamma x>0$ for every nonzero $x\in\R^{2n}$.
+\end{theorem}
+\begin{proof}
+Put $H=\gamma_{\C}-i\Omega_n$, where the subscript denotes entrywise inclusion
+in $\C$. For real $x$, skew-symmetry gives $x^T\Omega_nx=0$, and hence
+\[
+ x^*Hx=x^T\gamma x\geq0.
+\]
+For a positive semidefinite Hermitian matrix, a vector has zero quadratic
+form precisely when it lies in the kernel. Thus, if $x^T\gamma x=0$, then
+$Hx=0$. Taking imaginary parts gives $\Omega_nx=0$. Since $\Omega_n^2=-I$,
+we obtain $x=0$. The quadratic form is therefore strictly positive away from
+zero. When $n=0$, there is no nonzero vector and the assertion is vacuous.
+\end{proof}
+
+\begin{definition}[Contracted covariance]\label{def:contraction}
+Let $W$ be a real $(k+2m)\times2n$ matrix. For a real symmetric $2n\times2n$ matrix $\gamma$, write
+\[
+ V=W\gamma W^T=\begin{pmatrix}E&F\\F^T&G\end{pmatrix},
+ \qquad E\in\R^{k\times k}.
+\]
+The first $k$ output coordinates are to be eliminated; the last $2m$ are
+retained in position-then-momentum order. When $E$ is invertible, define
+\[
+ \gamma_{\mathrm{out}}=G-F^TE^{-1}F.
+\]
+This is the \emph{Schur complement} of $E$ in $V$. For $k=0$, it reduces to $G$.
+\end{definition}
+The eliminated coordinates need not form a canonical subsystem. The next
+condition makes their symplectic pairings vanish, both among themselves and
+with the retained coordinates.
+
+\begin{theorem}\label{thm:contraction}
+Let $n,m,k\geq0$ and let $\gamma$ be admissible. Suppose $W^T$ is one-to-one
+and
+\[
+ W\Omega_nW^T=
+ \begin{pmatrix}0_{k\times k}&0\\0&\Omega_m\end{pmatrix}.
+\]
+Then $E$ is positive definite, hence invertible, and
+$\gamma_{\mathrm{out}}$ is admissible.
+\end{theorem}
+\begin{proof}
+Theorem~\ref{thm:admissible-positive} and injectivity of $W^T$ give, for $y\ne0$,
+\[
+ y^TVy=(W^Ty)^T\gamma(W^Ty)>0.
+\]
+Thus $V$ and its principal block $E$ are positive definite. Congruence of the
+input uncertainty matrix yields
+\[
+ Q=W_{\C}(\gamma_{\C}-i\Omega_n)W_{\C}^*
+  =\begin{pmatrix}E_{\C}&F_{\C}\\F_{\C}^*&G_{\C}-i\Omega_m\end{pmatrix}
+  \succeq0.
+\]
+For any complex vector $z$, choose the eliminated component to cancel the first
+block row. Direct block multiplication gives
+\[
+ \begin{pmatrix}-E_{\C}^{-1}F_{\C}z\\z\end{pmatrix}^{\!*}
+ Q\begin{pmatrix}-E_{\C}^{-1}F_{\C}z\\z\end{pmatrix}
+ =z^*\bigl((G-F^TE^{-1}F)_{\C}-i\Omega_m\bigr)z\geq0.
+\]
+Here complexification commutes with the inverse of the invertible real matrix
+$E$. The output is real symmetric because $E$ and $G$ are symmetric and
+$(E^{-1})^T=E^{-1}$. Its uncertainty matrix is consequently Hermitian, so the
+quadratic-form inequality proves admissibility. The argument includes empty
+eliminated or retained coordinate sets.
+\end{proof}
+
+\subsection{EPR measurements and covariance contraction}
+Two pairs of canonical quadratures admit the commuting combinations
+\[
+ X_-=q_A-q_B,\qquad P_+=p_A+p_B,\qquad
+ [X_-,P_+]=[q_A,p_A]-[q_B,p_B]=0.
+\]
+An \emph{EPR measurement} is the joint measurement of these two observables.
+Their exact joint eigenvectors are generalized eigenvectors: they do not belong
+to the two-mode Hilbert space. In particular, the ideal EPR vector is not a
+normalizable state. Finite squeezing gives normalizable approximations, but the
+infinitely squeezed vector must not be treated as a density operator of trace one.
+The covariance description of Gaussian measurements is developed in
+Giedke and Cirac~\cite[Secs.~III--IV]{giedke}.
+
+Reversing both quadratures of $B$ is a canonical phase rotation. It replaces the
+preceding pair by
+\begin{equation}\label{eq:epr-plus}
+ Y_q=q_A+q_B,\qquad Y_p=p_A-p_B.
+\end{equation}
+We use this convention for the virtual pairs below. Put
+$\Theta=\diag(I_M,-I_M)$ for $M$ such pairs. If the remaining modes are denoted
+by $C$, the matrix
+\[
+ L=\begin{pmatrix}I&\Theta&0\\0&0&I_C\end{pmatrix}
+\]
+maps the quadrature vector in $A,B,C$ order to $(Y,C)$.
+The identity $\Theta\Omega_M\Theta^T=-\Omega_M$ gives
+$L\Omega L^T=\diag(0,\Omega_C)$, as required in Theorem~\ref{thm:contraction}.
+
+Here is the corresponding characteristic-function calculation, including its
+normalization. For a centered Gaussian with covariance $\gamma$, write
+\[
+ \chi(t)=\langle e^{it^TR}\rangle=\exp(-t^T\gamma t/4).
+\]
+The factor $1/4$ follows from our convention that $\gamma$ is twice the ordinary
+covariance. Thus the joint characteristic function of $Y$ and the retained
+quadratures is $\chi(L^T(u,z))$. In $A,B,C$ coordinates,
+$L^T(u,z)=(u,\Theta u,z)$: this explains the momentum sign in the contraction
+of characteristic-function variables. Write
+\[
+ L\gamma L^T=\begin{pmatrix}E&F\\F^T&G\end{pmatrix}.
+\]
+Conditioning on the zero outcome integrates out the Fourier variable $u$.
+The quadratic expression in the exponent is
+\begin{align*}
+ u^TEu+2u^TFz+z^TGz
+ &=(u+E^{-1}Fz)^TE(u+E^{-1}Fz)\\
+ &\quad+z^T(G-F^TE^{-1}F)z.
+\end{align*}
+Since $E$ is positive definite, the Gaussian integral is finite. Dividing by
+its value at $z=0$ leaves the characteristic function with covariance
+$G-F^TE^{-1}F$. More generally, for means $d_Y,d_C$ and outcome $a$, the usual
+Gaussian conditioning formula is
+\begin{equation}\label{eq:conditional-mean}
+ d_{C\mid a}=d_C+F^TE^{-1}(a-d_Y),\qquad
+ \gamma_{C\mid a}=G-F^TE^{-1}F.
+\end{equation}
+The outcome changes the mean, but not the conditional covariance. Conditioning
+here is understood through the outcome density, not as an event of positive
+probability at one exact value. These formulas give the measurement interpretation;
+Theorem~\ref{thm:contraction} establishes the covariance inequality directly.
+
+In the Choi--Jamio{\l}kowski construction, the resource associated with a map
+is obtained formally by applying the map to one half of an ideal EPR pair.
+EPR contraction with the other half represents feeding an input to the map.
+This turns the GMPS construction into contractions of local resources, but
+still involves ideal EPR measurements. Moreover, a channel representative obtained
+from an infinitely squeezed pair need not be a finite covariance matrix: the
+identity channel already illustrates the difficulty. The results below use
+finite admissible local matrices. Schuch, Wolf and Cirac describe the resource
+construction in Sections~3 and~6 of~\cite{schuch};
+their Section 5 replaces infinitely entangled bonds by finite ones while moving
+the infinite entanglement into the local maps.
+
+\subsection{A periodic chain}
+At each site $i\in\mathbb Z/N\mathbb Z$, introduce $M$ left virtual modes $A_i$,
+$M$ right virtual modes $B_i$, and one retained mode $C_i$.
+The pair on each edge joins $B_{i-1}$ to $A_i$. We assume $N\geq3$ and $M\geq1$.
+The integer $M$ counts the \emph{virtual modes per bond}. Each bosonic mode has
+an infinite-dimensional Hilbert space, so even $M=1$ can support entanglement.
+With no virtual modes, $M=0$, the virtual Hilbert space is one-dimensional;
+this is the counterpart of bond dimension $D=1$ for a qudit MPS. Product
+covariances can also be represented with $M\geq1$ by adding unused virtual modes.
+A bound on $M$ alone does not bound entanglement entropy: the squeezing must
+also be controlled.
+
+\begin{definition}[Periodic covariance]\label{def:periodic}
+Put $d=2M+1$ and let $\Gamma_i$ be real $2d\times2d$ matrices. The local mode
+order is $(A_{i,1},\ldots,A_{i,M},B_{i,1},\ldots,B_{i,M},C_i)$, with positions
+preceding momenta. Define $\gamma_{\rm loc}$ on $Nd$ modes by
+\[
+ (\gamma_{\rm loc})_{(u,i,a),(v,j,b)}=
+ \begin{cases}(\Gamma_i)_{(u,a),(v,b)},&i=j,\\0,&i\ne j,\end{cases}
+ \qquad u,v\in\{q,p\}.
+\]
+Globally, positions precede momenta; within either group, sites precede local
+modes. The real linear map $W:\R^{2Nd}\to\R^{2NM}\oplus\R^{2N}$ has eliminated
+coordinates
+\[
+ (Wx)_{q,i,a}=x_{q,A_i,a}+x_{q,B_{i-1},a},\qquad
+ (Wx)_{p,i,a}=x_{p,A_i,a}-x_{p,B_{i-1},a},
+\]
+and retained coordinates $(Wx)_{q,C_i}=x_{q,C_i}$ and
+$(Wx)_{p,C_i}=x_{p,C_i}$. Each output group is in position-then-momentum order.
+When its eliminated block is invertible, the \emph{periodic covariance} is
+\[
+ \gamma_{\rm per}=\mathrm{SC}_{\R^{2NM}}(W\gamma_{\rm loc}W^T),
+\]
+where $\mathrm{SC}$ denotes the Schur complement of Definition~\ref{def:contraction}.
+\end{definition}
+For comparison with the paper, group all $A$ coordinates together, then all $B$
+and all $C$ coordinates. If $R$ shifts the site index to the right,
+$(Rx)_i=x_{i-1}$, the same map is
+\[
+ W=\begin{pmatrix}I_A&R\Theta_B&0\\0&0&I_C\end{pmatrix}.
+\]
+The shift acts identically on positions and momenta and preserves each mode
+label. This is the matrix in Section~6, Eq.~(3) of~\cite{schuch}.
+
+\begin{theorem}\label{thm:periodic}
+Suppose every $\Gamma_i$ is admissible. Then $W^T$ is injective,
+\[
+ W\Omega_{Nd}W^T=\diag(0_{2NM},\Omega_N),
+\]
+the eliminated block of $W\gamma_{\rm loc}W^T$ is positive definite, and
+$\gamma_{\rm per}$ is admissible.
+\end{theorem}
+\begin{proof}
+The independent sum of the local covariances is admissible by
+Theorem~\ref{thm:sum}, iterated over the sites. Reordering its positions and
+momenta together gives $\gamma_{\rm loc}$ and preserves the uncertainty inequality.
+For an output vector $(y_q,y_p,z_q,z_p)$, the $A$ components of its image under
+$W^T$ are $y_q,y_p$, and the $C$ components are $z_q,z_p$. Hence $W^T$ is injective.
+Each eliminated position--momentum pairing has an $A$ contribution $+1$ and a
+$B$ contribution $-1$. They cancel, including after the common cyclic shift.
+Distinct mode pairs and all pairings with $C$ vanish. The retained pairings
+form $\Omega_N$. Apply Theorem~\ref{thm:contraction}.
+\end{proof}
+
+\subsection{Three correlated sites}
+\begin{proposition}\label{prop:three-site}
+Take $N=3$, $M=1$, and at each site let
+\[
+ K=\begin{pmatrix}0&0&1\\0&0&1\\1&1&0\end{pmatrix},\qquad
+ S=\begin{pmatrix}I_3&0\\K&I_3\end{pmatrix},\qquad \Gamma_i=SS^T.
+\]
+Then $S$ is symplectic, $\Gamma_i$ is admissible, and the periodic covariance is
+\[
+ \gamma_{\rm per}=\diag(Q,P),\qquad
+ Q=\begin{pmatrix}3/5&1/5&1/5\\1/5&3/5&1/5\\1/5&1/5&3/5\end{pmatrix},\quad
+ P=\begin{pmatrix}2&-1/2&-1/2\\-1/2&2&-1/2\\-1/2&-1/2&2\end{pmatrix}.
+\]
+It is admissible. In particular, distinct sites have position--position covariance
+entry $1/5$ and momentum--momentum covariance entry $-1/2$.
+\end{proposition}
+\begin{proof}
+Since $K=K^T$, direct multiplication gives $S\Omega_3S^T=\Omega_3$.
+The covariance $I_6$ is an independent sum of three one-mode vacua, so
+Theorem~\ref{thm:congruence} gives admissibility of $SS^T$.
+Let $R$ be the three-site cyclic right shift and $U$ the $3\times3$ all-ones
+matrix. Multiplying the local covariance blocks gives
+\[
+ E=\begin{pmatrix}2I&0\\0&4I-R-R^T\end{pmatrix},\quad
+ F=\begin{pmatrix}0&I+R\\I-R&0\end{pmatrix},\quad
+ G=\begin{pmatrix}I&0\\0&3I\end{pmatrix}.
+\]
+Here $R+R^T=U-I$ and $U^2=3U$. Consequently
+\[
+ (4I-R-R^T)^{-1}=(5I-U)^{-1}=\tfrac15 I+\tfrac1{10}U,
+\]
+as is checked by multiplication. Since $U(I-R)=0$, the two diagonal blocks of
+the Schur complement are
+\begin{align*}
+ Q&=I-(I-R)^T(\tfrac15I+\tfrac1{10}U)(I-R)
+   =\tfrac25I+\tfrac15U,\\
+ P&=3I-\tfrac12(I+R)^T(I+R)=\tfrac52I-\tfrac12U.
+\end{align*}
+The off-diagonal blocks vanish. Theorem~\ref{thm:periodic} proves admissibility.
+\end{proof}
+
+For this example, $QP=I_3$, so the associated Gaussian state is pure. Its
+single-site covariance is $\diag(3/5,2)$, with determinant $6/5>1$; the
+single-site reduced state is therefore mixed. Thus the state is entangled
+across every partition of one site from the other two. These deductions use
+the Gaussian purity criterion~\cite[Secs.~II.C--D]{weedbrook}; the checked
+proposition establishes the displayed covariance and its admissibility.

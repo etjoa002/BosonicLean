@@ -1,0 +1,19 @@
+% Navigation only; checked labels are maintained with reviewed correspondence.
+\definecolor{GaussianTagFill}{HTML}{EEEAF8}
+\definecolor{GaussianTagBorder}{HTML}{D6CEEB}
+\definecolor{GaussianTagText}{HTML}{5B477D}
+\newcommand{\BosonicLeanTag}{%
+  \tikz[baseline=(tag.base)]\node[rounded corners=1.5pt,
+    fill=GaussianTagFill,draw=GaussianTagBorder,text=GaussianTagText,
+    line width=0.3pt,inner xsep=3pt,inner ysep=1.5pt] (tag)
+    {\normalfont\scriptsize\sffamily Lean\,\ensuremath{\checkmark}};}
+\makeatletter
+\newcommand{\GaussianCheckedLabel}[1]{\expandafter\gdef\csname gaussian@checked@#1\endcsname{}}
+\newcommand{\GaussianEnableLinks}{%
+  \let\GaussianOriginalLabel\label
+  \renewcommand{\label}[1]{%
+    \GaussianOriginalLabel{##1}%
+    \ifcsname gaussian@checked@##1\endcsname
+      \nobreak\hspace{0.4em}\hyperlink{lean:##1}{\BosonicLeanTag}%
+    \fi}}
+\makeatother

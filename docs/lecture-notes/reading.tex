@@ -1,0 +1,50 @@
+% Reading guide.
+\section*{Reading guide}
+\addcontentsline{toc}{section}{Reading guide}
+\revb{These notes state their definitions and theorems in forms that a proof assistant can check;
+the remarks between them explain. Where that form differs from the usual physics presentation,
+the table below names the object used here, the one used in the literature, and where the two
+are related.}
+
+\medskip
+\noindent\revb{\begin{tabular}{@{}L{0.3\textwidth}L{0.31\textwidth}L{0.31\textwidth}@{}}
+\textbf{Here} & \textbf{In the literature} & \textbf{Relation}\\[2pt]\hline\\[-8pt]
+Covariance $\gamma$, twice the symmetrized covariance; vacuum $I_2$ &
+Varies: vacuum $I_2$ as here (Weedbrook et al.~\cite{weedbrook}, quadratures $a+a^\dagger$);
+$\sigma=\gamma/2$ with vacuum $\tfrac12I_2$ when $\sigma$ is the symmetrized covariance itself; or
+$\hbar$-dependent units &
+Definition~\ref{def:covariance}; units in Section~\ref{sec:states}\\[6pt]
+Coordinates $(q_1,\ldots,q_n,p_1,\ldots,p_n)$, form $\Omega_n$ &
+Mode by mode, $(q_1,p_1,\ldots,q_n,p_n)$ (e.g.~\cite{weedbrook}) &
+A permutation of coordinates carries one symplectic form to the other; covariances transform by
+the same permutation, by congruence, and admissibility is unchanged (proof of
+Theorem~\ref{thm:sum})\\[6pt]
+Admissibility $\gamma-i\Omega_n\succeq0$ &
+Uncertainty relation for the covariance, e.g.\ $V+i\Omega\succeq0$ &
+Definition~\ref{def:admissible}; equivalent to $\gamma+i\Omega_n\succeq0$ by complex conjugation,
+and for $\sigma=\gamma/2$ to $\sigma-\tfrac i2\Omega_n\succeq0$\\[6pt]
+Schwartz functions inside $L^2(\R)$ &
+Wave functions &
+Section~\ref{sec:states}\\[6pt]
+Contraction: a Schur complement of covariance matrices &
+Projection of virtual modes onto EPR pairs &
+Section~\ref{sec:contraction}: the ideal EPR vector is not normalizable; the Schur complement is
+proved, the EPR projection is its motivation\\[6pt]
+Finite periodic chains, $N\ge3$ (translation-invariant in Section~\ref{sec:fourier}) &
+Often infinite chains &
+Sections~\ref{sec:contraction}--\ref{sec:products}\\[6pt]
+Formal Fock space: all coefficient families &
+The Hilbert space $\Gamma_s(\mathfrak h)$ &
+$\Gamma_s(\mathfrak h)$ is the square-summable part (Section~\ref{sec:fock})\\[6pt]
+$e^T$ as a finite sum at each coefficient, for $T$ raising the photon number &
+Operator exponential &
+Equal coefficientwise wherever the series converges (after Lemma~\ref{lem:fock-raising})\\[6pt]
+Bargmann map into formal power series &
+Bargmann's space of entire functions &
+On $\Gamma_s(\mathfrak h)$, the Taylor coefficients (after Definition~\ref{def:fock-bargmann})\\
+\end{tabular}}
+
+\medskip
+\revb{Sections 1--5 work with covariance matrices and wave functions; Section~\ref{sec:fock}
+works with coefficient families over the number basis. These notes do not yet connect the two
+pictures.}

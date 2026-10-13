@@ -1,0 +1,130 @@
+\section{Homogeneous periodic covariances}\label{sec:fourier}
+Suppose that every site in the periodic construction uses the same local
+covariance $\Gamma$. A cyclic shift then leaves the construction unchanged.
+The finite Fourier transform separates its spatial frequencies: at each
+frequency, the covariance is obtained by eliminating only the local virtual
+coordinates. This gives the finite-chain form of the Fourier calculation
+in~\cite[Sec.~6]{schuch}.
+
+Fix $N\geq3$ and $M\geq1$, with one physical mode at each site. Retain the
+ordering and predecessor wiring of Section~\ref{sec:contraction}.
+For the local block calculations, group the coordinates as $(a,b,c)$, where
+$a=(q_A,p_A)$, $b=(q_B,p_B)$ and $c=(q_C,p_C)$. Write
+\[
+ \Gamma=\begin{pmatrix}\Gamma_{vv}&\Gamma_{vC}\\
+                         \Gamma_{Cv}&\Gamma_{CC}\end{pmatrix},
+ \qquad v=(a,b),\qquad \Theta=\diag(I_M,-I_M).
+\]
+Thus the virtual block has size $4M\times4M$, the cross block has size
+$4M\times2$, and the physical block has size $2\times2$.
+All blocks are taken in the order $(a,b,c)$.
+
+\begin{definition}[Fourier blocks]\label{def:fourier-blocks}
+Label sites and frequencies by $0,\ldots,N-1$, with indices interpreted
+modulo $N$. Set
+\[
+ \phi_k=\frac{2\pi k}{N},\qquad
+ \widehat f_k=\frac1{\sqrt N}\sum_{j=0}^{N-1}e^{-\mathrm i\phi_kj}f_j,
+ \qquad Z_k=\begin{pmatrix}I_{2M}&e^{-\mathrm i\phi_k}\Theta\end{pmatrix}.
+\]
+Define
+\begin{equation}\label{eq:fourier-schur}
+ E_k=Z_k\Gamma_{vv}Z_k^*,\qquad F_k=Z_k\Gamma_{vC},\qquad
+ S_k=\Gamma_{CC}-F_k^*E_k^{-1}F_k,
+\end{equation}
+where $*$ denotes conjugate transpose. Invertibility of $E_k$ follows from
+the next theorem.
+\end{definition}
+The eliminated coordinates are $y_j=a_j+\Theta b_{j-1}$. Substituting
+$j=r+1$ in the Fourier sum gives
+\[
+ \widehat{(b_{j-1})}_k=e^{-\mathrm i\phi_k}\widehat b_k,
+ \qquad \widehat y_k=Z_k\binom{\widehat a_k}{\widehat b_k}.
+\]
+
+\begin{theorem}[Fourier contraction]\label{thm:fourier-contraction}
+Let $\Gamma$ be admissible and let $\gamma_{\rm per}$ be its homogeneous
+periodic covariance. Each $E_k$ is Hermitian positive definite, and
+\[
+ (\gamma_{\rm per})_{\alpha,i+1;\,\beta,j+1}
+   =(\gamma_{\rm per})_{\alpha i,\beta j}
+ \qquad(\alpha,\beta\in\{q,p\}).
+\]
+Its Fourier transform is block diagonal:
+\begin{equation}\label{eq:fourier-diagonal}
+ \frac1N\sum_{i,j=0}^{N-1}e^{-\mathrm i\phi_ki}
+ (\gamma_{\rm per})_{\alpha i,\beta j}e^{\mathrm i\phi_lj}
+ =\begin{cases}(S_k)_{\alpha\beta},&k=l,\\0,&k\ne l.\end{cases}
+\end{equation}
+\end{theorem}
+\begin{proof}
+For $r$ coordinates at each site, define $T_k^{(r)}:\C^r\to\C^{Nr}$ by
+$(T_k^{(r)}v)_j=e^{\mathrm i\phi_kj}v$. Character orthogonality gives
+\[
+ (T_l^{(r)})^*T_k^{(r)}=N\delta_{lk}I_r,\qquad
+ \frac1N\sum_kT_k^{(r)}(T_k^{(r)})^*=I_{Nr}.
+\]
+The independent local covariance acts as $\Gamma$ on each such subspace.
+The shift calculation above shows that the wiring acts there as
+$L_k=\diag(Z_k,I_2)$. Its transpose acts as $L_k^*$, since the contribution
+from a $B$ coordinate uses the successor site. Consequently the wired
+covariance has local matrix
+\[
+ L_k\Gamma L_k^*=\begin{pmatrix}E_k&F_k\\F_k^*&\Gamma_{CC}\end{pmatrix}.
+\]
+Write its global blocks as $E,F,G$, as in the contraction theorem. In particular,
+\[
+ ET_k^{(2M)}=T_k^{(2M)}E_k,\qquad
+ FT_k^{(2)}=T_k^{(2M)}F_k,\qquad
+ GT_k^{(2)}=T_k^{(2)}\Gamma_{CC}.
+\]
+Theorem~\ref{thm:admissible-positive} gives $\Gamma\succ0$ over the reals.
+For complex vectors, put $Q=\Gamma-\mathrm i\Omega$, with the symplectic
+matrix $\Omega$ expressed in the same coordinate order. Both $Q$ and
+$Q^T$ are positive semidefinite, so their average $\Gamma$ is positive
+semidefinite as well. Since $\Gamma$ is nonsingular, it is positive definite.
+Its virtual principal block is therefore positive definite. The map $Z_k^*$
+is injective, since its first block is the identity, and hence
+$E_k=Z_k\Gamma_{vv}Z_k^*\succ0$.
+By Theorem~\ref{thm:periodic}, the global block $E$ is also positive definite.
+The first mode identity therefore implies
+$E^{-1}T_k^{(2M)}=T_k^{(2M)}E_k^{-1}$.
+Taking the Schur complement yields
+\[
+ \gamma_{\rm per}T_k^{(2)}=T_k^{(2)}S_k.
+\]
+Multiplication by $(T_l^{(2)})^*$ and orthogonality prove
+\eqref{eq:fourier-diagonal}. A cyclic shift acts by a scalar on each Fourier
+subspace, so $\gamma_{\rm per}$ commutes with cyclic shifts and is
+translation invariant.
+\end{proof}
+
+\begin{theorem}[Reconstruction and uncertainty]\label{thm:fourier-reconstruction}
+Under the same assumptions,
+\begin{equation}\label{eq:fourier-reconstruction}
+ (\gamma_{\rm per})_{\alpha i,\beta j}
+ =\frac1N\sum_{k=0}^{N-1}e^{\mathrm i\phi_k(i-j)}(S_k)_{\alpha\beta}.
+\end{equation}
+Moreover,
+\[
+ S_{-k}=\overline{S_k},\qquad
+ S_k-\mathrm i\Omega_1\succeq0,\qquad
+ \Omega_1=\begin{pmatrix}0&1\\-1&0\end{pmatrix},
+\]
+where $-k$ is interpreted modulo $N$ and the bar is entrywise conjugation.
+\end{theorem}
+\begin{proof}
+Insert the Fourier resolution of the identity into
+$\gamma_{\rm per}T_k^{(2)}=T_k^{(2)}S_k$ to obtain
+\eqref{eq:fourier-reconstruction}. Since $\gamma_{\rm per}$ is real,
+conjugating its Fourier transform replaces each frequency by its negative.
+The diagonal blocks in~\eqref{eq:fourier-diagonal} therefore satisfy
+$S_{-k}=\overline{S_k}$. Finally, Theorem~\ref{thm:periodic} gives
+$\gamma_{\rm per}-\mathrm i\Omega_N\succeq0$. Its pullback along $T_k^{(2)}$ is
+$N(S_k-\mathrm i\Omega_1)$: the position and momentum coordinates use the
+same Fourier vectors, whose squared norm is $N$. Dividing by $N>0$ proves
+the inequality.
+\end{proof}
+The matrices $S_k$ can have complex entries. Conjugate frequencies together
+reconstruct the real covariance; the uncertainty inequality for an individual
+frequency is an inequality of complex Hermitian matrices.

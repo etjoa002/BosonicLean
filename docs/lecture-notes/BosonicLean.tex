@@ -1,0 +1,72 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=24mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\numberwithin{equation}{section}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{tikz}
+\usepackage{needspace}
+\usepackage{array}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\AddToHook{cmd/subsection/before}{\ifnum\value{section}=3\Needspace{18\baselineskip}\fi}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{plain}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Sch}{\mathcal S(\R;\C)}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\Rea}{\operatorname{Re}}
+% Vetting rounds: blue until accepted, then redefined as plain text with the date.
+\newcommand{\reva}[1]{#1}
+\newcommand{\revb}[1]{#1}
+\title{Gaussian states, covariance matrices and the formal Fock space}
+\author{}
+\date{}
+\input{lean-links}
+\input{checked-labels}
+\begin{document}
+\GaussianEnableLinks
+\maketitle
+\vspace{-2em}
+\noindent Gaussian formalism expresses properties of bosonic quantum states in terms
+of phase-space data. For Gaussian states, the first moments and covariance matrix
+determine the state: the former give its mean position and momentum, and the latter
+describe its fluctuations. These notes develop the matrix algebra of covariances
+and connect it with explicit normalized Gaussian wave functions, laying foundations
+for the study of Gaussian matrix product states. For general background, see
+Weedbrook et al.~\cite[Sec.~II]{weedbrook}.
+
+\medskip
+\noindent These notes assume finite-dimensional linear algebra, complex inner products,
+Lebesgue integration and elementary differential calculus. The covariance
+convention is twice the usual symmetrized covariance: a dimensionless vacuum
+has covariance $I_2$. We begin with the matrix inequality governing admissibility,
+then construct normalized Gaussian wave functions and compute their covariances.
+\reva{Sections~\ref{sec:contraction}--\ref{sec:products} contract local covariances into
+periodic Gaussian matrix product states. Section~\ref{sec:fock} is of a different kind: it builds the formal Fock space
+of all coefficient families over the number basis, the ladder operators on it, the
+exponentials of operators that raise the photon number, and the Bargmann picture. It needs
+only algebra and formal power series, and it is the foundation of the Gaussian-augmented
+bosonic matrix product states of~\cite{tjoacirac}.}
+
+\medskip
+\enlargethispage{2\baselineskip}
+\tableofcontents
+\clearpage
+\input{reading}
+\input{phase-space}
+\input{gaussian-states}
+\clearpage
+\input{contraction}
+\input{fourier}
+\input{products}
+\input{fock}
+\input{references}
+\input{lean-index}
+\end{document}

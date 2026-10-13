@@ -1,0 +1,80 @@
+\section{Product covariances}
+\label{sec:products}
+The periodic construction includes products: if the physical mode at each site
+is independent of the virtual modes, contraction leaves its covariance unchanged.
+We make this explicit, allowing the physical covariance to vary from site to site.
+Retain $N\geq3$, $M\geq1$ and the ordering of Section~\ref{sec:contraction}.
+
+\begin{definition}\label{def:product-resource}
+Let $\eta_i$ be a real one-mode covariance at site $i$. Take the local covariance
+\[
+ \Gamma_i=\diag(I_{2M},I_{2M},\eta_i)
+\]
+in grouped phase coordinates $(q_{A_i},p_{A_i},q_{B_i},p_{B_i},q_{C_i},p_{C_i})$,
+then reorder it to the position-then-momentum coordinates used for periodic
+assembly. Define the physical product covariance by
+\[
+ (\gamma_{\rm prod})_{(u,i),(v,j)}=
+ \begin{cases}(\eta_i)_{uv},&i=j,\\0,&i\ne j,\end{cases}
+ \qquad u,v\in\{q,p\}.
+\]
+\end{definition}
+Each virtual mode is a vacuum and is independent of all other modes at its site.
+The physical mode has covariance $\eta_i$.
+
+\begin{theorem}\label{thm:periodic-product}
+If every $\eta_i$ is admissible, then every $\Gamma_i$ is admissible and
+\[
+ W\gamma_{\rm loc}W^T=
+ \begin{pmatrix}2I_{2NM}&0\\0&\gamma_{\rm prod}\end{pmatrix}.
+\]
+Consequently the periodic contraction equals $\gamma_{\rm prod}$ and is
+admissible. In particular, one virtual mode per bond suffices for every $N\geq3$.
+\end{theorem}
+\begin{proof}
+The independent-sum rule of Theorem~\ref{thm:sum} applies to the local resources.
+In grouped phase coordinates its uncertainty matrix is
+\[
+ \Gamma_i-i\diag(\Omega_M,\Omega_M,\Omega_1)
+ = (I_{2M}-i\Omega_M)\oplus(I_{2M}-i\Omega_M)
+       \oplus(\eta_i-i\Omega_1)\succeq0.
+\]
+The two vacuum blocks and the prescribed physical block are positive semidefinite;
+reordering the coordinates preserves the inequality.
+
+Each eliminated quadrature is the signed sum of two independent virtual vacuum
+coordinates. Its diagonal covariance entry is $1+1=2$. Distinct eliminated
+coordinates have zero covariance: distinct virtual modes are independent, and
+within each vacuum mode the position--momentum covariance vanishes. The virtual
+coordinates are also independent of every physical coordinate. Thus, in the
+notation of Definition~\ref{def:contraction},
+\[
+ E=2I_{2NM},\qquad F=0,\qquad G=\gamma_{\rm prod}.
+\]
+The Schur-complement formula therefore gives
+\[
+ \gamma_{\rm per}=G-F^TE^{-1}F=\gamma_{\rm prod}.
+\]
+Admissibility follows from Theorem~\ref{thm:periodic}.
+\end{proof}
+
+\begin{corollary}\label{cor:product-examples}
+For $\eta_i=I_2$ at every site, the periodic contraction is $I_{2N}$.
+For arbitrary $s_i>0$, the choices
+$\eta_i=\diag(s_i^2,s_i^{-2})$ give the corresponding product of squeezed
+one-mode covariances.
+\end{corollary}
+\begin{proof}
+The vacuum covariance is admissible. The diagonal criterion of
+Proposition~\ref{prop:diagonal} states
+\[
+ \diag(a,b)\text{ is admissible}\quad\Longleftrightarrow\quad a>0\ \text{and}\ ab\geq1.
+\]
+Apply it with $a=s_i^2$ and $b=s_i^{-2}$, whose product is one, and use
+Theorem~\ref{thm:periodic-product}. In the vacuum case, the entries of
+$\gamma_{\rm prod}$ are those of the identity.
+\end{proof}
+The one-mode Gaussians of Theorem~\ref{thm:covariance}, with $\hbar=1$, have
+these squeezed covariances. The virtual vacua in this construction are unused;
+adding them allows products to fit the same $M\geq1$ convention as the correlated
+examples.
