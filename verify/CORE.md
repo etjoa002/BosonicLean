@@ -6,7 +6,13 @@ Generated from `verify/Challenge.lean` by `verify/make_core_page.py`: the 67 sta
 
 A phase-space index of $`n`$ modes is an element of $`\mathrm{Fin}\, n \oplus \mathrm{Fin}\, n`$: the positions $`q_1, \dots, q_n`$ followed by the momenta $`p_1, \dots, p_n`$. A real matrix is regarded as a complex matrix entrywise, and a complex matrix $`H`$ is positive semidefinite, $`H \ge 0`$, when it is Hermitian with $`\bar x^T H x \ge 0`$ for every complex vector $`x`$.
 
-**1.** The standard symplectic matrix on $`n`$ modes is $`\Omega = \begin{pmatrix} 0 & 1 \\ -1 & 0 \end{pmatrix}`$ in the blocks of positions and momenta.  
+**1.** The standard symplectic matrix on $`n`$ modes is 
+
+```math
+\Omega = \begin{pmatrix} 0 & 1 \\ -1 & 0 \end{pmatrix}
+```
+
+in the blocks of positions and momenta.  
 <sub>`Sealed.symplecticForm_eq`</sub>
 
 **2.** A real $`2n \times 2n`$ matrix $`\gamma`$ is an admissible covariance matrix if and only if it is symmetric and $`\gamma - i\Omega \ge 0`$.  
@@ -41,7 +47,13 @@ A Gaussian matrix product state is obtained from an independent covariance matri
 **9.** The contraction: for a real $`2n \times 2n`$ matrix $`\gamma`$ and a real matrix $`K`$ with $`k + 2m`$ rows and $`2n`$ columns, let $`V = K \gamma K^T`$ with blocks $`E`$ (the first $`k`$ rows and columns), $`F`$ (the first $`k`$ rows, the last $`2m`$ columns), $`F'`$ (the last $`2m`$ rows, the first $`k`$ columns) and $`G`$ (the last $`2m`$ rows and columns). The contracted covariance is the Schur complement $`G - F' E^{-1} F`$, where $`E^{-1}`$ is the matrix inverse ($`E`$ is invertible by the next statement).  
 <sub>`Sealed.contractCovariance_eq`</sub>
 
-**10.** Contraction preserves admissibility: let $`\gamma`$ be admissible on $`n`$ modes and $`K`$ a real matrix with $`k + 2m`$ rows and $`2n`$ columns whose rows are linearly independent ($`K^T`$ is injective) and with $`K \Omega K^T = \begin{pmatrix} 0 & 0 \\ 0 & \Omega \end{pmatrix}`$, the lower right block being the symplectic matrix of $`m`$ modes. Then the block $`E`$ of $`K\gamma K^T`$ is positive definite and the contracted covariance is admissible on $`m`$ modes.  
+**10.** Contraction preserves admissibility: let $`\gamma`$ be admissible on $`n`$ modes and $`K`$ a real matrix with $`k + 2m`$ rows and $`2n`$ columns whose rows are linearly independent ($`K^T`$ is injective) and with 
+
+```math
+K \Omega K^T = \begin{pmatrix} 0 & 0 \\ 0 & \Omega \end{pmatrix},
+```
+
+the lower right block being the symplectic matrix of $`m`$ modes. Then the block $`E`$ of $`K\gamma K^T`$ is positive definite and the contracted covariance is admissible on $`m`$ modes.  
 <sub>`Sealed.isAdmissible_contractCovariance`</sub>
 
 **11.** The input of a periodic chain: $`N`$ sites, each with $`2M + 1`$ local modes, and real $`2(2M+1) \times 2(2M+1)`$ matrices $`\Gamma_j`$, one for each site $`j`$. Mode $`l`$ of site $`j`$ is the global mode $`(2M+1) j + l`$. The input matrix is block diagonal: its entry between the global coordinates of the local coordinates $`u`$ of site $`j`$ and $`v`$ of site $`j'`$ is $`\Gamma_j(u, v)`$ if $`j = j'`$ and $`0`$ otherwise.  
@@ -50,7 +62,13 @@ A Gaussian matrix product state is obtained from an independent covariance matri
 **12.** The wiring of a periodic chain: each site $`i`$ of $`N`$ has $`M`$ virtual modes $`A_{i,a}`$ (local modes $`0, \dots, M-1`$), $`M`$ virtual modes $`B_{i,a}`$ (local modes $`M, \dots, 2M-1`$) and one physical mode $`C_i`$ (local mode $`2M`$), numbered globally as for the input. The wiring matrix $`K`$ has $`2NM`$ rows to be eliminated followed by $`2N`$ rows for the physical modes. Write $`e_x`$ for the standard basis vector of the global coordinate $`x`$, and $`i - 1`$ for the site before $`i`$, cyclically (the inverse of the rotation $`j \mapsto j + 1 \bmod N`$). For each site $`i`$ and $`a < M`$, the row $`Mi + a`$ of $`K`$ is $`e_{q(A_{i,a})} + e_{q(B_{i-1,a})}`$ and the row $`NM + Mi + a`$ is $`e_{p(A_{i,a})} - e_{p(B_{i-1,a})}`$ (each bond is wired as a maximally entangled pair); the rows of the physical mode of site $`i`$ are $`e_{q(C_i)}`$ and $`e_{p(C_i)}`$.  
 <sub>`Sealed.periodicWiring_rows`</sub>
 
-**13.** Periodic chains: let $`N \ge 3`$ and $`M \ge 1`$, and let every $`\Gamma_j`$ be admissible on $`2M + 1`$ modes. Then the wiring $`K`$ has linearly independent rows and satisfies $`K \Omega K^T = \begin{pmatrix} 0 & 0 \\ 0 & \Omega \end{pmatrix}`$ (the symplectic matrix of the $`N`$ physical modes in the lower right block), the eliminated block of $`K \gamma K^T`$ for the input matrix $`\gamma`$ is positive definite, and the contracted covariance of the $`N`$ physical modes is admissible.  
+**13.** Periodic chains: let $`N \ge 3`$ and $`M \ge 1`$, and let every $`\Gamma_j`$ be admissible on $`2M + 1`$ modes. Then the wiring $`K`$ has linearly independent rows and satisfies 
+
+```math
+K \Omega K^T = \begin{pmatrix} 0 & 0 \\ 0 & \Omega \end{pmatrix}
+```
+
+(the symplectic matrix of the $`N`$ physical modes in the lower right block), the eliminated block of $`K \gamma K^T`$ for the input matrix $`\gamma`$ is positive definite, and the contracted covariance of the $`N`$ physical modes is admissible.  
 <sub>`Sealed.isAdmissible_periodic`</sub>
 
 ## The CCR algebra
@@ -124,7 +142,31 @@ These examples show that the hypotheses of the main theorems can be met and that
 **30.** The attenuator: for $`0 \le \eta \le 1`$ the matrices $`X = \sqrt\eta\, 1`$ and $`Y = (1 - \eta)\, 1`$ on $`n`$ modes satisfy the hypotheses of the channel-matrix statement: $`Y`$ is symmetric and $`Y - i\Omega + iX\Omega X^T \ge 0`$.  
 <sub>`Sealed.witness_attenuator`</sub>
 
-**31.** An explicit three-site chain: with $`C = \begin{pmatrix} 0 & 0 & 1 \\ 0 & 0 & 1 \\ 1 & 1 & 0 \end{pmatrix}`$ and $`S = \begin{pmatrix} 1 & 0 \\ C & 1 \end{pmatrix}`$, every site of the periodic chain with $`N = 3`$ and $`M = 1`$ carries the local matrix $`S S^T`$, and the contracted covariance of the three physical modes is $`\Gamma_q \oplus \Gamma_p`$, with the position block $`\Gamma_q = \frac15 \begin{pmatrix} 3 & 1 & 1 \\ 1 & 3 & 1 \\ 1 & 1 & 3 \end{pmatrix}`$ and the momentum block $`\Gamma_p = \begin{pmatrix} 2 & -1/2 & -1/2 \\ -1/2 & 2 & -1/2 \\ -1/2 & -1/2 & 2 \end{pmatrix}`$; it is admissible.  
+**31.** An explicit three-site chain: with 
+
+```math
+C = \begin{pmatrix} 0 & 0 & 1 \\ 0 & 0 & 1 \\ 1 & 1 & 0 \end{pmatrix}
+```
+
+and 
+
+```math
+S = \begin{pmatrix} 1 & 0 \\ C & 1 \end{pmatrix},
+```
+
+every site of the periodic chain with $`N = 3`$ and $`M = 1`$ carries the local matrix $`S S^T`$, and the contracted covariance of the three physical modes is $`\Gamma_q \oplus \Gamma_p`$, with the position block 
+
+```math
+\Gamma_q = \frac15 \begin{pmatrix} 3 & 1 & 1 \\ 1 & 3 & 1 \\ 1 & 1 & 3 \end{pmatrix}
+```
+
+and the momentum block 
+
+```math
+\Gamma_p = \begin{pmatrix} 2 & -1/2 & -1/2 \\ -1/2 & 2 & -1/2 \\ -1/2 & -1/2 & 2 \end{pmatrix};
+```
+
+it is admissible.  
 <sub>`Sealed.witness_three_site`</sub>
 
 **32.** On $`V = \mathbb R^2`$ the form $`\sigma(u, w) = u_1 w_2 - u_2 w_1`$ is alternating and nondegenerate, so the simplicity statement applies to it, and its CCR algebra is not the zero algebra.  
@@ -177,10 +219,22 @@ A periodic chain is homogeneous when every site carries the same local matrix $`
 **45.** Product covariances as periodic contractions: let $`N \ge 3`$, $`M \ge 1`$ and let every $`\eta_x`$ be admissible on one mode. Take as input of the periodic chain with $`M`$ virtual modes on each side of every bond (entries 11 to 13) the product resources with physical matrices $`\eta_x`$. Then every product resource is admissible; the matrix $`K\gamma K^T`$, for the wiring $`K`$ and the input $`\gamma`$, is block diagonal with $`2 \cdot 1`$ on the $`2NM`$ eliminated rows and the product covariance $`\eta`$ on the physical rows; the contracted covariance equals $`\eta`$; and $`\eta`$ is admissible.  
 <sub>`Sealed.isAdmissible_product`</sub>
 
-**46.** The covariance of a Gaussian kernel: for a complex $`n \times n`$ matrix $`K`$ with real part $`X`$ and imaginary part $`-Y`$, so that $`K = X - iY`$, the kernel covariance is the real $`2n \times 2n`$ matrix $`\begin{pmatrix} X^{-1} & X^{-1}Y \\ YX^{-1} & X + YX^{-1}Y \end{pmatrix}`$ in the blocks of positions and momenta, with $`X^{-1}`$ the matrix inverse.  
+**46.** The covariance of a Gaussian kernel: for a complex $`n \times n`$ matrix $`K`$ with real part $`X`$ and imaginary part $`-Y`$, so that $`K = X - iY`$, the kernel covariance is the real $`2n \times 2n`$ matrix 
+
+```math
+\begin{pmatrix} X^{-1} & X^{-1}Y \\ YX^{-1} & X + YX^{-1}Y \end{pmatrix}
+```
+
+in the blocks of positions and momenta, with $`X^{-1}`$ the matrix inverse.  
 <sub>`Sealed.kernelCovariance_eq`</sub>
 
-**47.** The local resource of a finitely squeezed cluster chain: for real $`t`$, $`g`$ and $`g_i`$ let $`r = t/(4(1 + g^2))`$ and $`\alpha = r + i`$. The local resource is the kernel covariance (entry 46) of the three-mode kernel $`\begin{pmatrix} \alpha & 0 & i \\ 0 & \alpha & -2g_i\alpha \\ i & -2g_i\alpha & t - 1/(2\alpha) + 2g_i^2\alpha \end{pmatrix}`$ on the left virtual, the right virtual and the physical mode.  
+**47.** The local resource of a finitely squeezed cluster chain: for real $`t`$, $`g`$ and $`g_i`$ let $`r = t/(4(1 + g^2))`$ and $`\alpha = r + i`$. The local resource is the kernel covariance (entry 46) of the three-mode kernel 
+
+```math
+\begin{pmatrix} \alpha & 0 & i \\ 0 & \alpha & -2g_i\alpha \\ i & -2g_i\alpha & t - 1/(2\alpha) + 2g_i^2\alpha \end{pmatrix}
+```
+
+on the left virtual, the right virtual and the physical mode.  
 <sub>`Sealed.clusterLocalResource_eq`</sub>
 
 **48.** Gaussian kernels give admissible covariances: if the complex $`n \times n`$ matrix $`K`$ is symmetric, $`K^T = K`$, and its real part $`X`$ is positive definite ($`x^T X x > 0`$ for every nonzero real vector $`x`$, $`X`$ symmetric), then the kernel covariance of $`K`$ is admissible.  
