@@ -28,14 +28,15 @@ and the C*-algebra they generate.
 | Gaussian channels | The transformation of Gaussian data under a channel, concatenation, the noiseless case and the dilation identities; for finitely many modes, channel matrices preserve admissibility | |
 | The formal Fock space | Ladder operators with `[aᵢ, aⱼ†] = δᵢⱼ`; exponentials of operators that raise the particle number; the Bargmann map to formal power series, with `aⱼ† ↦ zⱼ` and `aⱼ ↦ ∂/∂zⱼ` | §6 |
 
-The precise statements are the 67 theorems of [`verify/CORE.md`](verify/CORE.md), grouped by the
-rows of this table. The condition `γ + iσ ≥ 0` is proved necessary for a Gaussian state; a Gaussian
-channel is a completely positive map by definition. Conventions are listed in `CONVENTIONS.md`.
+The precise statements are the 67 theorems of [`verify/CORE.md`](verify/CORE.md), under headings
+that refine the rows of this table. The condition `γ + iσ ≥ 0` is proved necessary for a Gaussian
+state; a Gaussian channel is a completely positive map by definition. Conventions are listed in
+`CONVENTIONS.md`.
 
 ## Verification
 
-The 67 theorems of the core are 43 main results, fourteen statements that describe the
-library's definitions in Mathlib's terms, and ten examples (the vacuum, a squeezed covariance, the
+The 67 theorems of the core are 43 main results, 14 statements that describe the
+library's definitions in Mathlib's terms, and 10 examples (the vacuum, a squeezed covariance, the
 attenuator channel, a state of the CCR algebra, and others) in which the hypotheses hold and the
 objects are not degenerate. `verify/Challenge.lean` states them without proofs, and
 `verify/Solution.lean` proves them from the library. The command
@@ -89,7 +90,7 @@ arises.
 
 [`docs/lecture-notes/BosonicLean.pdf`](docs/lecture-notes/BosonicLean.pdf) gives the account with
 proofs, examples and a dictionary to the physics literature, in the sections listed in the table
-above. A tag beside a theorem links to the Lean declaration that proves it.
+above. A tag beside a theorem links to the Lean declarations that prove it.
 
 ## Library layout
 
