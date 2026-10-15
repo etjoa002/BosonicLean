@@ -1,14 +1,13 @@
 \section{Contraction of covariance matrices}
 \label{sec:contraction}
 We now turn to constructing Gaussian matrix product states from local Gaussian
-resources~\cite[Secs.~3 and~6]{schuch}. At each site, we distinguish physical
-modes, which form the final system, from auxiliary virtual modes. Neighbouring
+resources~\cite[Secs.~3 and~6]{schuch}. At each site, we distinguish \emph{physical
+modes}, which form the final system, from auxiliary \emph{virtual modes}. Neighbouring
 sites are joined by EPR measurements on their virtual modes, and we seek the
 covariance of the physical modes conditioned on the measurement outcomes.
 At the covariance level, this construction leads to a Schur complement.
 We first establish the general matrix result, then explain EPR measurements
-and apply it to a periodic chain. The idealizations involved in the measurement
-description will be distinguished from the finite covariance matrices used below.
+and apply it to a periodic chain.
 
 \begin{theorem}\label{thm:admissible-positive}
 Every admissible $2n\times2n$ covariance matrix is positive definite:
@@ -89,10 +88,10 @@ Two pairs of canonical quadratures admit the commuting combinations
 An \emph{EPR measurement} is the joint measurement of these two observables.
 Their exact joint eigenvectors are generalized eigenvectors: they do not belong
 to the two-mode Hilbert space. In particular, the ideal EPR vector is not a
-normalizable state. Finite squeezing gives normalizable approximations, but the
-infinitely squeezed vector must not be treated as a density operator of trace one.
-The covariance description of Gaussian measurements is developed in
-Giedke and Cirac~\cite[Secs.~III--IV]{giedke}.
+normalizable state. Finite squeezing gives normalizable approximations, but we
+must not treat the infinitely squeezed vector as a density operator of trace one.
+Giedke and Cirac~\cite[Secs.~III--IV]{giedke} develop the covariance description of
+Gaussian measurements.
 
 Reversing both quadratures of $B$ is a canonical phase rotation. It replaces the
 preceding pair by
@@ -100,7 +99,7 @@ preceding pair by
  Y_q=q_A+q_B,\qquad Y_p=p_A-p_B.
 \end{equation}
 We use this convention for the virtual pairs below. Put
-$\Theta=\diag(I_M,-I_M)$ for $M$ such pairs. If the remaining modes are denoted
+$\Theta=\diag(I_M,-I_M)$ for $M$ such pairs. If we denote the remaining modes
 by $C$, the matrix
 \[
  L=\begin{pmatrix}I&\Theta&0\\0&0&I_C\end{pmatrix}
@@ -109,7 +108,7 @@ maps the quadrature vector in $A,B,C$ order to $(Y,C)$.
 The identity $\Theta\Omega_M\Theta^T=-\Omega_M$ gives
 $L\Omega L^T=\diag(0,\Omega_C)$, as required in Theorem~\ref{thm:contraction}.
 
-Here is the corresponding characteristic-function calculation, including its
+We now compute the corresponding characteristic function, including its
 normalization. For a centered Gaussian with covariance $\gamma$, write
 \[
  \chi(t)=\langle e^{it^TR}\rangle=\exp(-t^T\gamma t/4).
@@ -137,15 +136,15 @@ Gaussian conditioning formula is
  d_{C\mid a}=d_C+F^TE^{-1}(a-d_Y),\qquad
  \gamma_{C\mid a}=G-F^TE^{-1}F.
 \end{equation}
-The outcome changes the mean, but not the conditional covariance. Conditioning
-here is understood through the outcome density, not as an event of positive
+The outcome changes the mean, but not the conditional covariance. We understand
+conditioning here through the outcome density, not as an event of positive
 probability at one exact value. These formulas give the measurement interpretation;
 Theorem~\ref{thm:contraction} establishes the covariance inequality directly.
 
 In the Choi--Jamio{\l}kowski construction, the resource associated with a map
 is obtained formally by applying the map to one half of an ideal EPR pair.
 EPR contraction with the other half represents feeding an input to the map.
-This turns the GMPS construction into contractions of local resources, but
+This turns the \revs{construction of Gaussian matrix product states} into contractions of local resources, but
 still involves ideal EPR measurements. Moreover, a channel representative obtained
 from an infinitely squeezed pair need not be a finite covariance matrix: the
 identity channel already illustrates the difficulty. The results below use
@@ -155,14 +154,14 @@ their Section 5 replaces infinitely entangled bonds by finite ones while moving
 the infinite entanglement into the local maps.
 
 \subsection{A periodic chain}
-At each site $i\in\mathbb Z/N\mathbb Z$, introduce $M$ left virtual modes $A_i$,
+At each site $i\in\mathbb Z/N\mathbb Z$, we introduce $M$ left virtual modes $A_i$,
 $M$ right virtual modes $B_i$, and one retained mode $C_i$.
 The pair on each edge joins $B_{i-1}$ to $A_i$. We assume $N\geq3$ and $M\geq1$.
 The integer $M$ counts the \emph{virtual modes per bond}. Each bosonic mode has
 an infinite-dimensional Hilbert space, so even $M=1$ can support entanglement.
 With no virtual modes, $M=0$, the virtual Hilbert space is one-dimensional;
-this is the counterpart of bond dimension $D=1$ for a qudit MPS. Product
-covariances can also be represented with $M\geq1$ by adding unused virtual modes.
+this is the counterpart of bond dimension $D=1$ for a qudit MPS. We can also
+represent product covariances with $M\geq1$ by adding unused virtual modes.
 A bound on $M$ alone does not bound entanglement entropy: the squeezing must
 also be controlled.
 
@@ -190,7 +189,7 @@ When its eliminated block is invertible, the \emph{periodic covariance} is
 \]
 where $\mathrm{SC}$ denotes the Schur complement of Definition~\ref{def:contraction}.
 \end{definition}
-For comparison with the paper, group all $A$ coordinates together, then all $B$
+For comparison with~\revs{\cite{schuch}}, we group all $A$ coordinates together, then all $B$
 and all $C$ coordinates. If $R$ shifts the site index to the right,
 $(Rx)_i=x_{i-1}$, the same map is
 \[
@@ -250,7 +249,7 @@ Here $R+R^T=U-I$ and $U^2=3U$. Consequently
 \[
  (4I-R-R^T)^{-1}=(5I-U)^{-1}=\tfrac15 I+\tfrac1{10}U,
 \]
-as is checked by multiplication. Since $U(I-R)=0$, the two diagonal blocks of
+as multiplication checks. Since $U(I-R)=0$, the two diagonal blocks of
 the Schur complement are
 \begin{align*}
  Q&=I-(I-R)^T(\tfrac15I+\tfrac1{10}U)(I-R)
@@ -264,5 +263,5 @@ For this example, $QP=I_3$, so the associated Gaussian state is pure. Its
 single-site covariance is $\diag(3/5,2)$, with determinant $6/5>1$; the
 single-site reduced state is therefore mixed. Thus the state is entangled
 across every partition of one site from the other two. These deductions use
-the Gaussian purity criterion~\cite[Secs.~II.C--D]{weedbrook}; the checked
-proposition establishes the displayed covariance and its admissibility.
+the Gaussian purity criterion~\cite[Secs.~II.C--D]{weedbrook}\revs{, which is cited, not
+proved here; Proposition~\ref{prop:three-site} establishes the displayed covariance and its admissibility}.

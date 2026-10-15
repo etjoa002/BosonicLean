@@ -26,6 +26,9 @@
 \newcommand{\reva}[1]{#1}
 \newcommand{\revb}[1]{#1}
 \newcommand{\revtag}[1]{#1}
+% Lecture-form pass of 15 Oct 2026 (front matter, reading guide, roadmap, index of terms, filler):
+% blue until vetted by the user; the export sets it plain.
+\newcommand{\revs}[1]{#1}
 \title{Gaussian states, covariance matrices and the formal Fock space}
 \author{}
 \date{}
@@ -49,30 +52,18 @@ Weedbrook et al.~\cite[Sec.~II]{weedbrook}.
 \clearpage
 
 \section*{About these notes}
-\noindent These notes assume finite-dimensional linear algebra, complex inner products,
-Lebesgue integration and elementary differential calculus. We begin with the matrix inequality governing admissibility,
-then construct normalized Gaussian wave functions and compute their covariances.
-\reva{Sections~\ref{sec:contraction}--\ref{sec:products} contract local covariances into
-periodic Gaussian matrix product states.}
-
-\medskip
-\noindent\reva{Section~\ref{sec:fock} is of a different kind: it builds the formal Fock space
-of all coefficient families over the number basis, the ladder operators on it, the
-exponentials of operators that raise the photon number, and the Bargmann picture. It needs
-only algebra and formal power series, and it is the foundation of the Gaussian-augmented
-bosonic matrix product states of~\cite{tjoacirac}.} \revtag{These notes do not yet connect the
-covariance matrices of Sections~1--5 with the formal Fock space.}
-
-\medskip
-\noindent\revtag{\textbf{Reading conventions.} The conventions of these notes are those of the
-reading guide below, which compares each with the usual physics presentation.}
+\noindent\revs{These notes are the mathematical account of the Lean library BosonicLean. We assume}
+finite-dimensional linear algebra, complex inner products,
+Lebesgue integration and elementary differential calculus\revs{; Section~\ref{sec:fock} needs only
+algebra and formal power series. The reading guide below relates our conventions to those of the
+literature, the roadmap after it shows which sections use which, and an index of terms precedes
+the references.}
 
 \medskip
 \noindent\revtag{A statement marked
 \BosonicLeanTag{} has a checked proof in BosonicLean whose correspondence with the statement
 here has been reviewed; the declaration index at the end names the checked declarations. Definitions, Remarks and paragraphs of motivation carry no marks.}
 
-\clearpage
 \input{reading}
 \input{phase-space}
 \input{gaussian-states}
@@ -81,6 +72,7 @@ here has been reviewed; the declaration index at the end names the checked decla
 \input{fourier}
 \input{products}
 \input{fock}
+\input{terms}
 \input{references}
 \input{lean-index}
 \end{document}

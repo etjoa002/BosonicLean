@@ -72,7 +72,10 @@ $\lvert n\rvert=k$, so that, sector by sector,
 \]
 the finite-particle space, the bosonic Fock space of~\cite{dg,br} (the Hilbert direct sum,
 that is, the square-summable families) and the full product. \reva{$\Gamma_s(\mathfrak h)$
-is recalled from~\cite{dg,br}; it is not constructed in these notes.} For a single mode, the vector with
+is recalled from~\cite{dg,br}; it is not constructed in these notes}\revs{, nor are second
+quantization, the Fock representation of the CCR algebra, or the identification of
+$\Gamma_s(\mathfrak h)$ with $L^2(\R^\iota)$ through the Hermite functions that would join this
+section to Sections~\ref{sec:covariance}--\ref{sec:products}}. For a single mode, the vector with
 coefficients $\sqrt{(2k)!}/k!$ at $\ket{2k}$ and $0$ at odd occupations lies in
 $\Fock(\{1\},\C)$ but not in $\Gamma_s$, since $(2k)!/(k!)^2\ge1$. After
 Definition~\ref{def:fock-raising} it is $e^{(a^\dagger)^2}\ket0$.
@@ -101,7 +104,7 @@ $[a_i^\dagger,a_j^\dagger]=0$.
 \end{theorem}
 
 \begin{proof}
-The identities are checked coefficientwise.
+We check the identities coefficientwise.
 \begin{enumerate}
 \item[(a)] For $i=j$: $(a_ia_i^\dagger\psi)(n)=\sqrt{n_i+1}\sqrt{n_i+1}\,\psi(n)$ and
 $(a_i^\dagger a_i\psi)(n)=\sqrt{n_i}\sqrt{n_i}\,\psi(n)$, the second being $0$ when $n_i=0$.
@@ -162,7 +165,7 @@ preserves vanishing below $k$.\qedhere
 \end{enumerate}
 \end{proof}
 
-\reva{The exponential is defined by the finite sum of Definition~\ref{def:fock-raising},
+\reva{We define the exponential by the finite sum of Definition~\ref{def:fock-raising},
 not as a limit, so no topology on $\Fock(\iota,R)$ is needed.} By Lemma~\ref{lem:fock-raising}(a) this is the operator series
 $\sum_rT^r/r!$ itself: at every coefficient the partial sums are constant from
 $r=\lvert n\rvert$ on. When the series converges in $\Gamma_s(\mathfrak h)$, its limit has
@@ -199,7 +202,7 @@ applied to the raising map $T^r$ for $r\ge1$ (and trivially for $r=0$),
  =\sum_{k=0}^\Lambda\frac1{k!}\sum_{r+t=k}\binom kr(T^rT'^t\psi)(n)
  =\sum_{k=0}^\Lambda\frac{((T+T')^k\psi)(n)}{k!}.
 \]
-The terms with $r+t>\Lambda$ were dropped because $T^rT'^t$ is a product of $r+t$ raising maps and
+We dropped the terms with $r+t>\Lambda$ because $T^rT'^t$ is a product of $r+t$ raising maps and
 therefore, by Lemma~\ref{lem:fock-raising}(a), vanishes at $n$; the last step is the
 binomial theorem for commuting $T$ and $T'$. The right side is $(e^{T+T'}\psi)(n)$.
 \end{proof}
@@ -216,7 +219,7 @@ diverges.}
 
 \reva{$R[[z]]$ is the set of all functions $f$ from multi-indices to $R$, written
 $f=\sum_n\coef nf\,z^n$, with the Cauchy product
-$\coef n{(fg)}=\sum_{n'+n''=n}\coef{n'}f\,\coef{n''}g$, a finite sum.} For $f\in R[[z]]$, the partial derivative is defined coefficientwise by
+$\coef n{(fg)}=\sum_{n'+n''=n}\coef{n'}f\,\coef{n''}g$, a finite sum.} For $f\in R[[z]]$, we define the partial derivative coefficientwise by
 $\coef n{(\partial_jf)}=(n_j+1)\,\coef{n+e_j}f$; for $R=\C$ it is the usual derivative of
 formal power series.
 
@@ -307,9 +310,3 @@ $\coef n{(e^{Xz_j^p}f)}$ is the same finite sum.
 The truncation in Definition~\ref{def:fock-raising} therefore cuts only terms whose
 coefficient at $n$ vanishes.
 
-\medskip
-\noindent\textbf{Scope.} \reva{The results of this section hold for an arbitrary set of modes
-and an arbitrary $\C$-algebra of coefficients. These notes do not construct
-$\Gamma_s(\mathfrak h)$, second quantization or the Fock representation of the CCR algebra, and do
-not yet identify $\Gamma_s(\mathfrak h)$ with $L^2(\R^\iota)$ through the Hermite functions, the
-first step towards joining this section to Sections~\ref{sec:covariance}--\ref{sec:products}.}

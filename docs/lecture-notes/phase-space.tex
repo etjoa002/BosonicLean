@@ -1,14 +1,13 @@
 \section{Covariance matrices}
 \label{sec:covariance}
-For $n\geq0$, use coordinates
+For $n\geq0$, we use coordinates
 $(q_1,\ldots,q_n,p_1,\ldots,p_n)$ on $\R^{2n}$ and define
 \[
  \Omega_n=\begin{pmatrix}0&I_n\\-I_n&0\end{pmatrix}.
 \]
 For a complex matrix $H$, the notation $H\succeq0$ means that $H=H^*$ and
 $z^*Hz\geq0$ for every complex column vector $z$. Here $H^*$ is the conjugate
-transpose. Real matrices are regarded as complex matrices when used in this
-inequality.
+transpose. We regard real matrices as complex matrices in this inequality.
 
 \begin{definition}[Admissible covariance]\label{def:admissible}
 A real $2n\times2n$ matrix $\gamma$ is called \emph{admissible} if
@@ -16,7 +15,8 @@ A real $2n\times2n$ matrix $\gamma$ is called \emph{admissible} if
  \gamma^T=\gamma,\qquad \gamma-i\Omega_n\succeq0.
 \end{equation}
 \end{definition}
-These coordinates are dimensionless. For one mode the condition concerns the
+These coordinates are dimensionless. \revs{For a real $2n\times2n$ matrix $\gamma$ we call
+$\gamma-i\Omega_n$ its \emph{uncertainty matrix}.} For one mode the condition concerns the
 Hermitian matrix
 \[
  \begin{pmatrix}a&c-i\\c+i&b\end{pmatrix},
@@ -26,9 +26,9 @@ The imaginary part records the canonical pairing between position and momentum.
 The empty matrix is admissible when $n=0$.
 
 \subsection{Changes of coordinates}
-A real matrix $S$ is symplectic in these coordinates when
+A real matrix $S$ is \emph{symplectic} in these coordinates when
 $S\Omega_nS^T=\Omega_n$. Transforming a covariance in both indices gives
-$\gamma\mapsto S\gamma S^T$. This is a congruence transformation. Similarity
+$\gamma\mapsto S\gamma S^T$. This is a \emph{congruence transformation}. Similarity
 has the form $A\mapsto SAS^{-1}$; the two formulas agree for orthogonal $S$,
 but symplecticity alone does not give $S^T=S^{-1}$.
 
@@ -80,7 +80,7 @@ by zero on the unselected coordinates gives $\widetilde z\in\C^{2n}$ and
 \]
 \end{proof}
 
-Conversely, independent covariance blocks can be combined without cross terms.
+Conversely, we can combine independent covariance blocks without cross terms.
 \begin{definition}[Independent sum]\label{def:independent-sum}
 For arbitrary real matrices $A$ and $B$ of sizes $2n\times2n$ and
 $2m\times2m$, write their position/momentum blocks as $A_{qq},A_{qp},A_{pq},A_{pp}$
@@ -142,5 +142,4 @@ $D(t,t^{-1})$ is admissible for every $t>0$. Its two variances in our covariance
 convention are $t/2$ and $1/(2t)$; their product is $1/4$.
 By contrast, $cI_2$ with $0\leq c<1$ is a positive semidefinite real matrix
 but is not admissible, since $c^2<1$.
-Theorem~\ref{thm:sum} combines admissible one-mode blocks into larger matrices.
 We now construct wave functions whose covariances give the one-mode equality case.
