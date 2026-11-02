@@ -1,0 +1,526 @@
+% Section 12: characteristic functions of vectors of the Fock space, Gaussian characteristic functions, the state
+% condition from positive semidefinite kernels, pure Gaussian states and their equivalence with Gaussian characteristic
+% functions, the inversion of the paper's (8) and its norm (9). GA-BMPS milestone B5.4, Sections 2-4 of its proposal
+% through Lemma 15, and its decision 2 (chapter written 30 Oct 2026). New text for vetting (veteenv).
+\providecommand{\cU}{\mathcal U}
+\providecommand{\sU}{\mathsf U}
+\providecommand{\sS}{\mathsf S}
+\providecommand{\Sp}{\mathrm{Sp}(2N,\R)}
+\providecommand{\Un}{\mathrm{U}(N)}
+\providecommand{\Rh}{\hat R}
+\providecommand{\Qd}{\mathcal Q}
+\providecommand{\chG}{\chi^{\mathrm G}}
+\providecommand{\gk}{\gamma_\kappa}
+\begin{veteenv}
+\setlength{\emergencystretch}{3em}
+\section{Characteristic functions and pure Gaussian states}\label{sec:puregaussian}
+
+Tjoa and Cirac define a pure Gaussian state as $U\ket0$ for a Gaussian unitary $U$~\cite[(4)]{tjoacirac}; the textbook definition
+is a unit vector whose characteristic function $\langle\psi,W(u)\psi\rangle$ is a Gaussian function of $u$. We prove that the two
+agree. Two facts carry the proof, and both rest on irreducibility (Theorem~\ref{thm:dsq-irreducible}): a vector is determined up to
+a phase by its characteristic function, and a unit vector with a Gaussian characteristic function has a symplectic covariance
+matrix, so that it cannot be a nontrivial Gaussian mixture.
+
+\medskip
+\noindent\textbf{Notation for this section.}
+\begin{center}
+\begin{tabular}{@{}L{0.3\textwidth}L{0.64\textwidth}@{}}
+$\Gamma_s(N)$ & the bosonic Fock space of the modes $\{1,\ldots,N\}$, $N\ge1$; $N'$ another number of modes\\
+$W(u)$, $\sigma$, $\alpha(u)$, $\delta(\alpha)$, $\Rh$, $\Qd$ & as in Section~\ref{sec:gaussunitary}\\
+$(M,d)$ & data of a Gaussian unitary (Definition~\ref{def:gu-weyl})\\
+$\chi_\psi$ & characteristic function of $\psi$ (Definition~\ref{def:pg-charfun})\\
+$\chG_{d,\gamma}$ & Gaussian function of displacement $d$ and covariance $\gamma$ (Definition~\ref{def:pg-gauss})\\
+$\gamma$, $A\succeq0$ & a real $2N\times2N$ matrix, symmetric where stated; $A$ is Hermitian and positive semidefinite
+(Section~\ref{sec:covariance})\\
+$\gk$ & the covariance matrix of the normalized vector $\ket{\kappa,\ell}$ (Lemma~\ref{lem:pg-invert})\\
+\end{tabular}
+\end{center}
+Inner products are antilinear in the first argument. A Gaussian unitary has some data $(M,d)$, unique by
+Proposition~\ref{prop:gu-weyl}(c).
+
+\subsection{Characteristic functions}\label{sec:pg-charfun}
+
+\begin{definition}[Characteristic function]\label{def:pg-charfun}
+For $\psi\in\Gamma_s(N)$ and $u\in\R^{2N}$, the \emph{characteristic function} of $\psi$ is $\chi_\psi(u)=\langle\psi,W(u)\psi\rangle$.
+\end{definition}
+
+For a unit vector this is the symmetrically ordered characteristic function\vetx{~\cite{cahillglauber}} $\operatorname{Tr}(\rho D(\xi))$ of
+$\rho=\ket\psi\langle\psi\rvert$ at $\xi=\alpha(u)$; formally $W(u)=e^{-i\sigma(u,\Rh)}$.
+
+\begin{lemma}[Elementary properties]\label{lem:pg-charfun}
+Let $\psi\in\Gamma_s(N)$, $u\in\R^{2N}$ and $a\in\C$. Then $\chi_\psi(0)=\lVert\psi\rVert^2$, $\chi_\psi(-u)=\overline{\chi_\psi(u)}$,
+$\lvert\chi_\psi(u)\rvert\le\lVert\psi\rVert^2$ and $\chi_{a\psi}=\lvert a\rvert^2\chi_\psi$. If $U$ is a Gaussian unitary with data $(M,d)$, then
+\[
+ \chi_{U\psi}(u)=e^{-i\sigma(u,d)}\,\chi_\psi(M^{-1}u).
+\]
+\end{lemma}
+
+\begin{proof}
+$W(0)=D(0)=1$; $\langle\psi,W(-u)\psi\rangle=\langle\psi,W(u)^*\psi\rangle=\langle W(u)\psi,\psi\rangle$ by
+Proposition~\ref{prop:gu-weyl}(a); the bound is the Cauchy--Schwarz inequality, $W(u)$ being unitary; the scaling is sesquilinearity. Finally
+$\langle U\psi,W(u)U\psi\rangle=\langle\psi,U^*W(u)U\psi\rangle$, and Definition~\ref{def:gu-weyl} applies.
+\end{proof}
+
+The inner products of the vectors $W(u)\psi$ are values of $\chi_\psi$, so the characteristic function fixes the Gram matrix of
+the orbit of $\psi$; since the orbit spans a dense subspace, Lemma~\ref{lem:dsq-gram} turns equal characteristic functions into
+an isometry.
+
+\begin{lemma}[The intertwiner]\label{lem:pg-intertwiner}
+\begin{enumerate}
+\item[(a)] For $\psi\in\Gamma_s(N)$ and $u,v\in\R^{2N}$, $\langle W(u)\psi,W(v)\psi\rangle=e^{i\sigma(u,v)/2}\chi_\psi(v-u)$.
+\item[(b)] If $\psi\ne0$, the vectors $W(u)\psi$, $u\in\R^{2N}$, span a dense subspace of $\Gamma_s(N)$.
+\item[(c)] Let $\sigma'$ be the symplectic form of $\R^{2N'}$ and $E:\R^{2N}\to\R^{2N'}$ linear with $\sigma'(Eu,Ev)=\sigma(u,v)$ for all $u,v$.
+Let $\psi\in\Gamma_s(N)$, $\psi\ne0$, and $\psi'\in\Gamma_s(N')$ with $\chi_\psi(u)=\chi_{\psi'}(Eu)$ for every $u$. Then there is exactly one
+linear isometry $T:\Gamma_s(N)\to\Gamma_s(N')$ with $T\psi=\psi'$ and $TW(u)x=W(Eu)Tx$ for all $u\in\R^{2N}$ and $x\in\Gamma_s(N)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+\begin{enumerate}
+\item[(a)] $\langle W(u)\psi,W(v)\psi\rangle=\langle\psi,W(-u)W(v)\psi\rangle=e^{-i\sigma(-u,v)/2}\chi_\psi(v-u)$ by Proposition~\ref{prop:gu-weyl}(a).
+\item[(b)] Let $K$ be the closure of the span. Since $W(v)W(u)\psi=e^{-i\sigma(v,u)/2}W(v+u)\psi$ and $W(v)$ is continuous, $W(v)K\subseteq K$ for
+every $v$, so $D(\alpha)K=W(\delta(\alpha))K\subseteq K$ for every $\alpha$. As $\psi\in K$ is nonzero, Corollary~\ref{cor:dsq-irreducible}(b)
+gives $K=\Gamma_s(N)$.
+\item[(c)] By (a) for $\psi$ and for $\psi'$, the linearity of $E$ and the two hypotheses, $\langle W(Eu)\psi',W(Ev)\psi'\rangle=
+e^{i\sigma'(Eu,Ev)/2}\chi_{\psi'}(E(v-u))=\langle W(u)\psi,W(v)\psi\rangle$. By (b) and Lemma~\ref{lem:dsq-gram} there is exactly one
+linear isometry $T$ with $TW(u)\psi=W(Eu)\psi'$ for every $u$; at $u=0$, $T\psi=\psi'$. For fixed $v$, the bounded operators $TW(v)$ and
+$W(Ev)T$ agree on every $W(u)\psi$:
+\begin{align*}
+ TW(v)W(u)\psi&=e^{-i\sigma(v,u)/2}W(E(v+u))\psi'\\
+ &=e^{-i\sigma'(Ev,Eu)/2}W(Ev+Eu)\psi'=W(Ev)TW(u)\psi ,
+\end{align*}
+hence everywhere by (b). Conversely, an isometry with $T\psi=\psi'$ and $TW(u)=W(Eu)T$ sends $W(u)\psi$ to $W(Eu)\psi'$, so it is the
+one of Lemma~\ref{lem:dsq-gram}.\qedhere
+\end{enumerate}
+\end{proof}
+
+\begin{theorem}[A vector is determined up to a phase by its characteristic function]\label{thm:pg-phase}
+Let $\psi,\psi'\in\Gamma_s(N)$ with $\psi\ne0$ and $\chi_{\psi'}=\chi_\psi$. Then $\psi'=\lambda\psi$ for some $\lambda\in\C$ with $\lvert\lambda\rvert=1$.
+\end{theorem}
+
+\begin{proof}
+Lemma~\ref{lem:pg-intertwiner}(c) with $N'=N$ and $E=1$ gives an isometry $T$ with $T\psi=\psi'$ that commutes with every $W(u)$, hence
+with every $D(\alpha)=W(\delta(\alpha))$. By Theorem~\ref{thm:dsq-irreducible}, $T=\lambda1$, and $\lvert\lambda\rvert=1$ since $T$ is an
+isometry. So $\psi'=T\psi=\lambda\psi$.
+\end{proof}
+
+Conversely $\chi_{\lambda\psi}=\chi_\psi$ when $\lvert\lambda\rvert=1$, by Lemma~\ref{lem:pg-charfun}.
+
+\subsection{Gaussian characteristic functions and the state condition}\label{sec:pg-gauss}
+
+For a state with mean $d=\langle\Rh\rangle$ and covariance matrix $\gamma_{kl}=\langle\{\Rh_k-d_k,\Rh_l-d_l\}\rangle$, twice the symmetrized
+covariance as in Definition~\ref{def:covariance}, the formal identity $W(u)=e^{-i\sigma(u,\Rh)}$ and the moment formula for Gaussian
+states give $\langle W(u)\rangle=\exp(-i\sigma(u,d)-\frac14(\Omega^Tu)^T\gamma(\Omega^Tu))$. This motivates the definition; its
+identification with the moments is Proposition~\ref{prop:pg-moments}.
+
+\begin{definition}[Gaussian characteristic function]\label{def:pg-gauss}
+For $d\in\R^{2N}$ and a real $2N\times2N$ matrix $\gamma$, the \emph{Gaussian function} is
+\[
+ \chG_{d,\gamma}(u)=\exp\Bigl(-i\sigma(u,d)-\tfrac14\,u^T\Omega\gamma\Omega^Tu\Bigr),\qquad u\in\R^{2N}.
+\]
+A vector $\psi\in\Gamma_s(N)$ \emph{has the Gaussian characteristic function with displacement vector $d$ and covariance matrix $\gamma$} if
+$\gamma^T=\gamma$ and $\chi_\psi=\chG_{d,\gamma}$.
+\end{definition}
+
+$\chG_{d,\gamma}$ has the form $\exp(i\,\mathrm{disp}(u)-\mathrm{cov}(u,u)/4)$ with the linear form $\mathrm{disp}(u)=-\sigma(u,d)$ and the
+bilinear form $\mathrm{cov}(u,v)=u^T\Omega\gamma\Omega^Tv$, symmetric when $\gamma$ is. The vacuum has $\chi_{\ket0}(u)=e^{-\lvert u\rvert^2/4}=
+\chG_{0,1}(u)$ (Proposition~\ref{prop:gu-weyl}(a)), so it has displacement $0$ and covariance $1$, the convention of the reading guide.
+Only unit vectors have a Gaussian characteristic function, since $\chG_{d,\gamma}(0)=1$.
+
+The admissibility of $\gamma$ follows from a positivity property that every characteristic function has: by
+Lemma~\ref{lem:pg-intertwiner}(a), the matrix $[e^{i\sigma(u_j,u_k)/2}\chi_\psi(u_k-u_j)]_{jk}$ is the Gram matrix of the vectors $W(u_j)\psi$.
+We state the second-order argument that extracts the state condition from it in general. For a real vector space $\mathsf V$ with a
+bilinear form $\sigma$ and a function $\chi:\mathsf V\to\C$, the \emph{twisted kernel} of a finite family $(u_j)$ in $\mathsf V$ is
+$[e^{i\sigma(u_j,u_k)/2}\chi(u_k-u_j)]_{jk}$; $\sigma$ is \emph{alternating} if $\sigma(u,u)=0$ for every $u$.
+
+\begin{lemma}[The state condition from positive semidefinite kernels]\label{lem:pg-statecond}
+Let $\mathrm{cov}$ be a symmetric bilinear form and $\mathrm{disp}$ a linear form on $\mathsf V$, both real, and
+$\chi(u)=\exp(i\,\mathrm{disp}(u)-\mathrm{cov}(u,u)/4)$. For a finite family $(u_j)$ put $H_{jk}=(\mathrm{cov}(u_j,u_k)+i\sigma(u_j,u_k))/2$.
+\begin{enumerate}
+\item[(a)] For every family $(u_j)$ and $s\in\R$, the twisted kernel of $(su_j)$ has the entries
+$\overline{\chi(su_j)}\,\chi(su_k)\,e^{s^2H_{jk}}$.
+\end{enumerate}
+Let moreover every twisted kernel of $\chi$ be positive semidefinite. Then for every finite family $(u_j)$ and all $b_j\in\C$:
+\begin{enumerate}
+\item[(b)] if $\sum_jb_j=0$, then $\sum_{j,k}\bar b_jb_k(e^{s^2H_{jk}}-1)$ is a real number $\ge0$ for every $s\in\R$;
+\item[(c)] the same holds with no condition on $\sum_jb_j$;
+\item[(d)] $\Rea\sum_{j,k}\bar b_jb_k\bigl(\mathrm{cov}(u_j,u_k)+i\sigma(u_j,u_k)\bigr)\ge0$;
+\item[(e)] if $\sigma$ is alternating, the \emph{state condition} holds: $\bigl[\mathrm{cov}(u_j,u_k)+i\sigma(u_j,u_k)\bigr]_{jk}\succeq0$ for every
+finite family.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+\begin{enumerate}
+\item[(a)] Expanding $\mathrm{cov}(s(u_k-u_j),s(u_k-u_j))$ and using the linearity of $\mathrm{disp}$,
+$\chi(s(u_k-u_j))=\overline{\chi(su_j)}\chi(su_k)e^{s^2\mathrm{cov}(u_j,u_k)/2}$, since $\mathrm{disp}$ and $\mathrm{cov}$ are real; multiply by
+$e^{is^2\sigma(u_j,u_k)/2}$.
+\item[(b)] Apply the positivity of the twisted kernel of $(su_j)$ to the coefficients $b_k/\chi(su_k)$, which is allowed since $\chi$ has no
+zeros: by (a), $\sum_{j,k}\bar b_jb_ke^{s^2H_{jk}}$ is real and $\ge0$. Subtract $\sum_{j,k}\bar b_jb_k=\lvert\sum_jb_j\rvert^2=0$.
+\item[(c)] Apply (b) to the family $(0,u_1,\ldots,u_m)$ with the coefficients $(-\sum_jb_j,b_1,\ldots,b_m)$, which sum to $0$. The entries of $H$ in
+the row and column of $0$ vanish, so their terms $e^0-1$ contribute nothing.
+\item[(d)] Divide (c) by $s^2>0$ and let $s\to0$: $(e^{s^2H_{jk}}-1)/s^2\to H_{jk}$, so $\sum_{j,k}\bar b_jb_kH_{jk}$ is a limit of real numbers
+$\ge0$, and its real part is $\ge0$.
+\item[(e)] If $\sigma$ is alternating, it is antisymmetric, so the matrix is Hermitian and its quadratic form is real; by (d) it is
+$\ge0$.\qedhere
+\end{enumerate}
+\end{proof}
+
+For a Gaussian state on the algebra of the canonical commutation relations over $(\mathsf V,\sigma)$, the same five statements hold with
+$\chi$ the expectation of the Weyl operators and $\mathrm{cov}$, $\mathrm{disp}$ its covariance and displacement, since the twisted kernels of a
+state are positive semidefinite.
+
+\begin{lemma}[Gaussian characteristic functions]\label{lem:pg-gauss}
+Let $\psi\in\Gamma_s(N)$ have the Gaussian characteristic function with $(d,\gamma)$.
+\begin{enumerate}
+\item[(a)] $\lVert\psi\rVert=1$.
+\item[(b)] If $\psi$ also has it with $(d',\gamma')$, then $d=d'$ and $\gamma=\gamma'$.
+\item[(c)] $\gamma$ is admissible: $\gamma-i\Omega\succeq0$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+\begin{enumerate}
+\item[(a)] $\lVert\psi\rVert^2=\chi_\psi(0)=1$.
+\item[(b)] Taking moduli, $u^T\Omega\gamma\Omega^Tu=u^T\Omega\gamma'\Omega^Tu$ for every $u$; both matrices are symmetric, so by polarization
+$\Omega\gamma\Omega^T=\Omega\gamma'\Omega^T$, and $\gamma=\gamma'$ since $\Omega$ is orthogonal. Then $e^{-i\sigma(u,d-d')}=1$ for every $u$, and the
+rescaling argument in the proof of Proposition~\ref{prop:gu-weyl}(c) gives $d=d'$.
+\item[(c)] By Lemma~\ref{lem:pg-intertwiner}(a) every twisted kernel of $\chi_\psi$ is a Gram matrix, hence positive semidefinite, and
+$\chi_\psi$ has the form of Lemma~\ref{lem:pg-statecond} with $\mathrm{disp}(u)=-\sigma(u,d)$ and $\mathrm{cov}(u,v)=u^T\Omega\gamma\Omega^Tv$. The form
+$\sigma$ is alternating, so by Lemma~\ref{lem:pg-statecond}(e) for the coordinate vectors, $\Omega\gamma\Omega^T+i\Omega\succeq0$. Congruence by
+$\Omega$ gives $\gamma+i\Omega=\Omega^T(\Omega\gamma\Omega^T+i\Omega)\Omega\succeq0$, and entrywise complex conjugation, which preserves
+$\succeq0$, gives $\gamma-i\Omega\succeq0$.\qedhere
+\end{enumerate}
+\end{proof}
+
+Theorem~\ref{thm:pg-symplectic} below compares $\gamma$ with a symplectic matrix below it, which the next lemma supplies; the
+matrix it constructs is explicit.
+
+\begin{lemma}[A symplectic matrix below an admissible one]\label{lem:pg-minorant}
+If $\gamma$ is admissible, there is a positive definite $\gamma_0\in\Sp$ with $\gamma-\gamma_0\succeq0$.
+\end{lemma}
+
+\begin{proof}
+By Theorem~\ref{thm:admissible-positive}, $\gamma$ is positive definite; let $\gamma^{1/2}$ be its positive square root and
+$A=\gamma^{-1/2}\Omega\gamma^{-1/2}$, a real, antisymmetric, invertible matrix. Congruence by $\gamma^{-1/2}$ turns $\gamma-i\Omega\succeq0$ into
+$1-iA\succeq0$. For real vectors $x,y$ and $v=x+iy$, $v^*(1-iA)v=\lvert x\rvert^2+\lvert y\rvert^2+2x^TAy$, using $y^TAx=-x^TAy$. With $y=Ax$ this
+is $\lvert x\rvert^2+\lvert Ax\rvert^2-2\lvert Ax\rvert^2\ge0$, since $x^TA^2x=-\lvert Ax\rvert^2$; so $A^TA\preceq1$. Let $\lvert A\rvert=(A^TA)^{1/2}$,
+symmetric and positive definite. For every real $x$, by the Cauchy--Schwarz inequality,
+$x^T\lvert A\rvert x\le\lvert x\rvert\,\lvert\,\lvert A\rvert x\rvert=\lvert x\rvert(x^TA^TAx)^{1/2}\le\lvert x\rvert^2$, so $\lvert A\rvert\preceq1$.
+
+Put $\gamma_0=\gamma^{1/2}\lvert A\rvert\gamma^{1/2}$, symmetric and positive definite. Then $\gamma-\gamma_0=\gamma^{1/2}(1-\lvert A\rvert)\gamma^{1/2}\succeq0$.
+$A$ commutes with $A^TA=-A^2$, hence with its square root $\lvert A\rvert$, and $\lvert A\rvert^2=-A^2$. From $\Omega^{-1}=-\Omega$,
+$\gamma^{1/2}\Omega\gamma^{1/2}=-A^{-1}$, and
+\[
+ \gamma_0\Omega\gamma_0=\gamma^{1/2}\lvert A\rvert(-A^{-1})\lvert A\rvert\gamma^{1/2}=-\gamma^{1/2}\lvert A\rvert^2A^{-1}\gamma^{1/2}
+ =\gamma^{1/2}A\gamma^{1/2}=\Omega .
+\]
+Since $\gamma_0$ is symmetric, $\gamma_0\Omega\gamma_0^T=\Omega$.
+\end{proof}
+
+If $\gamma$ is itself symplectic, then $\lvert A\rvert=1$ and $\gamma_0=\gamma$. Physically, $\gamma-\gamma_0\succeq0$ says that the Gaussian state of
+$\gamma$ is a Gaussian mixture of displaced states with covariance $\gamma_0$.
+
+\begin{theorem}[Gaussian unitaries on the vacuum]\label{thm:pg-vacuum}
+If $U$ is a Gaussian unitary with data $(M,d)$, then $U\ket0$ has the Gaussian characteristic function with displacement vector $d$ and
+covariance matrix $MM^T$.
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:pg-charfun} and Proposition~\ref{prop:gu-weyl}(a), $\chi_{U\ket0}(u)=e^{-i\sigma(u,d)}e^{-\lvert M^{-1}u\rvert^2/4}$. From
+$M\Omega M^T=\Omega$, $M^{-1}=\Omega M^T\Omega^T$, so $(M^{-1})^TM^{-1}=\Omega M\Omega^T\Omega M^T\Omega^T=\Omega MM^T\Omega^T$. The matrix $MM^T$ is
+symmetric.
+\end{proof}
+
+$MM^T$ is positive definite and symplectic by Lemma~\ref{lem:bm-positive}. The displacement vector and the covariance matrix are the
+first and second moments of the quadratures, in the following sense.
+
+\begin{proposition}[Moments;~{\cite[(13)]{tjoacirac}}]\label{prop:pg-moments}
+Let $U$ be a Gaussian unitary with data $(M,d)$, $\psi=U\ket0$ and $\gamma=MM^T$. There are $\phi_1,\ldots,\phi_{2N}\in\Gamma_s(N)$ with
+$\Rh_k\jmath\psi=\jmath\phi_k$ and $\langle\psi,\phi_k\rangle=d_k$ for every $k$, and
+\[
+ \langle\phi_k-d_k\psi,\ \phi_l-d_l\psi\rangle=\tfrac12\bigl(\gamma_{kl}+i\Omega_{kl}\bigr)\qquad\text{for all }k,l.
+\]
+\end{proposition}
+
+\begin{proof}
+$\ket0\in\Qd$, so by Corollary~\ref{cor:gu-vacuum}(c), with the finitely supported $\xi_k=\sum_mM_{km}\Rh_m\ket0+d_k\ket0$, the vectors
+$\phi_k=U\xi_k$ satisfy $\Rh_k\jmath\psi=\jmath\phi_k$. From $\hat q_j\ket0=\ket{e_j}/\sqrt2$ and $\hat p_j\ket0=i\ket{e_j}/\sqrt2$,
+$\langle0\rvert\Rh_m\ket0=0$ and $\langle\Rh_m\ket0,\Rh_n\ket0\rangle=\frac12(\delta_{mn}+i\Omega_{mn})$. Since $U$ is unitary,
+$\langle\psi,\phi_k\rangle=\langle0,\xi_k\rangle=d_k$, and
+\[
+ \langle\phi_k-d_k\psi,\phi_l-d_l\psi\rangle=\sum_{m,n}M_{km}M_{ln}\langle\Rh_m\ket0,\Rh_n\ket0\rangle=\tfrac12\bigl(MM^T+iM\Omega M^T\bigr)_{kl},
+\]
+and $M\Omega M^T=\Omega$.
+\end{proof}
+
+In particular $\psi\in\Qd$, since $a_j=(\hat q_j+i\hat p_j)/\sqrt2$. In the paper's notation $r_k=\langle\Rh_k\rangle=d_k$ and
+$\Gamma_{kl}=\frac12\langle\{\Rh_k-r_k,\Rh_l-r_l\}\rangle=\gamma_{kl}/2$, the anticommutator expectation being read as
+$2\Rea\langle(\Rh_k-r_k)\psi,(\Rh_l-r_l)\psi\rangle$.
+
+\subsection{Pure Gaussian states}\label{sec:pg-pure}
+
+\begin{definition}[Pure Gaussian state;~{\cite[(4)]{tjoacirac}}]\label{def:pg-pure}
+A vector $\psi\in\Gamma_s(N)$ is a \emph{pure Gaussian state} if $\psi=U\ket0$ for some Gaussian unitary $U$.
+\end{definition}
+
+The global phase in~\cite[(4)]{tjoacirac} is absorbed: $\lambda U$ with $\lvert\lambda\rvert=1$ is Gaussian with the same data
+(Proposition~\ref{prop:gu-weyl}(b)). The vacuum is pure Gaussian, with $U=1$, and $0$ is not, since $\lVert U\ket0\rVert=1$.
+
+\begin{lemma}[Existence]\label{lem:pg-exist}
+\begin{enumerate}
+\item[(a)] For every $M\in\Sp$ and $d\in\R^{2N}$ there is a Gaussian unitary with data $(M,d)$.
+\item[(b)] Every positive definite $\gamma\in\Sp$ is $MM^T$ for some $M\in\Sp$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+\begin{enumerate}
+\item[(a)] By Theorems~\ref{thm:bm-decomp} and~\ref{thm:bm-unitary}(b), $M=O_{\cU}\Sigma(r)O_{\cV}$ with $\cU,\cV\in\Un$; by
+Theorem~\ref{thm:gu-prop5}(b) with $\zeta=r$, $\sU_\cU D(\alpha)\sS(r)\sU_\cV$ has data $(M,O_\cU\delta(\alpha))$, and $\delta(\alpha)=O_\cU^Td$ gives
+displacement $d$.
+\item[(b)] By Theorem~\ref{thm:bm-diag}(b), $\gamma=O\Sigma(r)^2O^T$ with $O$ orthogonal symplectic; take $M=O\Sigma(r)$, which is symplectic,
+with $MM^T=O\Sigma(r)^2O^T$ since $\Sigma(r)$ is symmetric.\qedhere
+\end{enumerate}
+\end{proof}
+
+The next theorem is the step from a Gaussian characteristic function to a pure state. If $\gamma$ lay strictly above the symplectic
+$\gamma_0$ of Lemma~\ref{lem:pg-minorant}, the state would be a Gaussian mixture; the proof realizes the mixture with $2N$ ancilla
+modes and lets irreducibility exclude it.
+
+\begin{theorem}[The covariance matrix is symplectic]\label{thm:pg-symplectic}
+If $\psi\in\Gamma_s(N)$ has the Gaussian characteristic function with $(d,\gamma)$, then $\gamma\in\Sp$; as $\gamma$ is symmetric,
+$\gamma\Omega\gamma=\Omega$.
+\end{theorem}
+
+\begin{proof}
+\emph{A symplectic part.} By Lemma~\ref{lem:pg-gauss}(c) $\gamma$ is admissible, and Lemma~\ref{lem:pg-minorant} gives a positive definite
+$\gamma_0\in\Sp$ with $\Delta=\gamma-\gamma_0\succeq0$. Let $C=(\Omega\Delta\Omega^T)^{1/2}$, symmetric and positive semidefinite, so that
+$u^T\Omega\gamma\Omega^Tu=u^T\Omega\gamma_0\Omega^Tu+\lvert Cu\rvert^2$.
+
+\emph{Ancillas.} Take $N'=3N$ modes, the $N$ modes of $\psi$ followed by $2N$ ancilla modes. Reordering the coordinates of $\R^{6N}$
+(positions first) by subsystem, we write $w=(w_s;x,y)$ with $w_s\in\R^{2N}$ for the first $N$ modes and $x,y\in\R^{2N}$ for the positions
+and the momenta of the ancillas. Under this reordering $\Omega_{3N}$ becomes $\Omega_N\oplus\Omega_{2N}$ (the proof of
+Theorem~\ref{thm:sum}), so $\sigma'(w,w')=\sigma(w_s,w'_s)+x\cdot y'-y\cdot x'$. The map $E(u)=(u;Cu,0)$ is linear with
+$\sigma'(Eu,Ev)=\sigma(u,v)$. The matrix $\gamma_0\boxplus1$ (Definition~\ref{def:independent-sum}) is positive definite and symplectic, so by
+Lemmas~\ref{lem:pg-exist}(b) and~(a) and Theorem~\ref{thm:pg-vacuum} there is $\psi'\in\Gamma_s(3N)$ with the Gaussian characteristic
+function of $((d;0,0),\gamma_0\boxplus1)$:
+\[
+ \chi_{\psi'}(w)=\exp\Bigl(-i\sigma(w_s,d)-\tfrac14w_s^T\Omega\gamma_0\Omega^Tw_s-\tfrac14\bigl(\lvert x\rvert^2+\lvert y\rvert^2\bigr)\Bigr).
+\]
+At $w=Eu$ this is $\exp(-i\sigma(u,d)-\frac14u^T\Omega\gamma_0\Omega^Tu-\frac14\lvert Cu\rvert^2)=\chi_\psi(u)$.
+
+\emph{The intertwiner.} Since $\lVert\psi\rVert=1$, Lemma~\ref{lem:pg-intertwiner}(c) gives a linear isometry $T:\Gamma_s(N)\to\Gamma_s(3N)$
+with $T\psi=\psi'$ and $TW(v)=W(Ev)T$. Taking adjoints at $-v$, $T^*W(Ev)=W(v)T^*$.
+
+\emph{Commuting Weyl operators.} For $h\in\R^{2N}$ let $w_h=(0;h,0)$. Then $\sigma'(w_h,Ev)=h\cdot0-0\cdot Cv=0$, so $W(w_h)$ commutes with
+every $W(Ev)$, and $X_h=T^*W(w_h)T$ satisfies
+\[
+ X_hW(v)=T^*W(w_h)W(Ev)T=T^*W(Ev)W(w_h)T=W(v)X_h .
+\]
+By Theorem~\ref{thm:dsq-irreducible}, $X_h=f_h1$ for a number $f_h$.
+
+\emph{$C=0$.} For every $u$, since $\sigma'(w_h,Eu)=0$,
+\[
+ f_h\,\chi_\psi(u)=\langle\psi,X_hW(u)\psi\rangle=\langle T\psi,W(w_h)TW(u)\psi\rangle=\langle\psi',W(w_h)W(Eu)\psi'\rangle=\chi_{\psi'}(w_h+Eu),
+\]
+and $w_h+Eu=(u;Cu+h,0)$, so the right side is $\chi_\psi(u)\exp(-\frac14(\lvert Cu+h\rvert^2-\lvert Cu\rvert^2))$. At $u=0$,
+$f_h=e^{-\lvert h\rvert^2/4}$. As $\chi_\psi(u)\ne0$, $e^{-\lvert h\rvert^2/4}=e^{-(2Cu\cdot h+\lvert h\rvert^2)/4}$ with real exponents, so
+$Cu\cdot h=0$ for all $u,h$, and $h=Cu$ gives $Cu=0$. Hence $C=0$, $\Omega\Delta\Omega^T=0$, $\Delta=0$, and $\gamma=\gamma_0\in\Sp$.
+\end{proof}
+
+\begin{theorem}[The two definitions agree]\label{thm:pg-equiv}
+\begin{enumerate}
+\item[(a)] $\psi\in\Gamma_s(N)$ is a pure Gaussian state if and only if it has the Gaussian characteristic function with some $(d,\gamma)$.
+\item[(b)] If $\psi$ has the Gaussian characteristic function with $(d,\gamma)$ and $M\in\Sp$ satisfies $\gamma=MM^T$, then $\psi=U\ket0$ for
+some Gaussian unitary $U$ with data $(M,d)$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\begin{enumerate}
+\item[(a)] If $\psi=U\ket0$, Theorem~\ref{thm:pg-vacuum} applies. Conversely, by Theorem~\ref{thm:pg-symplectic} $\gamma$ is symplectic, and by
+Lemma~\ref{lem:pg-gauss}(c) and Theorem~\ref{thm:admissible-positive} it is positive definite; Lemma~\ref{lem:pg-exist}(b) gives
+$M\in\Sp$ with $MM^T=\gamma$, and (b) applies.
+\item[(b)] By Lemma~\ref{lem:pg-exist}(a) there is a Gaussian unitary $U'$ with data $(M,d)$, and by Theorem~\ref{thm:pg-vacuum}
+$\chi_{U'\ket0}=\chG_{d,MM^T}=\chi_\psi$. Theorem~\ref{thm:pg-phase}, with $U'\ket0\ne0$, gives $\psi=\lambda U'\ket0$ with $\lvert\lambda\rvert=1$,
+and $U=\lambda U'$ has data $(M,d)$ by Proposition~\ref{prop:gu-weyl}(b).\qedhere
+\end{enumerate}
+\end{proof}
+
+\begin{corollary}[Uniqueness]\label{cor:pg-unique}
+If $\psi$ and $\psi'$ both have the Gaussian characteristic function with $(d,\gamma)$, then $\psi'=\lambda\psi$ for some $\lambda\in\C$ with
+$\lvert\lambda\rvert=1$: a pure Gaussian state is determined, up to a phase, by its displacement vector and covariance matrix.
+\end{corollary}
+
+\begin{proof}
+$\psi\ne0$ by Lemma~\ref{lem:pg-gauss}(a), and $\chi_{\psi'}=\chi_\psi$; Theorem~\ref{thm:pg-phase}.
+\end{proof}
+
+\vets{By Lemma~\ref{lem:pg-gauss}(c) and Theorem~\ref{thm:pg-symplectic}, the covariance matrix of a pure Gaussian state is admissible
+and symplectic. Every such matrix occurs.}
+
+\begin{corollary}[Every admissible symplectic $\gamma$ occurs]\label{cor:pg-exist}
+\vets{Let $\gamma$ be admissible and symplectic, and $d\in\R^{2N}$. There is a Gaussian unitary $U$ such that $U\ket0$ has the Gaussian
+characteristic function with $(d,\gamma)$. Hence a vector with the Gaussian characteristic function with $(d,\gamma)$ exists if and
+only if $\gamma$ is admissible and symplectic.}
+\end{corollary}
+
+\begin{proof}
+\vets{$\gamma$ is positive definite by Theorem~\ref{thm:admissible-positive}, so Lemma~\ref{lem:pg-exist}(b) gives $M\in\Sp$ with
+$\gamma=MM^T$, and Lemma~\ref{lem:pg-exist}(a) a Gaussian unitary $U$ with data $(M,d)$. By Theorem~\ref{thm:pg-vacuum}, $U\ket0$ has the
+Gaussian characteristic function with $(d,MM^T)=(d,\gamma)$. The converse is the sentence before the corollary.}
+\end{proof}
+
+\subsection{The parametrization of squeezed coherent states}\label{sec:pg-invert}
+
+Tjoa and Cirac parametrize single-mode squeezed coherent states by the unnormalized vectors $\ket{\kappa,\ell}\propto
+D(\alpha)\sS(\zeta)\ket0$ with $\kappa=-\frac12e^{i\phi}\tanh r$ and $\ell=\alpha-2\kappa\bar\alpha$~\cite[(8)]{tjoacirac}. The next lemma inverts
+this parametrization and computes the covariance matrix.
+
+\begin{lemma}[Inverting the paper's (8)]\label{lem:pg-invert}
+\begin{enumerate}
+\item[(a)] For every $\tau_0\in\C$ with $\lvert\tau_0\rvert<1$ there is $\zeta\in\C$ with $\tau(\zeta)=\tau_0$. For every $\zeta\in\C$,
+$\cosh\lvert\zeta\rvert=(1-\lvert\tau(\zeta)\rvert^2)^{-1/2}$.
+\item[(b)] Let $\iota$ be a finite set and $\kappa,\ell,\zeta\in\C^\iota$ with $\tau(\zeta_j)=-2\kappa_j$ for every $j$, and put
+$\alpha_j=(\ell_j+2\kappa_j\bar\ell_j)/(1-4\lvert\kappa_j\rvert^2)$. Then
+\[
+ \bigotimes_j\ket{\kappa_j,\ell_j}=\prod_j\Bigl((1-4\lvert\kappa_j\rvert^2)^{-1/4}e^{\lvert\alpha_j\rvert^2/2-\kappa_j\bar\alpha_j^2}\Bigr)\,
+ \jmath\,D(\alpha)\sS(\zeta)\ket0 .
+\]
+\item[(c)] For $N$ modes and $\tau(\zeta_j)=-2\kappa_j$ for every $j$, $M_\zeta^2=\gk$, where $\gk$ has no entries between different modes and
+its $2\times2$ matrix on $(q_j,p_j)$ is
+\[
+ \frac1{1-4\lvert\kappa_j\rvert^2}\begin{pmatrix}1+4\lvert\kappa_j\rvert^2+4\Rea\kappa_j&4\operatorname{Im}\kappa_j\\
+ 4\operatorname{Im}\kappa_j&1+4\lvert\kappa_j\rvert^2-4\Rea\kappa_j\end{pmatrix}.
+\]
+\end{enumerate}
+\end{lemma}
+
+The condition $\tau(\zeta_j)=-2\kappa_j$ forces $\lvert\kappa_j\rvert<\frac12$, and by (a) it can be met exactly when $\lvert\kappa_j\rvert<\frac12$; for
+$\lvert\kappa_j\rvert\ge\frac12$ the vector $\ket{\kappa_j,\ell_j}$ is not square-summable (Lemma~\ref{lem:dsq-lower}(b) and its proof).
+
+\begin{proof}
+\begin{enumerate}
+\item[(a)] For $\tau_0\ne0$ take $\zeta=\operatorname{artanh}(\lvert\tau_0\rvert)\,\tau_0/\lvert\tau_0\rvert$, so that
+$\tau(\zeta)=(\tau_0/\lvert\tau_0\rvert)\tanh\operatorname{artanh}\lvert\tau_0\rvert=\tau_0$; for $\tau_0=0$ take $\zeta=0$. And
+$\lvert\tau(\zeta)\rvert=\tanh\lvert\zeta\rvert$, $1-\tanh^2=\cosh^{-2}$.
+\item[(b)] With $D_j=1-4\lvert\kappa_j\rvert^2>0$, $\alpha_j-2\kappa_j\bar\alpha_j=(\ell_j+2\kappa_j\bar\ell_j-2\kappa_j\bar\ell_j-4\lvert\kappa_j\rvert^2\ell_j)/D_j
+=\ell_j$. Corollary~\ref{cor:gu-vacuum}(a), which holds on any finite set of modes, with $\tau_j=-2\kappa_j$ reads
+$D(\alpha)\sS(\zeta)\ket0=\prod_jc_j^{-1/2}e^{-\lvert\alpha_j\rvert^2/2+\kappa_j\bar\alpha_j^2}\bigotimes_j\ket{\kappa_j,\ell_j}$, and
+$c_j^{-1/2}=(1-\lvert\tau_j\rvert^2)^{1/4}=D_j^{1/4}$ by (a). Dividing by the nonzero scalar gives the identity.
+\item[(c)] Per mode, $M_\zeta=c\,1-s\,R$ with $R=\left(\begin{smallmatrix}\cos\phi&\sin\phi\\\sin\phi&-\cos\phi\end{smallmatrix}\right)$, $R^2=1$, so
+$M_\zeta^2=(c^2+s^2)1-2cs\,R$. Entry by entry, $c^2+s^2=c^2(1+\tanh^2r)$ and $2cs=2c^2\tanh r$ with $c^2=(1-\tanh^2r)^{-1}$ and
+$\tanh r\,e^{i\phi}=\tau=-2\kappa$: so $c^2+s^2=(1+4\lvert\kappa\rvert^2)/D$, $2cs\cos\phi=-4\Rea\kappa/D$ and $2cs\sin\phi=-4\operatorname{Im}\kappa/D$. For
+$\kappa=0$, $\zeta=0$ and both sides are $1$.\qedhere
+\end{enumerate}
+\end{proof}
+
+\begin{corollary}[The norm of $\ket{\kappa,\ell}$;~{\cite[(9)]{tjoacirac}}]\label{cor:pg-norm}
+For $\kappa,\ell\in\C$ with $\lvert\kappa\rvert<\frac12$ and $\alpha=(\ell+2\kappa\bar\ell)/(1-4\lvert\kappa\rvert^2)$,
+\[
+ \lVert\ket{\kappa,\ell}\rVert^2=\frac{e^{\lvert\alpha\rvert^2-2\Rea(\kappa\bar\alpha^2)}}{\sqrt{1-4\lvert\kappa\rvert^2}}
+ =\frac1{\sqrt{1-4\lvert\kappa\rvert^2}}\exp\frac{\lvert\ell\rvert^2+\kappa\bar\ell^2+\bar\kappa\ell^2}{1-4\lvert\kappa\rvert^2}.
+\]
+\end{corollary}
+
+\begin{proof}
+Choose $\zeta$ with $\tau(\zeta)=-2\kappa$ (Lemma~\ref{lem:pg-invert}(a)). By Lemma~\ref{lem:pg-invert}(b) for one mode and the unitarity of
+$D(\alpha)\sS(\zeta)$, the squared norm is $\lvert(1-4\lvert\kappa\rvert^2)^{-1/4}e^{\lvert\alpha\rvert^2/2-\kappa\bar\alpha^2}\rvert^2$, the first
+expression. With $D=1-4\lvert\kappa\rvert^2$, expanding $\lvert\ell+2\kappa\bar\ell\rvert^2$ and $\kappa(\bar\ell+2\bar\kappa\ell)^2$ gives
+$D^2(\lvert\alpha\rvert^2-2\Rea(\kappa\bar\alpha^2))=D(\lvert\ell\rvert^2+\kappa\bar\ell^2+\bar\kappa\ell^2)$, the second. It is also
+Lemma~\ref{lem:dsq-mehler} at $(\kappa',\ell')=(\kappa,\ell)$, with $\Cb(\lvert\kappa\rvert^2)=(1-4\lvert\kappa\rvert^2)^{-1/2}$.
+\end{proof}
+
+For one mode, Theorem~\ref{thm:gu-prop5}(b) gives $D(\alpha)\sS(\zeta)$ the data $(M_\zeta,\delta(\alpha))$, so by Theorem~\ref{thm:pg-vacuum} and
+Lemma~\ref{lem:pg-invert} the normalized vector $\ket{\kappa,\ell}/\lVert\ket{\kappa,\ell}\rVert$ has displacement $\delta(\alpha)$ and covariance
+$\gk$. At $\kappa=0$ it is the coherent state with $\gamma=1$, and at $\ell=0$ the squeezed vacuum with $d=0$; for real $\kappa>0$,
+$\gamma_{qq}=(1+2\kappa)/(1-2\kappa)$ exceeds the vacuum value $1$ and $\gamma_{pp}=(1-2\kappa)/(1+2\kappa)$ lies below it.
+
+\begin{vetyenv}
+\subsection{The vacuum component}\label{sec:pg-vacuumcomp}
+
+A photon-number measurement on a pure Gaussian state $\psi$ finds no photon with the probability
+$\lvert\langle0,\psi\rangle\rvert^2$, the squared modulus of its \emph{vacuum component} $\langle0,\psi\rangle$, and this probability
+is never zero. By
+Theorem~\ref{thm:gu-prop5} it is a passive unitary applied to a product of displaced squeezed vacua; the passive unitary
+leaves the vacuum component unchanged, and each one-mode factor is a nonzero multiple of a vector $\ket{\kappa,\ell}$ with
+vacuum coefficient $1$ (Corollary~\ref{cor:gu-vacuum}(a)). So no nonzero vector orthogonal to the vacuum, in particular no
+number state other than the vacuum, is a multiple of a pure Gaussian state.
+
+\begin{theorem}[The vacuum component of a pure Gaussian state]\label{thm:pg-vacuumcomp}
+Every pure Gaussian state $\psi\in\Gamma_s(N)$ satisfies $\langle0,\psi\rangle=\psi(0)\ne0$.
+\end{theorem}
+
+\begin{proof}
+The inner product with $\ket0$ picks the coefficient at the multi-index $0$, so $\langle0,\varphi\rangle=\varphi(0)$ for every
+$\varphi\in\Gamma_s(N)$. For $\cU\in\Un$ the passive unitary preserves this coefficient: $\sU_\cU^*=\sU_{\cU^*}$ by
+Theorem~\ref{thm:sq-unitary}(b), and $\Gamma(\cU^*)\ket0=\ket0$ by Lemma~\ref{lem:sq-sectors}(b), so
+$\langle0,\sU_\cU\varphi\rangle=\langle\sU_{\cU^*}\ket0,\varphi\rangle=\langle0,\varphi\rangle$.
+
+Let $\psi=U\ket0$ with $U$ a Gaussian unitary. By Corollary~\ref{cor:gu-vacuum}(a), $U\ket0=\lambda\,\sU_\cU D(\alpha)\sS(r)\ket0$ for
+some $\lambda$ with $\lvert\lambda\rvert=1$, $\cU\in\Un$, $\alpha\in\C^N$ and $r\in\R^N$ with $r\ge0$, and
+\[
+ D(\alpha)\sS(r)\ket0=\Bigl(\prod_jc_j\Bigr)^{-1/2}e^{-\lvert\alpha\rvert^2/2-\sum_j\tau_j\bar\alpha_j^2/2}\bigotimes_j\ket{-\tau_j/2,\,\alpha_j+\tau_j\bar\alpha_j},
+\]
+with $c_j=\cosh r_j\ge1$ and $\tau_j=\tanh r_j$. The coefficient of a product vector at $0$ is the product of the coefficients of its
+factors at $0$ (Definition~\ref{def:fock-modes}), and each factor $e^{\kappa a^{\dagger2}+\ell a^\dagger}\ket0$ has the coefficient $1$
+at $0$, because its exponent raises the particle number, so that the finite sum of Definition~\ref{def:fock-raising} at the
+multi-index $0$ has the single term $\ket0(0)=1$. With the first paragraph,
+\[
+ \langle0,\psi\rangle=\lambda\,\Bigl(\prod_jc_j\Bigr)^{-1/2}e^{-\lvert\alpha\rvert^2/2-\sum_j\tau_j\bar\alpha_j^2/2}\ne0 .\qedhere
+\]
+\end{proof}
+
+\begin{corollary}[Vectors orthogonal to the vacuum]\label{cor:pg-orthogonal}
+Let $\varphi\in\Gamma_s(N)$ be nonzero with $\langle0,\varphi\rangle=0$. Then $\varphi\ne c\,\psi$ for every pure Gaussian state
+$\psi\in\Gamma_s(N)$ and every $c\in\C$.
+\end{corollary}
+
+\begin{proof}
+If $\varphi=c\,\psi$, then $0=\langle0,\varphi\rangle=c\,\langle0,\psi\rangle$, so $c=0$ by Theorem~\ref{thm:pg-vacuumcomp}, and
+$\varphi=0$.
+\end{proof}
+
+\begin{corollary}[Number states are not Gaussian]\label{cor:pg-number}
+For every multi-index $m\ne0$, the number state $\ket m\in\Gamma_s(N)$ is not a multiple of a pure Gaussian state: $\ket m\ne
+c\,\psi$ for every pure Gaussian state $\psi$ and every $c\in\C$.
+\end{corollary}
+
+\begin{proof}
+$\ket m\ne0$, and $\langle0,\ket m\rangle$ is the coefficient of $\ket m$ at $0\ne m$, which is $0$; apply
+Corollary~\ref{cor:pg-orthogonal}.
+\end{proof}
+\end{vetyenv}
+
+\subsection*{Notes and references}
+
+Tjoa and Cirac~\cite[Sec.~II\,A]{tjoacirac} define pure Gaussian states by their~(4), give the parametrization~(8) with its norm~(9), the
+multimode form~(11) and the moments~(13), and state that by Wick's theorem a Gaussian state is completely characterized by its
+displacement vector and covariance matrix. For pure states this characterization is Corollary~\ref{cor:pg-unique}; Wick's theorem for
+higher moments is not treated here. The paper gives the norm~(9) but not the covariance matrix of $\ket{\kappa,\ell}$, which is $\gk$
+of Lemma~\ref{lem:pg-invert}(c).
+
+\vetx{Theorem~\ref{thm:pg-equiv} is, for finitely many modes, the classical result of Manuceau and Verbeure~\cite{mv} that the pure
+quasi-free states of the algebra of the canonical commutation relations are the images of the Fock state under Bogoliubov
+transformations; see also Holevo~\cite[Ch.~V]{holevo} and, for pure Gaussian states and their Wigner functions, Arvind, Dutta,
+Mukunda and Simon~\cite[Sec.~XII]{adms}.} The standard proofs that the covariance matrix of a pure Gaussian state is
+symplectic~\cite{folland,serafini} use Williamson's normal form or the Moyal identity; Theorem~\ref{thm:pg-symplectic} uses
+neither, only the explicit symplectic matrix of Lemma~\ref{lem:pg-minorant} and irreducibility. \vetx{Lemma~\ref{lem:pg-minorant} uses
+the device of the quasi-free literature~\cite{mv}, \cite{arakishiraishi}, the polar part $\lvert A\rvert$ of
+$A=\gamma^{-1/2}\Omega\gamma^{-1/2}$.} We have not checked whether the formula $\gamma_0=\gamma^{1/2}\lvert A\rvert\gamma^{1/2}$
+appears in the literature. Once the Fock representation of the algebra of the canonical commutation relations is constructed, every
+vector of Definition~\ref{def:pg-gauss} defines a Gaussian state of that algebra with $\mathrm{disp}(u)=-\sigma(u,d)$ and
+$\mathrm{cov}(u,v)=u^T\Omega\gamma\Omega^Tv$; this construction is not part of these notes. \vetx{The derivation of the state
+condition from the positivity of the twisted kernels, Lemma~\ref{lem:pg-statecond}, is modelled on the characterization of
+quasi-free states in~\cite{mv} and~\cite[Ch.~V]{holevo}. Lemma~\ref{lem:pg-intertwiner}(c) and Theorem~\ref{thm:pg-phase} are modelled
+on the uniqueness of the cyclic representation of a state up to unitary equivalence~\cite[Thm.~2.3.16]{br1}, combined with
+irreducibility.} The formal proof of
+Lemma~\ref{lem:pg-minorant} obtains $A^TA\preceq1$ from the pair form of the state condition and $\lvert A\rvert\preceq1$ by quadratic forms, as
+above; that of Lemma~\ref{lem:pg-invert}(c) compares the entries directly, through $\cosh^2r\,(1-\tanh^2r)=1$ and $\sinh r=\tanh r\cosh r$.
+
+\vety{For one mode, the vacuum coefficient of a squeezed coherent state is the first term of its number-state expansion, which is
+classical~\cite{yuen}. Theorem~\ref{thm:pg-vacuumcomp} reaches $N$ modes through the factorization of
+Theorem~\ref{thm:gu-prop5}; this argument is ours. Corollary~\ref{cor:pg-number} is the remark after~(10) in~\cite{tjoacirac} that
+the number states are Gaussian only for $n=0$.}
+\end{veteenv}

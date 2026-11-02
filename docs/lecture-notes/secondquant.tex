@@ -1,0 +1,529 @@
+% Section 8: second quantization of a matrix on the formal Fock space, the unitary representation on
+% the bosonic Fock space, the generator dGamma(h) and Gamma(e^h) = e^{dGamma(h)}, conjugation of operators.
+% GA-BMPS milestone B5.1, general part (chapter written 22 Oct 2026). New text for vetting (vetdenv).
+\providecommand{\cU}{\mathcal U}
+\providecommand{\cV}{\mathcal V}
+\providecommand{\sU}{\mathsf U}
+\providecommand{\dG}{d\Gamma}
+\providecommand{\ntot}{n_{\mathrm{tot}}}
+\providecommand{\dom}{\operatorname{dom}}
+\begin{vetdenv}
+\section{Second quantization of a matrix}\label{sec:secondquant}
+
+A complex matrix $g$ on the one-particle space $\C^\iota$ acts on states of $p$ particles as
+$g^{\otimes p}$. In the Bargmann picture of Section~\ref{sec:fock} this action is the linear change of
+variables $f(z)\mapsto f(g^Tz)$, which is defined on the whole formal Fock space for every matrix $g$:
+substitution of linear forms preserves degrees, so each coefficient of the image is a finite sum. For
+unitary $g$ the map restricts to a strongly continuous unitary representation on the bosonic Fock space
+of Section~\ref{sec:fockspace}, and the second quantization of $e^h$ is the exponential, summed coefficient by
+coefficient, of the quadratic operator $\sum_{j,k}h_{jk}a_j^\dagger a_k$. For $h=i\mathsf M$ with $\mathsf M$ Hermitian,
+on the bosonic Fock space this exponential is $e^{iA_{\mathsf M}}$ with $A_{\mathsf M}$ self-adjoint, so the passive
+linear-optical unitaries of Tjoa and Cirac~\cite{tjoacirac} are the unitary operators $\sU_\cU$ obtained in this way.
+
+\medskip
+\noindent\textbf{Notation for this section.}
+\begin{center}
+\begin{tabular}{@{}L{0.3\textwidth}L{0.64\textwidth}@{}}
+$\iota$, $N$ & a finite set of $N\ge1$ modes\\
+$M_\iota(\C)$; $g$, $h$, $\mathsf M$ & complex $\iota\times\iota$ matrices; elements of $M_\iota(\C)$, $\mathsf M$
+Hermitian where stated\\
+$g^T$, $g^*$, $e^h$, $I$ & transpose, conjugate transpose, matrix exponential $\sum_rh^r/r!$, identity matrix\\
+$\mathrm U(\iota)$; $\cU$, $\cV$ & the group of unitary matrices, with the topology of the entries; its elements\\
+$\Fock$, $\Fock_p$, $[\psi]_p$ & $\Fock(\iota,\C)$, its $p$-particle subspace, the component of $\psi$ in it
+(Definition~\ref{def:sq-sector})\\
+$\ntot$, $\langle\varphi,\psi\rangle$ & total number operator; pairing (Definition~\ref{def:sq-sector})\\
+$\ell_j(g)$, $f(g^Tz)$ & linear forms and substitution~\eqref{eq:sq-subst}\\
+$\Gamma(g)$, $\Gamma(g)_{mn}$ & second quantization of $g$ and its matrix elements (Definition~\ref{def:sq-gamma})\\
+$\sU_\cU$ & the unitary operator on $\Gamma_s(\iota)$ given by $\Gamma(\cU)$, the passive unitary
+(Theorem~\ref{thm:sq-unitary})\\
+$\dG(h)$, $e^T$ & second quantization of a generator, coefficientwise exponential (Definition~\ref{def:sq-dgamma})\\
+$\lVert h\rVert_1$ & $\sum_{j,k}\lvert h_{jk}\rvert$ (Lemma~\ref{lem:sq-dgamma})\\
+$O$, $O^\cU$, $\bar O$ & a linear map of $\Fock$, its conjugate $\Gamma(\cU^*)\,O\,\Gamma(\cU)$, its maximal
+realization (Definition~\ref{def:fock-maxreal})\\
+$A_{\mathsf M}$, $A_{\mathsf M,p}$ & the closure of $\dG(\mathsf M)$, its restriction to $\Fock_p$
+(Proposition~\ref{prop:sq-passive-exp})\\
+\end{tabular}
+\end{center}
+In this section $f$, $f_1$, $f_2$ are formal power series in $(z_i)_{i\in\iota}$ over $\C$, $p$ is a particle number,
+$r$, $s$, $t$ are summation indices ($t$ is a real parameter after Proposition~\ref{prop:sq-passive-exp}), $[f]_p$ is
+the homogeneous component of degree $p$ of $f$, and $\delta$ is a derivation. The letter $\Gamma$ carries three standard
+meanings, kept apart by their arguments: $\Gamma(g)$, $\dG(h)$ and the Hilbert space $\Gamma_s(\iota)$.
+
+\subsection{The definition and particle-number sectors}\label{sec:sq-def}
+
+Throughout, $\iota$ is a finite set of $N\ge1$ modes, and $\Fock=\Fock(\iota,\C)$. The particle-number
+grading of Section~\ref{sec:fock} enters every argument below, so we name its pieces.
+
+\begin{definition}[Particle-number sectors; total number operator; pairing]\label{def:sq-sector}
+\begin{enumerate}
+\item[(a)] For $p\in\N$ and $\psi\in\Fock$, the \emph{component of $\psi$ with $p$ particles} is $[\psi]_p$, with
+$[\psi]_p(n)=\psi(n)$ if $\lvert n\rvert=p$ and $[\psi]_p(n)=0$ otherwise. The \emph{particle-number sector}
+$\Fock_p$, or \emph{$p$-particle subspace}, consists of the $\psi$ with $\psi=[\psi]_p$.
+\item[(b)] The \emph{total number operator} is $\ntot=\sum_{j\in\iota}a_j^\dagger a_j$ on $\Fock$.
+\item[(c)] For a finitely supported $\varphi\in\Fock$ and any $\psi\in\Fock$, the \emph{pairing} is the finite sum
+$\langle\varphi,\psi\rangle=\sum_n\overline{\varphi(n)}\,\psi(n)$, antilinear in $\varphi$ and linear in $\psi$.
+\end{enumerate}
+\end{definition}
+
+By Definition~\ref{def:fock-ladder}, $(a_j^\dagger a_j\psi)(n)=n_j\psi(n)$, so $(\ntot\psi)(n)=\lvert
+n\rvert\,\psi(n)$. The sector $\Fock_p$ is finite-dimensional, with basis the number states $\ket n$, $\lvert
+n\rvert=p$, and the Bargmann map sends $[\psi]_p$ to the homogeneous component of degree $p$ of $\Barg\psi$.
+If $\varphi=\jmath\varphi'$ and $\psi=\jmath\psi'$ with $\varphi',\psi'\in\Gamma_s(\iota)$ and $\varphi$ finitely
+supported, the pairing is the inner product $\langle\varphi',\psi'\rangle$ of Definition~\ref{def:fock-hilbert};
+for $\varphi$ not finitely supported we use only the inner product of $\Gamma_s(\iota)$.
+
+For $g\in M_\iota(\C)$ and $j\in\iota$ we write $\ell_j(g)=(g^Tz)_j=\sum_kg_{kj}z_k$, a linear form, and for
+$f\in\C[[z]]$ we write $f(g^Tz)$ for the series obtained by substituting $\ell_j(g)$ for $z_j$:
+\begin{equation}\label{eq:sq-subst}
+ \coef m{f(g^Tz)}=\sum_{\lvert d\rvert=\lvert m\rvert}\coef df\,\coef m{\ell(g)^d},\qquad
+ \ell(g)^d=\prod_{j}\ell_j(g)^{d_j}.
+\end{equation}
+Since $\ell(g)^d$ is a homogeneous polynomial of degree $\lvert d\rvert$, only the finitely many $d$ with
+$\lvert d\rvert=\lvert m\rvert$ contribute, and~\eqref{eq:sq-subst} is the substitution of formal power series
+without constant term. It is a unital algebra endomorphism of $\C[[z]]$ that sends $z_j$ to $\ell_j(g)$.
+
+Write $[f]_p$ for the homogeneous component of degree $p$ of $f\in\C[[z]]$, a polynomial, so that
+$\Barg[\psi]_p=[\Barg\psi]_p$. A linear map $T$ of $\C[[z]]$ \emph{acts degree by degree} if $[Tf]_p=T[f]_p$ for every
+$f$ and $p$; then the coefficient of $Tf$ at $m$ depends only on $[f]_{\lvert m\rvert}$. By~\eqref{eq:sq-subst} every
+substitution of linear forms acts degree by degree, and a composite of maps that act degree by degree does too. Two
+maps $T$, $T'$ that act degree by degree and agree on every polynomial agree on $\C[[z]]$, since
+$[Tf]_p=T[f]_p=T'[f]_p=[T'f]_p$.
+
+\begin{definition}[Second quantization]\label{def:sq-gamma}
+For $g\in M_\iota(\C)$, the \emph{second quantization} $\Gamma(g)$ is the linear map of $\Fock$ with
+\[
+ \Barg\,\Gamma(g)\psi=(\Barg\psi)(g^Tz),\qquad\psi\in\Fock .
+\]
+Its \emph{matrix elements} are $\Gamma(g)_{mn}=(\Gamma(g)\ket n)(m)$.
+\end{definition}
+
+The Bargmann map is a linear bijection of $\Fock$ onto $\C[[z]]$ (Definition~\ref{def:fock-bargmann}), so the
+equation defines $\Gamma(g)$ on all of $\Fock$, for every complex matrix $g$.
+
+\begin{lemma}[Coefficients and sectors]\label{lem:sq-sectors}
+Let $g\in M_\iota(\C)$.
+\begin{enumerate}
+\item[(a)] For every $\psi\in\Fock$ and every multi-index $m$,
+\[
+ (\Gamma(g)\psi)(m)=\sum_{\lvert n\rvert=\lvert m\rvert}\Gamma(g)_{mn}\,\psi(n),\qquad
+ \Gamma(g)_{mn}=\frac{\sqrt{m!}}{\sqrt{n!}}\,\coef m{\prod_j\ell_j(g)^{n_j}},
+\]
+a finite sum, and $\Gamma(g)_{mn}=0$ if $\lvert m\rvert\ne\lvert n\rvert$. For all $m,n$ there is a polynomial in
+$N^2$ variables whose value at the entries of $g$ is $\Gamma(g)_{mn}$, for every $g$. Moreover
+$\Gamma(g)[\psi]_p=[\Gamma(g)\psi]_p$ for every $p$, $\Gamma(g)\ntot=\ntot\Gamma(g)$, and $\Gamma(g)$ is
+coefficient-finite (Definition~\ref{def:fock-coefffinite}).
+\item[(b)] $\Gamma(g)(c\ket0)=c\ket0$ for every $c\in\C$, and $\Gamma(g)\ket{e_j}=\sum_kg_{kj}\ket{e_k}$ for every $j$.
+\item[(c)] If $\varphi$ is finitely supported, so is $\Gamma(g)\varphi$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+\begin{enumerate}
+\item[(a)] Since $\coef n{\Barg\psi}=\psi(n)/\sqrt{n!}$, formula~\eqref{eq:sq-subst} gives
+\[
+ \coef m{\Barg\,\Gamma(g)\psi}=\sum_{\lvert n\rvert=\lvert m\rvert}\frac{\psi(n)}{\sqrt{n!}}\,\coef m{\ell(g)^n};
+\]
+multiplying by $\sqrt{m!}$ gives the coefficient formula, and $\psi=\ket n$ gives the matrix elements, which vanish
+for $\lvert n\rvert\ne\lvert m\rvert$. Expanding the product of linear forms, $\coef m{\ell(g)^n}$ is a polynomial
+with integer coefficients in the entries of $g$. The coefficient of $\Gamma(g)\psi$ at $m$ involves only
+$[\psi]_{\lvert m\rvert}$, which gives $\Gamma(g)[\psi]_p=[\Gamma(g)\psi]_p$; since $\ntot$ multiplies the
+coefficients at $m$ and at every $n$ with $\lvert n\rvert=\lvert m\rvert$ by the same number $\lvert m\rvert$, it
+commutes with $\Gamma(g)$. The finite set $\{n:\lvert n\rvert=\lvert m\rvert\}$ serves as $\mathcal S_m$ in
+Definition~\ref{def:fock-coefffinite}.
+\item[(b)] $\Barg(c\ket0)=c$ is a constant, which substitution fixes; and $\Barg\ket{e_j}=z_j$ is sent to
+$\ell_j(g)=\sum_kg_{kj}z_k=\Barg\sum_kg_{kj}\ket{e_k}$.
+\item[(c)] A finitely supported vector has nonzero components in finitely many sectors; by (a), so does its
+image, and each sector is finite-dimensional.\qedhere
+\end{enumerate}
+\end{proof}
+
+By (b), $\Gamma(g)$ acts on $\Fock_1\cong\C^\iota$, $\ket{e_j}\leftrightarrow e_j$, as the matrix $g$ itself.
+Standard texts define the second quantization of a contraction $g$ as $\bigoplus_pg^{\otimes p}$ on the symmetric
+tensors~\cite{dg}. The two definitions agree on every sector. Identify the symmetric tensors
+$\otimes_s^p\C^\iota$ with the homogeneous polynomials of degree $p$ by sending the symmetrization of
+$e_{w_1}\otimes\cdots\otimes e_{w_p}$ to $z_{w_1}\cdots z_{w_p}$. Then $g^{\otimes p}$ sends this monomial to
+$\prod_q\ell_{w_q}(g)$, which is the substitution. The normalized symmetric tensor with occupation numbers $n$,
+$\lvert n\rvert=p$, corresponds to $(p!/n!)^{1/2}z^n=\sqrt{p!}\,\Barg\ket n$, so the identification is $\sqrt{p!}\,\Barg$ on
+$\Fock_p$, a multiple of $\Barg$, under which both maps are the same substitution. The agreement is standard, and no
+later statement depends on it.
+
+The standard $\Gamma(g)$ is bounded on $\Gamma_s(\iota)$ when $g$ is a contraction; Definition~\ref{def:sq-gamma}
+needs no such condition, but then $\Gamma(g)$ need not preserve $\Gamma_s(\iota)$. For one mode, $g=u\in\C$ and
+$\Gamma(u)\ket m=u^m\ket m$, that is, $\Gamma(u)=u^{\ntot}$ with $0^0=1$; so $\Gamma(2)$ sends the square-summable
+vector with coefficients $2^{-m}$ to the vector with all coefficients $1$. For $g=0$, $\Gamma(0)\psi=\psi(0)\ket0$
+is the projection onto the vacuum.
+
+\subsection{Representation, intertwining and adjoint}
+
+\begin{theorem}[Representation]\label{thm:sq-rep}
+$\Gamma(I)=1$ and $\Gamma(gg')=\Gamma(g)\Gamma(g')$ for all $g,g'\in M_\iota(\C)$, so $g\mapsto\Gamma(g)$ is a monoid
+homomorphism from $M_\iota(\C)$ to the linear maps of $\Fock$. For invertible $g$,
+$\Gamma(g^{-1})\Gamma(g)=\Gamma(g)\Gamma(g^{-1})=1$.
+\end{theorem}
+
+\begin{proof}
+For $g=I$ the linear forms are the variables, and substitution of the variables is the identity. Applying
+$\Gamma(g')$ and then $\Gamma(g)$ substitutes first $\ell_j(g')$ for $z_j$ and then $\ell_k(g)$ for $z_k$. The
+composite is a unital algebra endomorphism of $\C[[z]]$ that acts degree by degree and sends $z_j$ to
+\[
+ \ell_j(g')\bigl(g^Tz\bigr)=\sum_kg'_{kj}\sum_lg_{lk}z_l=\sum_l(gg')_{lj}z_l=\ell_j(gg').
+\]
+So it agrees with the substitution of $\ell(gg')$ on every polynomial, hence on $\C[[z]]$ by the remark
+after~\eqref{eq:sq-subst}, and
+$\Gamma(g)\Gamma(g')=\Gamma(gg')$. The last statement follows from the first two.
+\end{proof}
+
+The ladder operators become multiplication and differentiation in the Bargmann picture
+(Theorem~\ref{thm:fock-bargmann}), so the substitution transforms them by the chain rule; this is how
+$\Gamma(g)$ intertwines them.
+
+\begin{theorem}[Intertwining]\label{thm:sq-intertwine}
+For every $g\in M_\iota(\C)$ and every mode $j$, on all of $\Fock$,
+\[
+ \Gamma(g)\,a_j^\dagger=\Bigl(\sum_kg_{kj}a_k^\dagger\Bigr)\Gamma(g),\qquad
+ a_j\,\Gamma(g)=\Gamma(g)\Bigl(\sum_kg_{jk}a_k\Bigr).
+\]
+The second identity rests on the chain rule $\partial_j[f(g^Tz)]=\sum_kg_{jk}(\partial_kf)(g^Tz)$, which holds for
+every $f\in\C[[z]]$.
+\end{theorem}
+
+\begin{proof}
+Write $f=\Barg\psi$. By Theorem~\ref{thm:fock-bargmann}(a), the first identity reads $(z_jf)(g^Tz)=\ell_j(g)\,
+f(g^Tz)$ under $\Barg$, which holds because substitution is multiplicative, and $\ell_j(g)=\sum_kg_{kj}z_k$.
+
+By Theorem~\ref{thm:fock-bargmann}(b), the second identity is the chain rule. Both of its sides are linear in
+$f$, and the coefficient of either side at $m$ is a finite linear combination of the coefficients of the single
+homogeneous component $[f]_{\lvert m\rvert+1}$: the substitution acts degree by degree and each $\partial_k$ lowers
+degrees by one. So it suffices to prove the chain rule for polynomials, and by linearity for
+$f=z^n$. With $\ell=\ell(g)$ and $\partial_j\ell_k=g_{jk}$, the product rule gives
+$\partial_j\ell^n=\sum_kn_k\,g_{jk}\,\ell^{n-e_k}$, while $(\partial_kz^n)(g^Tz)=n_k\ell^{n-e_k}$; the terms with
+$n_k=0$ vanish on both sides.
+\end{proof}
+
+\begin{theorem}[Adjoint]\label{thm:sq-adjoint}
+Let $g\in M_\iota(\C)$. For every finitely supported $\varphi$ and every $\psi\in\Fock$,
+$\langle\varphi,\Gamma(g)\psi\rangle=\langle\Gamma(g^*)\varphi,\psi\rangle$, and $\Gamma(g^*)_{nm}=\overline{\Gamma(g)_{mn}}$
+for all multi-indices $m,n$.
+\end{theorem}
+
+Since $\Gamma(g^*)\varphi$ is finitely supported by Lemma~\ref{lem:sq-sectors}(c), the right side of the first
+identity is defined.
+
+\begin{proof}
+We prove the identity of matrix elements by induction on $\lvert m\rvert$, for all $n$ at once, and then sum.
+For $m=0$, Lemma~\ref{lem:sq-sectors}(b) gives $\Gamma(g^*)_{n0}=1$ if $n=0$ and $0$ otherwise, and
+$\Gamma(g)_{0n}$ is the same by Lemma~\ref{lem:sq-sectors}(a),(b).
+
+If $m_i\ge1$, apply the second identity of Theorem~\ref{thm:sq-intertwine} to $\ket n$ and take the coefficient at
+$m-e_i$; apply the first identity, for $g^*$, whose entries are $(g^*)_{ki}=\overline{g_{ik}}$, to $\ket{m-e_i}$ and
+take the coefficient at $n$. With the formulas of Definition~\ref{def:fock-ladder} this gives
+\begin{align*}
+ \sqrt{m_i}\,\Gamma(g)_{mn}&=\sum_{k:\,n_k\ge1}g_{ik}\sqrt{n_k}\,\Gamma(g)_{m-e_i,\,n-e_k},\\
+ \sqrt{m_i}\,\Gamma(g^*)_{nm}&=\sum_{k:\,n_k\ge1}\overline{g_{ik}}\sqrt{n_k}\,\Gamma(g^*)_{n-e_k,\,m-e_i}.
+\end{align*}
+By the induction hypothesis $\Gamma(g^*)_{n-e_k,m-e_i}=\overline{\Gamma(g)_{m-e_i,n-e_k}}$, so the second right side is
+the complex conjugate of the first, and dividing by $\sqrt{m_i}>0$ gives $\Gamma(g^*)_{nm}=\overline{\Gamma(g)_{mn}}$.
+
+For the pairing, let $\varphi$ be supported in a finite set $F$. By Lemma~\ref{lem:sq-sectors}(a) and the
+identity just proved, both $\langle\varphi,\Gamma(g)\psi\rangle$ and $\langle\Gamma(g^*)\varphi,\psi\rangle$ equal the
+finite double sum
+\[
+ \sum_{m\in F}\ \sum_{\lvert n\rvert=\lvert m\rvert}\overline{\varphi(m)}\,\Gamma(g)_{mn}\,\psi(n),
+\]
+summed first over $n$ for the left side and first over $m$ for the right side.
+\end{proof}
+
+\subsection{Unitary matrices}\label{sec:sq-unitary}
+
+\begin{theorem}[Unitarity and strong continuity]\label{thm:sq-unitary}
+Let $\cU\in\mathrm U(\iota)$.
+\begin{enumerate}
+\item[(a)] $\lVert\Gamma(\cU)\psi\rVert^2=\lVert\psi\rVert^2$ in $[0,\infty]$ for every $\psi\in\Fock$; and
+$\lVert\psi\rVert^2=\sum_p\lVert[\psi]_p\rVert^2$.
+\item[(b)] $\Gamma(\cU)$ maps $\jmath(\Gamma_s(\iota))$ onto $\jmath(\Gamma_s(\iota))$. The operator $\sU_\cU$ on
+$\Gamma_s(\iota)$ with $\jmath\,\sU_\cU\psi=\Gamma(\cU)\jmath\psi$ is a surjective linear isometry, with
+$\sU_\cU^{-1}=\sU_{\cU^*}$ and $\sU_{\cU\cV}=\sU_\cU\sU_\cV$ for $\cV\in\mathrm U(\iota)$. The map $\cU\mapsto\sU_\cU$ is a
+group homomorphism from $\mathrm U(\iota)$ to the unitary group of the bounded operators on $\Gamma_s(\iota)$, and
+$\sU_\cU^*=\sU_{\cU^*}$.
+\item[(c)] On all of $\Fock$,
+\begin{gather*}
+ \Gamma(\cU^*)\,a_j\,\Gamma(\cU)=\sum_k\cU_{jk}a_k,\qquad
+ \Gamma(\cU^*)\,a_j^\dagger\,\Gamma(\cU)=\sum_k\overline{\cU_{jk}}\,a_k^\dagger,\\
+ \Gamma(\cU)\,a_j^\dagger\,\Gamma(\cU^*)=\sum_k\cU_{kj}\,a_k^\dagger,\qquad
+ \Gamma(\cU)\,\ntot\,\Gamma(\cU^*)=\ntot .
+\end{gather*}
+\item[(d)] For every $\psi\in\Gamma_s(\iota)$, the map $\cU\mapsto\sU_\cU\psi$ is continuous from $\mathrm U(\iota)$ to
+$\Gamma_s(\iota)$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\begin{enumerate}
+\item[(a)] The squared norm is a sum of non-negative terms in $[0,\infty]$, which may be regrouped by particle
+number; this is the second identity. For a finitely supported $\chi$, $\lVert\chi\rVert^2=\langle\chi,\chi\rangle$. Take
+$\chi=[\psi]_p$, which is finitely supported; so is $\Gamma(\cU)\chi$ (Lemma~\ref{lem:sq-sectors}(c)), and
+Theorem~\ref{thm:sq-adjoint} with $\varphi=\Gamma(\cU)\chi$, followed by Theorem~\ref{thm:sq-rep}, gives
+\[
+ \lVert\Gamma(\cU)\chi\rVert^2=\langle\Gamma(\cU^*)\Gamma(\cU)\chi,\chi\rangle=\langle\Gamma(\cU^*\cU)\chi,\chi\rangle
+ =\lVert\chi\rVert^2 .
+\]
+Since $[\Gamma(\cU)\psi]_p=\Gamma(\cU)[\psi]_p$, summing over $p$ gives $\lVert\Gamma(\cU)\psi\rVert^2=\lVert\psi\rVert^2$.
+\item[(b)] By (a) and Lemma~\ref{lem:fock-hilbert}(b), $\Gamma(\cU)$ and $\Gamma(\cU^*)$ map $\jmath(\Gamma_s(\iota))$
+into itself, and they are mutually inverse by Theorem~\ref{thm:sq-rep}, since $\cU^*\cU=\cU\cU^*=I$; so the map is
+onto, and $\sU_\cU^{-1}=\sU_{\cU^*}$. By Lemma~\ref{lem:fock-hilbert}(a), $\sU_\cU$ is an isometry, and
+$\sU_{\cU\cV}=\sU_\cU\sU_\cV$ is Theorem~\ref{thm:sq-rep}. A surjective linear isometry of a Hilbert space is unitary,
+so $\sU_\cU^*=\sU_\cU^{-1}=\sU_{\cU^*}$.
+\item[(c)] Multiply $a_j\Gamma(\cU)=\Gamma(\cU)\sum_k\cU_{jk}a_k$ (Theorem~\ref{thm:sq-intertwine}) on the left by
+$\Gamma(\cU^*)$. Multiply the first identity of Theorem~\ref{thm:sq-intertwine} for $\cU^*$, whose entries are
+$(\cU^*)_{kj}=\overline{\cU_{jk}}$, on the right by $\Gamma(\cU)$, and the same identity for $\cU$ on the right by
+$\Gamma(\cU^*)$. Finally $\Gamma(\cU)\ntot\Gamma(\cU^*)=\ntot\Gamma(\cU)\Gamma(\cU^*)=\ntot$ by
+Lemma~\ref{lem:sq-sectors}(a). Each step uses $\Gamma(\cU^*)\Gamma(\cU)=\Gamma(\cU)\Gamma(\cU^*)=1$.
+\item[(d)] For a number state, $\sU_\cU\ket m=\sum_{\lvert n\rvert=\lvert m\rvert}\Gamma(\cU)_{nm}\ket n$ is a finite sum
+whose coefficients are polynomials in the entries of $\cU$ (Lemma~\ref{lem:sq-sectors}(a)), so $\cU\mapsto\sU_\cU\chi$
+is continuous for every finitely supported $\chi$. Let $\psi\in\Gamma_s(\iota)$, $\cU\in\mathrm U(\iota)$ and
+$\varepsilon>0$, and choose a finitely supported $\chi$ with $\lVert\psi-\chi\rVert<\varepsilon/3$
+(Lemma~\ref{lem:fock-hilbert}(c)). Since every $\sU_\cV$ is an isometry,
+\[
+ \lVert\sU_\cU\psi-\sU_\cV\psi\rVert\le\lVert\sU_\cU(\psi-\chi)\rVert+\lVert\sU_\cU\chi-\sU_\cV\chi\rVert
+ +\lVert\sU_\cV(\chi-\psi)\rVert<\tfrac23\varepsilon+\lVert\sU_\cU\chi-\sU_\cV\chi\rVert,
+\]
+which is below $\varepsilon$ for $\cV$ near $\cU$.\qedhere
+\end{enumerate}
+\end{proof}
+
+So $\cU\mapsto\sU_\cU$ is a strongly continuous unitary representation of $\mathrm U(\iota)$ on $\Gamma_s(\iota)$, and
+$\Gamma(\cU)\ket0=\ket0$ by Lemma~\ref{lem:sq-sectors}(b). In quantum optics the unitary operator $\sU_\cU$ on
+$\Gamma_s(\iota)$ is the \emph{passive} (linear-optical) unitary of the interferometer $\cU$: by (c) it maps
+annihilation operators to linear combinations of annihilation operators and preserves the total particle number.
+The map $\Gamma(\cU)$ itself acts on the formal Fock space, which carries no inner product, and $\sU_\cU$ is its
+restriction to $\Gamma_s(\iota)$. The first identity of (c) is the convention $\sU^\dagger a_j\sU=\sum_k\cU_{jk}a_k$
+of~\cite{tjoacirac}.
+
+\subsection{The generator and the exponential}
+
+The passive unitary of~\cite[(12)]{tjoacirac} is written as the exponential of a quadratic operator. We take that
+exponential coefficient by coefficient, as in Definition~\ref{def:fock-raising}, but now as a series in $r$, and
+show that the series always converges.
+
+\begin{definition}[Second quantization of a generator; coefficientwise exponential]\label{def:sq-dgamma}
+For $h\in M_\iota(\C)$, $\dG(h)=\sum_{j,k}h_{jk}\,a_j^\dagger a_k$ on $\Fock$. For a linear map $T$ of $\Fock$ and
+$\psi\in\Fock$ such that the series below converges absolutely for every multi-index $n$, $e^T\psi$ is the vector
+with the coefficients
+\[
+ (e^T\psi)(n)=\sum_{r\ge0}\frac{(T^r\psi)(n)}{r!}.
+\]
+\end{definition}
+
+The map $h\mapsto\dG(h)$ is linear, so $\dG(ch)=c\,\dG(h)$ for $c\in\C$, and $\dG(h)$ is the standard second
+quantization of the one-particle operator $h$, written in the number basis~\cite{dg}. If $T$
+raises the particle number, the series terminates at $r=\lvert n\rvert$ (Lemma~\ref{lem:fock-raising}(a)) and
+$e^T$ is the exponential of Definition~\ref{def:fock-raising}. Here $T=\dG(h)$, which preserves every sector, and
+the next lemma shows that its series converges absolutely for every $\psi$.
+
+\begin{lemma}[The generator]\label{lem:sq-dgamma}
+Let $h\in M_\iota(\C)$ and $\lVert h\rVert_1=\sum_{j,k}\lvert h_{jk}\rvert$.
+\begin{enumerate}
+\item[(a)] For every $\psi\in\Fock$, $\Barg\,\dG(h)\psi=\sum_{j,k}h_{jk}\,z_j\partial_k\Barg\psi$, a sum of derivations
+$z_j\partial_k$ of $\C[[z]]$. For every mode $l$ and every $r\in\N$, $\Barg\,\dG(h)\ket{e_l}=\ell_l(h)$ and
+$\Barg\,\dG(h)^r\ket{e_l}=\ell_l(h^r)$. Moreover $\dG(h)[\psi]_p=[\dG(h)\psi]_p$, $\dG(h)\ket{e_j}=\sum_kh_{kj}\ket{e_k}$,
+and $\dG(ch)=c\,\dG(h)$ for every $c\in\C$.
+\item[(b)] For every derivation $\delta$ of a commutative $\C$-algebra $A$, every $r\in\N$
+and all $x,y\in A$, $\delta^r(xy)=\sum_{s+t=r}\binom rs\,\delta^sx\,\delta^ty$.
+\item[(c)] Let $\psi\in\Fock$, $p\in\N$ and $C\ge0$ with $\lvert\coef m{\Barg\psi}\rvert\le C$ for every $m$ with
+$\lvert m\rvert=p$. Then $\lvert\coef n{\Barg\,\dG(h)^r\psi}\rvert\le(p\lVert h\rVert_1)^rC$ for every $r$ and every $n$
+with $\lvert n\rvert=p$; in particular this holds with $C=\max_{\lvert m\rvert=\lvert n\rvert}\lvert\coef m{\Barg\psi}\rvert$.
+For every $\psi$ and $n$ the series
+\[
+ \sum_{r\ge0}\frac{\lvert\coef n{\Barg\,\dG(h)^r\psi}\rvert}{r!}\quad\text{and}\quad
+ \sum_{r\ge0}\frac{\lvert(\dG(h)^r\psi)(n)\rvert}{r!}
+\]
+converge. Hence $e^{\dG(h)}$ is defined on all of $\Fock$; it is linear, and
+$e^{\dG(h)}[\psi]_p=[e^{\dG(h)}\psi]_p$ (also a consequence of Theorem~\ref{thm:sq-exp}).
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+\begin{enumerate}
+\item[(a)] By Theorem~\ref{thm:fock-bargmann}, $\Barg a_j^\dagger a_k\psi=z_j\partial_k\Barg\psi$, and $z_j\partial_k$
+is a derivation because $\partial_k$ is. Write $\delta_h=\sum_{j,k}h_{jk}z_j\partial_k$, so that $\Barg\,\dG(h)^r=
+\delta_h^r\Barg$. Then $\delta_hz_l=\sum_jh_{jl}z_j=\ell_l(h)$, and by induction
+$\delta_h\ell_l(h^r)=\sum_k(h^r)_{kl}\sum_jh_{jk}z_j=\ell_l(h^{r+1})$. Each $z_j\partial_k$ maps a monomial of
+degree $p$ to a multiple of a monomial of degree $p$, so $\dG(h)$ preserves sectors; $\dG(h)\ket{e_j}$ is
+$\Barg^{-1}\ell_j(h)$, and $\dG(ch)=c\,\dG(h)$ is linearity in $h$.
+\item[(b)] Induction on $r$: apply $\delta$ to the sum for $r$, use $\delta(xy)=\delta x\,y+x\,\delta y$, and collect
+terms with Pascal's rule $\binom r{s-1}+\binom rs=\binom{r+1}s$, as for the binomial theorem.
+\item[(c)] The coefficient of $z_j\partial_kf$ at $n$ is $((n-e_j)_k+1)\coef{n-e_j+e_k}f$ if $n_j\ge1$ and $0$
+otherwise, and the factor $(n-e_j)_k+1$ is at most $\lvert n\rvert=p$. So $\lvert\coef n{\delta_hf}\rvert\le
+p\lVert h\rVert_1\max_{\lvert m\rvert=p}\lvert\coef mf\rvert$, and induction on $r$ gives the bound. The first series is
+then dominated by $Ce^{p\lVert h\rVert_1}$, and the second is the first times $\sqrt{n!}$, since
+$(\dG(h)^r\psi)(n)=\sqrt{n!}\,\coef n{\Barg\,\dG(h)^r\psi}$. Each term of the series of $(e^{\dG(h)}\psi)(n)$ is linear in
+$\psi$, and so is the sum of an absolutely convergent series; and $\dG(h)^r[\psi]_p=[\dG(h)^r\psi]_p$ by (a), which
+gives the last identity termwise.\qedhere
+\end{enumerate}
+\end{proof}
+
+\begin{theorem}[Exponential form;~{cf.~\cite[(12), (A20)--(A26)]{tjoacirac}}]\label{thm:sq-exp}
+Let $h\in M_\iota(\C)$. For every $\psi\in\Fock$ and every multi-index $n$, the series $\sum_r\coef n{\Barg\,\dG(h)^r
+\psi}/r!$ converges to $\coef n{(\Barg\psi)((e^h)^Tz)}$, and the series $\sum_r(\dG(h)^r\psi)(n)/r!$ converges to
+$(\Gamma(e^h)\psi)(n)$. Hence $\Gamma(e^h)=e^{\dG(h)}$ on $\Fock$, and $\Gamma(e^{i\mathsf M})=e^{i\,\dG(\mathsf M)}$ for
+every $\mathsf M\in M_\iota(\C)$.
+\end{theorem}
+
+\begin{proof}
+With $\delta_h$ as in the proof of Lemma~\ref{lem:sq-dgamma}, every $f\in\C[[z]]$ is $\Barg\psi$ for some $\psi$,
+so by Lemma~\ref{lem:sq-dgamma}(c) the series $\coef n{E(f)}=\sum_r\coef n{\delta_h^rf}/r!$ converges absolutely and
+defines a linear map $E$ of $\C[[z]]$. We show $E(f)=f((e^h)^Tz)$: first $E$ is multiplicative, then it agrees
+with the substitution on the variables, and we conclude degree by degree.
+
+\emph{Multiplicativity.} By Lemma~\ref{lem:sq-dgamma}(b) and the product of power series,
+\[
+ \frac{\coef n{\delta_h^r(f_1f_2)}}{r!}=\sum_{s+t=r}\ \sum_{n'+n''=n}\frac{\coef{n'}{\delta_h^sf_1}}{s!}\,
+ \frac{\coef{n''}{\delta_h^tf_2}}{t!}.
+\]
+For each of the finitely many pairs $n'+n''=n$, the series $\sum_s\coef{n'}{\delta_h^sf_1}/s!$ and
+$\sum_t\coef{n''}{\delta_h^tf_2}/t!$ converge absolutely, by Lemma~\ref{lem:sq-dgamma}(c) with $p=\lvert n'\rvert$ and
+$p=\lvert n''\rvert$, so their Cauchy product converges to the product of their sums. Summing over $r$ gives
+$\coef n{E(f_1f_2)}=\sum_{n'+n''=n}\coef{n'}{E(f_1)}\,\coef{n''}{E(f_2)}$, that is, $E(f_1f_2)=E(f_1)E(f_2)$; and
+$E(1)=1$ because $\delta_h1=0$.
+
+\emph{The variables.} By Lemma~\ref{lem:sq-dgamma}(a), $\delta_h^rz_l=\ell_l(h^r)=\sum_k(h^r)_{kl}z_k$, so
+$E(z_l)=\sum_k(e^h)_{kl}z_k=\ell_l(e^h)$, the entries of $e^h$ being the sums of the entries of its series.
+
+\emph{Conclusion.} $E$ and the substitution of $\ell(e^h)$ are linear, multiplicative and unital and agree on the
+variables, so they agree on every polynomial. Both act degree by degree: the substitution by the remark
+after~\eqref{eq:sq-subst}, and $E$ because $\delta_h$ does, so that $[E(f)]_p=E([f]_p)$ coefficient by coefficient.
+By the same remark they agree on $\C[[z]]$. With $f=\Barg\psi$ this is the first series; multiplying by
+$\sqrt{n!}$ gives the second, whose sum is the coefficient of $e^{\dG(h)}\psi$ at $n$. For the last statement take
+$h=i\mathsf M$, with $\dG(i\mathsf M)=i\,\dG(\mathsf M)$.
+\end{proof}
+
+The paper relates its two forms of the passive unitary only for $h=i\mathsf M$ with $\mathsf M$ Hermitian,
+through~\cite[(A23)--(A26)]{tjoacirac}. For one mode, $\dG(h)=h\,\ntot$ and Theorem~\ref{thm:sq-exp} reads
+$e^{hm}=(e^h)^m$ on $\ket m$. To write a given passive unitary in the form of~\cite[(12)]{tjoacirac} we need a
+Hermitian logarithm of $\cU$.
+
+\begin{lemma}[Unitary matrices are exponentials]\label{lem:sq-log}
+Every $\cU\in\mathrm U(\iota)$ is $e^{i\mathsf M}$ for a Hermitian $\mathsf M\in M_\iota(\C)$, and
+$e^{i\mathsf M}\in\mathrm U(\iota)$ for every Hermitian $\mathsf M$.
+\end{lemma}
+
+\begin{proof}
+A unitary matrix is normal, so by the spectral theorem $\cU=W\diag(\lambda_k)W^*$ with $W$ unitary and
+$\lvert\lambda_k\rvert=1$. Put $\theta_k=\arg\lambda_k$ and $\mathsf M=W\diag(\theta_k)W^*$, which is Hermitian; then
+$e^{i\mathsf M}=W\diag(e^{i\theta_k})W^*=\cU$. Conversely
+$(e^{i\mathsf M})^*=e^{-i\mathsf M^*}=e^{-i\mathsf M}=(e^{i\mathsf M})^{-1}$.
+\end{proof}
+
+Read as an operator on $\Gamma_s(\iota)$, the exponential in~\cite[(12)]{tjoacirac} is $e^{iA_{\mathsf M}}$, where
+$A_{\mathsf M}$ is the closure of $\dG(\mathsf M)$ on the finitely supported vectors. The next proposition identifies it
+with $\sU_{e^{i\mathsf M}}$, using only the functional calculus of orthogonal direct sums of self-adjoint
+operators~\cite[Ch.~VIII]{rs1}.
+
+\begin{proposition}[The passive unitary as an operator exponential]\label{prop:sq-passive-exp}
+Let $\mathsf M\in M_\iota(\C)$ be Hermitian, let $A_{\mathsf M,p}$ be the restriction of $\dG(\mathsf M)$ to the sector
+$\Fock_p$, and let $A_{\mathsf M}$ be the closure of $\dG(\mathsf M)$ on the finitely supported vectors of $\Gamma_s(\iota)$.
+Then each $A_{\mathsf M,p}$ is a Hermitian matrix, $A_{\mathsf M}=\bigoplus_pA_{\mathsf M,p}$ is self-adjoint and is the
+maximal realization of $\dG(\mathsf M)$ (Definition~\ref{def:fock-maxreal}), and $e^{iA_{\mathsf M}}=\sU_{e^{i\mathsf M}}$.
+\end{proposition}
+
+\begin{proof}
+Each sector $\Fock_p$ consists of finitely supported vectors, so it lies in $\jmath(\Gamma_s(\iota))$; we identify it
+with its preimage, a finite-dimensional subspace of $\Gamma_s(\iota)$. The number states form an orthonormal basis, so
+$\Gamma_s(\iota)$ is the Hilbert direct sum $\bigoplus_p\Fock_p$, and every $\psi$ is $\sum_p\psi_p$ with
+$\psi_p=[\psi]_p$. By Lemma~\ref{lem:sq-dgamma}(a), $\dG(\mathsf M)$ maps $\Fock_p$ into itself. By
+Definition~\ref{def:fock-ladder} the matrices of $a_j^\dagger$ and $a_j$ in the number basis are real and transposes of
+each other, so on $\Fock_p$ the adjoint of $a_j^\dagger a_k$ is $a_k^\dagger a_j$, and
+$A_{\mathsf M,p}^*=\sum_{j,k}\overline{\mathsf M_{jk}}\,a_k^\dagger a_j=A_{\mathsf M,p}$: each $A_{\mathsf M,p}$ is a
+Hermitian matrix.
+
+The direct sum $\bigoplus_pA_{\mathsf M,p}$, with the domain $\{\psi:\sum_p\lVert A_{\mathsf M,p}\psi_p\rVert^2<\infty\}$ and
+$(\bigoplus_pA_{\mathsf M,p})\psi=\sum_pA_{\mathsf M,p}\psi_p$, is self-adjoint, as a direct sum of self-adjoint
+operators. On the finitely supported vectors it is $\dG(\mathsf M)$, and they form a core for it: for $\psi$ in the
+domain the partial sums $\sum_{p\le P}\psi_p$ converge to $\psi$, and their images $\sum_{p\le P}A_{\mathsf M,p}\psi_p$
+converge to $(\bigoplus_pA_{\mathsf M,p})\psi$. Hence $A_{\mathsf M}=\bigoplus_pA_{\mathsf M,p}$ is self-adjoint. Since
+$\dG(\mathsf M)\jmath\psi$ has the components $A_{\mathsf M,p}\psi_p$, its squared norm is
+$\sum_p\lVert A_{\mathsf M,p}\psi_p\rVert^2$, so the domain and the action of $A_{\mathsf M}$ are those of the maximal
+realization. The functional calculus of direct sums gives $e^{iA_{\mathsf M}}=\bigoplus_pe^{iA_{\mathsf M,p}}$, with
+$e^{iA_{\mathsf M,p}}$ the matrix exponential on $\Fock_p$. For $\psi\in\Fock_p$, $\dG(i\mathsf M)^r\psi=(iA_{\mathsf M,p})^r\psi$,
+so Theorem~\ref{thm:sq-exp} with $h=i\mathsf M$ gives $e^{iA_{\mathsf M,p}}\psi=\Gamma(e^{i\mathsf M})\psi$. The bounded
+operators $e^{iA_{\mathsf M}}$ and $\sU_{e^{i\mathsf M}}$ therefore agree on every sector, hence on the dense finitely
+supported vectors, hence on $\Gamma_s(\iota)$.
+\end{proof}
+
+With Lemma~\ref{lem:sq-log}, the passive unitaries of~\cite[(12)]{tjoacirac} are exactly the operators $\sU_\cU$,
+$\cU\in\mathrm U(\iota)$. For real $t$, replacing $\mathsf M$ by $t\mathsf M$ gives $A_{t\mathsf M}=tA_{\mathsf M}$ and
+$e^{itA_{\mathsf M}}=\sU_{e^{it\mathsf M}}$, so $A_{\mathsf M}$ is also the self-adjoint generator that Stone's
+theorem~\cite[\vetx{Sec.~VIII.4}]{rs1} gives to the strongly continuous unitary group $t\mapsto\sU_{e^{it\mathsf M}}$
+(Theorem~\ref{thm:sq-unitary}(b),(d))\vetr{, in the sign convention of Reed and Simon; in that of
+Definition~\ref{def:qh-group}, $A_{\mathsf M}$ generates $t\mapsto\sU_{e^{-it\mathsf M}}$}.
+
+\subsection{Conjugation of operators}
+
+Expectation values in a state $\Gamma(\cU)\Psi$ reduce to expectation values in $\Psi$ of the conjugated operator
+$\Gamma(\cU^*)\,O\,\Gamma(\cU)$. The observables of interest are polynomials in the ladder operators, which are
+unbounded on $\Gamma_s(\iota)$, so we state the reduction for an arbitrary linear map $O$ of $\Fock$ through its maximal
+realization $\bar O$ (Definition~\ref{def:fock-maxreal}), which needs no closure, core or self-adjointness.
+
+\begin{theorem}[Conjugation of operators]\label{thm:sq-conj}
+Let $\cU\in\mathrm U(\iota)$, let $O$ be a linear map of $\Fock$, and write $O^\cU=\Gamma(\cU^*)\,O\,\Gamma(\cU)$.
+\begin{enumerate}
+\item[(a)] $(OO')^\cU=O^\cU O'^\cU$, $(O+O')^\cU=O^\cU+O'^\cU$ and $(cO)^\cU=c\,O^\cU$ for all linear maps $O,O'$ of
+$\Fock$ and all $c\in\C$. For every noncommutative polynomial $P$ with complex coefficients in $2N$ variables
+$x_j,y_j$, $j\in\iota$,
+\[
+ P(a^\dagger,a)^\cU=P\Bigl(\sum_k\overline{\cU_{jk}}\,a_k^\dagger,\ \sum_k\cU_{jk}a_k\Bigr),
+\]
+where $P(a^\dagger,a)$ substitutes $a_j^\dagger$ for $x_j$ and $a_j$ for $y_j$, and the right side substitutes the
+displayed sums.
+\item[(b)] For $\psi\in\Gamma_s(\iota)$, $\sU_\cU\psi\in\dom\bar O$ if and only if $\psi\in\dom\overline{O^\cU}$. Thus
+$\dom\overline{O^\cU}=\sU_\cU^{-1}(\dom\bar O)$, and $\overline{O^\cU}\psi=\sU_\cU^{-1}\bar O\,\sU_\cU\psi$ for $\psi$ in it.
+Moreover $\langle\sU_\cU\psi,\bar O\,\sU_\cU\psi\rangle=\langle\psi,\overline{O^\cU}\psi\rangle$ whenever
+$\sU_\cU\psi\in\dom\bar O$.
+\item[(c)] If $A$ is a bounded operator on $\Gamma_s(\iota)$ with $\jmath(A\psi)=O(\jmath\psi)$ for every
+$\psi\in\Gamma_s(\iota)$, then $\jmath(\sU_\cU^*A\,\sU_\cU\psi)=O^\cU(\jmath\psi)$ for every $\psi$, and
+$\dom\overline{O^\cU}=\Gamma_s(\iota)$. For every bounded operator $A$ and every $\psi\in\Gamma_s(\iota)$,
+$\langle\sU_\cU\psi,A\,\sU_\cU\psi\rangle=\langle\psi,\sU_\cU^*A\,\sU_\cU\psi\rangle$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\begin{enumerate}
+\item[(a)] Inserting $\Gamma(\cU)\Gamma(\cU^*)=1$ between $O$ and $O'$ gives multiplicativity; additivity and
+homogeneity hold because composition is bilinear; and $1^\cU=\Gamma(\cU^*)\Gamma(\cU)=1$. So $O\mapsto O^\cU$ is a
+unital algebra endomorphism of the linear maps of $\Fock$, and $P\mapsto P(a^\dagger,a)^\cU$ and the right side are
+two unital algebra homomorphisms from the noncommutative polynomials that agree on the variables by
+Theorem~\ref{thm:sq-unitary}(c). They therefore agree on every $P$.
+\item[(b)] $O^\cU\jmath\psi=\Gamma(\cU^*)\,O\,\jmath\,\sU_\cU\psi$, and $\Gamma(\cU^*)$ preserves the squared norm of every
+formal vector (Theorem~\ref{thm:sq-unitary}(a)), so $\lVert O^\cU\jmath\psi\rVert^2<\infty$ exactly when
+$\lVert O\jmath\,\sU_\cU\psi\rVert^2<\infty$; this is the equivalence of domains. On the domain,
+$\jmath\,\overline{O^\cU}\psi=\Gamma(\cU^*)\jmath\,\bar O\,\sU_\cU\psi=\jmath\,\sU_{\cU^*}\bar O\,\sU_\cU\psi$, and
+$\sU_{\cU^*}=\sU_\cU^{-1}$. Since $\sU_\cU$ is unitary, $\langle\sU_\cU\psi,\bar O\,\sU_\cU\psi\rangle=
+\langle\sU_\cU\psi,\sU_\cU\overline{O^\cU}\psi\rangle=\langle\psi,\overline{O^\cU}\psi\rangle$.
+\item[(c)] $\jmath(\sU_\cU^*A\,\sU_\cU\psi)=\Gamma(\cU^*)\jmath(A\,\sU_\cU\psi)=\Gamma(\cU^*)\,O\,\Gamma(\cU)\jmath\psi$ by
+Theorem~\ref{thm:sq-unitary}(b), and this vector is square-summable, so every $\psi$ lies in $\dom\overline{O^\cU}$.
+The last identity is the definition of the adjoint $\sU_\cU^*$.\qedhere
+\end{enumerate}
+\end{proof}
+
+\subsection*{Notes and references}
+
+Tjoa and Cirac~\cite{tjoacirac} define the passive unitary by their~(12),
+$\sU=e^{i\sum_{j,k}\mathsf M_{jk}a_j^\dagger a_k}$ with $\mathsf M$ Hermitian, and relate it to the single-particle
+unitary $\cU\in\mathrm U(N)$ by their~(29), $\sU^\dagger a_j\sU=\sum_k\cU_{jk}a_k$. Their Appendix~A derives the same
+relation as~(A26), with $\cU=e^{i\mathsf M}$~(A20), from the commutator $[G_{\mathsf H},a_l]=-\sum_k\mathsf H_{lk}a_k$~(A24),
+where $G_{\mathsf H}=\sum_{j,k}\mathsf H_{jk}a_j^\dagger a_k$~(A23) is $\dG(\mathsf H)$ in our notation, and the
+Baker--Campbell--Hausdorff formula~(A25); (29) and (A26) agree, and the first identity of Theorem~\ref{thm:sq-unitary}(c) proves them with $\sU$ and $\sU^\dagger$ read as $\Gamma(\cU)$ and $\Gamma(\cU^*)$ on the formal Fock space. The
+inverse conjugation $\Gamma(\cU)a_j^\dagger\Gamma(\cU)^{-1}=\sum_k\cU_{kj}a_k^\dagger$ is a consequence and does not
+appear in the paper. We instead define $\Gamma(g)$ by substitution in the Bargmann picture~\cite{bargmann} for every
+matrix, prove the representation, intertwining, adjoint and continuity properties without exponentials of unbounded
+operators, and obtain the exponential form for every matrix $h$, not only for $h=i\mathsf M$; the smallest case is
+one mode, $\Gamma(e^{i\theta})=e^{i\theta a^\dagger a}$. Proposition~\ref{prop:sq-passive-exp} identifies the coefficientwise $e^{i\,\dG(\mathsf M)}$ with
+the exponential of $i$ times the self-adjoint closure of $\dG(\mathsf M)$, by the functional
+calculus of orthogonal direct sums. The second quantization of operators on Fock space is treated
+in~\cite{dg}, and the functional
+calculus and Stone's theorem in~\cite[\vetx{Secs.~VIII.3 and~VIII.4}]{rs1}\vetx{; for the identity
+$\Gamma(e^{itA})=e^{it\,\dG(A)}$, $A$ self-adjoint, see~\cite{rs1}. For the action of the unitary group on
+the Bargmann space by a linear substitution of the variables, in the Fock model of the metaplectic representation,
+see~\cite[Ch.~4]{folland}; Definition~\ref{def:sq-gamma} extends this substitution to every matrix on the formal
+Fock space}.
+\end{vetdenv}

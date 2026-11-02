@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 BosonicLean contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: BosonicLean contributors
+-/
 import BosonicLean
 /-! Two examples that use the library through its root file: the normalized Gaussian wave
 function of a second width with its covariance, and the admissible one-mode vacuum covariance. -/

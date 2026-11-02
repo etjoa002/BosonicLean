@@ -43,6 +43,16 @@ theorem sqrtC_ne_zero {m : ℕ} (h : 0 < m) : sqrtC m ≠ 0 := by
   rw [sqrtC, Complex.ofReal_ne_zero, Real.sqrt_ne_zero']
   exact_mod_cast h
 
+/-- `√(∏ₐ fₐ) = ∏ₐ √fₐ` for natural numbers, in `ℂ`. -/
+theorem sqrtC_prod {α : Type*} (s : Finset α) (f : α → ℕ) :
+    sqrtC (∏ a ∈ s, f a) = ∏ a ∈ s, sqrtC (f a) := by
+  classical
+  induction s using Finset.induction_on with
+  | empty => simp [sqrtC]
+  | insert a s ha ih =>
+    rw [Finset.prod_insert ha, Finset.prod_insert ha, ← ih, sqrtC, sqrtC, sqrtC, Nat.cast_mul,
+      Real.sqrt_mul (Nat.cast_nonneg _), Complex.ofReal_mul]
+
 namespace FormalFock
 
 variable {ι R : Type*}

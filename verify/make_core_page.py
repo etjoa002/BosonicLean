@@ -106,13 +106,20 @@ def latex(its) -> str:
     body, k = [], 0
     for kind, a, b in its:
         if kind == "section":
-            body.append(f"\\section*{{{tex(a)}}}" + (f"\n{tex(b)}\n" if b else ""))
+            # keep a heading, its introduction and the first entry on one page
+            body.append(f"\\keepspace{{14\\baselineskip}}\\section*{{{tex(a)}}}" +
+                        (f"\n{tex(b)}\n" if b else ""))
         else:
             k += 1
             body.append(f"\\paragraph{{{k}.}} {tex(b)}\\par{{\\footnotesize\\texttt{{Sealed.{a.replace('_', chr(92) + '_')}}}}}\n")
     return ("\\documentclass[11pt]{article}\n\\usepackage[a4paper,margin=2.4cm]{geometry}\n"
             "\\usepackage{amsmath,amssymb}\n\\usepackage[hidelinks]{hyperref}\n"
             "\\newcommand{\\Aql}{\\mathcal{A}_{\\mathrm{ql}}}\n\\setlength{\\parindent}{0pt}\n"
+            # \keepspace{h}: start a new page unless h of space is left (the core of needspace)
+            "\\makeatletter\n\\newcommand{\\keepspace}[1]{\\par\\penalty-100\\begingroup"
+            "\\setlength{\\dimen@}{#1}\\dimen@ii\\pagegoal\\advance\\dimen@ii-\\pagetotal"
+            "\\ifdim\\dimen@>\\dimen@ii\\ifdim\\dimen@ii>\\z@\\vfil\\fi\\break\\fi\\endgroup}\n"
+            "\\makeatother\n"
             "\\title{The sealed statements of BosonicLean}\\date{}\n\\begin{document}\\maketitle\n"
             f"These {k} statements are the ones that \\texttt{{lake comparator}} checks. "
             "Each is followed by the name of its formal version in "

@@ -13,7 +13,8 @@ admissible covariance matrices and the operations that preserve admissibility, t
 Gaussian wave function and its covariance, the contraction of virtual modes and periodic Gaussian
 matrix product states, the CCR algebra of the Weyl operators on $\ell^2(V)$, its states and Gaussian
 states, Gaussian channels, and the formal Fock space with its ladder operators, the exponential
-of raising operators and the Bargmann map, followed by a section of examples. Further sections,
+of operators that raise the particle number and the Bargmann map, followed by a section of
+examples. Further sections,
 appended after the examples so that the numbering of entries 1 to 36 stays fixed, state the
 other results listed in the table of results on the front page of the library: the Schwartz
 domain, the moments and the units of the Gaussian wave function, the Fourier analysis of
@@ -31,7 +32,8 @@ library's structures. The statements still use these definitions of the library,
 Mathlib's terms by a theorem below: the symplectic matrix (entry 1), admissibility (entry 2),
 the contraction (entry 9), the input and the wiring of a periodic chain (entries 11 and 12),
 the Weyl operators and the CCR algebra (entry 14), the formal Fock space with its linear
-structure and the ladder operators, by their coefficient formulas (entry 23), raising operators
+structure and the ladder operators, by their coefficient formulas (entry 23), operators that
+raise the particle number
 and their exponential (entries 25 and 26), the Bargmann map (entry 27), the eliminated and the
 covariance symbols of a homogeneous chain (entry 41), the product resource and the product
 covariance (entry 44), the kernel covariance (entry 46), the local resource of a cluster chain
@@ -40,6 +42,30 @@ supplies two instances that carry no data: the CCR algebra, a closed star subalg
 bounded operators with the order of operators, is a star-ordered ring (needed for completely
 positive maps; entry 64 states this property for every norm-closed unital star subalgebra of a
 star-ordered C*-algebra), and it is not the zero algebra.
+
+Sections appended after entry 67 state the results of the later chapters of the lecture notes:
+anti-normal ordering for one mode, the bosonic Fock space with its closed maximal realizations and
+closed forms, second quantization, the Bloch–Messiah and polar decompositions of symplectic
+matrices, exponential vectors and the displacement and squeezing operators, Gaussian unitaries on
+Fock space and pure Gaussian states, followed by examples. They use these further definitions of
+the library, each fixed in Mathlib's terms by a theorem below: the Fock space, its embedding into
+the formal Fock space and the squared norm of formal vectors (entry 69), the maximal realization
+(entry 70), the second quantization (entry 72), its unitary on the Fock space (entry 74) and the
+generator (entry 75), the squeezing matrix and the orthogonal symplectic matrix of a unitary
+(entry 77), the exponential vectors (entry 82), the displacement and squeezing operators (entries
+84 and 88; their values or matrix elements on exponential vectors determine them by entry 83), the
+Weyl operators on Fock space (entry 90), Gaussian unitaries (entry 91), the quadratures (entry 95)
+and Gaussian characteristic functions (entry 97).
+
+Two sections appended after entry 105 state the existence of pure Gaussian states for every
+admissible symplectic covariance matrix, and the results of the chapter on quadratic Hamiltonians:
+one-parameter unitary groups and their generators, analytic vectors with a common radius, the
+essential self-adjointness of a quadratic Hamiltonian on the finitely supported vectors, the
+Gaussian unitaries it generates, and Eqs. (1) and (5) of Tjoa and Cirac. They use these further
+definitions of the library, each fixed in Mathlib's terms by a theorem below: strongly continuous
+one-parameter unitary groups and their generators (entry 107), the finitely supported vectors and
+the quadratic Hamiltonian (entry 111), and the Hamiltonian of Eq. (1) of Tjoa and Cirac with its
+real matrix (entry 115).
 
 Every statement here is closed by `sorry`. The file `Solution.lean` in this folder repeats each
 statement with the identical text and proves it. The tool `lake comparator`, configured by
@@ -387,10 +413,9 @@ The modes form a type $\iota$, an occupation-number configuration is a finitely 
 $n : \iota \to \mathbb N$ (finitely supported), with $|n| = \sum_i n_i$ and
 $n! = \prod_i n_i!$, and $e_i$ is the configuration with one particle in mode $i$. The
 coefficients lie in a complex vector space $R$, which for the Bargmann map and in entry 34 is a
-ring and a complex algebra. A raising operator is a complex-linear map $T$ of the formal Fock
-space that raises the degree of vanishing: if $\psi(n) = 0$ for all $|n| < k$, then
-$(T\psi)(n) = 0$ for all $|n| < k + 1$. Entry 25 characterizes these maps and defines their
-exponential. -/
+ring and a complex algebra. A complex-linear map $T$ of the formal Fock space raises the
+particle number if $\psi(n) = 0$ for all $|n| < k$ implies $(T\psi)(n) = 0$ for all
+$|n| < k + 1$. Entry 25 characterizes these maps and defines their exponential. -/
 
 /-- The formal Fock space is the space of all coefficient families: $\psi \mapsto (\psi(n))_n$
 is a complex-linear bijection from the formal Fock space onto all functions from
@@ -413,24 +438,26 @@ theorem ccr_ladder {ι R : Type*} [AddCommGroup R] [Module ℂ R] [DecidableEq �
     ⁅(annihilate (R := R) i : Module.End ℂ (FormalFock ι R)), annihilate (R := R) j⁆ = 0 ∧
     ⁅(create (R := R) i : Module.End ℂ (FormalFock ι R)), create (R := R) j⁆ = 0 := sorry
 
-/-- Raising operators and their exponential: a linear map $T$ of the formal Fock space is a
-raising operator if and only if, whenever
-$\psi(n) = 0$ for all $|n| < k$, also $(T\psi)(n) = 0$ for all $|n| < k + 1$. For a raising
+/-- Operators that raise the particle number, and their exponential: a linear map $T$ of the
+formal Fock space raises the particle number if and only if, whenever
+$\psi(n) = 0$ for all $|n| < k$, also $(T\psi)(n) = 0$ for all $|n| < k + 1$. For such an
 operator $T$ the exponential is $(e^T \psi)(n) = \sum_{k=0}^{|n|} (T^k \psi)(n) / k!$, a finite
 sum. -/
-theorem raisingOp_and_raisingExp {ι R : Type*} [AddCommGroup R] [Module ℂ R] :
-    (∀ T : Module.End ℂ (FormalFock ι R), (∃ S : RaisingOp ι R, S.op = T) ↔
+theorem numberRaisingOp_and_exp {ι R : Type*} [AddCommGroup R] [Module ℂ R] :
+    (∀ T : Module.End ℂ (FormalFock ι R), (∃ S : NumberRaisingOp ι R, S.op = T) ↔
       ∀ (k : ℕ) (ψ : FormalFock ι R), (∀ n : ι →₀ ℕ, n.degree < k → ψ.coeff n = 0) →
         ∀ n : ι →₀ ℕ, n.degree < k + 1 → (T ψ).coeff n = 0) ∧
-    ∀ (T : RaisingOp ι R) (ψ : FormalFock ι R) (n : ι →₀ ℕ),
-      (raisingExp T ψ).coeff n =
+    ∀ (T : NumberRaisingOp ι R) (ψ : FormalFock ι R) (n : ι →₀ ℕ),
+      (T.exp ψ).coeff n =
         ∑ k ∈ Finset.range (n.degree + 1), ((k.factorial : ℂ)⁻¹) • ((T.op ^ k) ψ).coeff n := sorry
 
-/-- The exponential law: for raising operators $S$ and $T$ whose underlying maps commute, the
-raising operator $S + T$ has as underlying map the sum of theirs, and $e^{S+T} = e^S e^T$. -/
-theorem raisingExp_add {ι R : Type*} [AddCommGroup R] [Module ℂ R] (S T : RaisingOp ι R)
+/-- The exponential law: for operators $S$ and $T$ that raise the particle number and whose
+underlying maps commute, the operator $S + T$ has as underlying map the sum of theirs, and
+$e^{S+T} = e^S e^T$. -/
+theorem numberRaisingOp_exp_add {ι R : Type*} [AddCommGroup R] [Module ℂ R]
+    (S T : NumberRaisingOp ι R)
     (hST : Commute S.op T.op) :
-    (S + T).op = S.op + T.op ∧ raisingExp (S + T) = raisingExp S * raisingExp T := sorry
+    (S + T).op = S.op + T.op ∧ (S + T).exp = S.exp * T.exp := sorry
 
 /-- The Bargmann map $\mathfrak B$ sends $\psi$ to the formal power series
 $\sum_n \psi(n)\, z^n / \sqrt{n!}$; it is, by its type, a complex-linear bijection onto all formal
@@ -513,9 +540,9 @@ theorem witness_vacuum_state_condition :
       (Matrix.of fun j k => (Matrix.toBilin' (1 : Matrix (Fin 2) (Fin 2) ℝ) (u j) (u k) : ℂ) +
         Complex.I * (Matrix.toBilin' !![(0 : ℝ), 1; -1, 0] (u j) (u k) : ℂ)).PosSemidef := sorry
 
-/-- The creation operator $a_j^\dagger$ is a raising operator. -/
-theorem witness_create_raising {ι R : Type*} [Ring R] [Algebra ℂ R] (j : ι) :
-    ∃ S : RaisingOp ι R, S.op = create j := sorry
+/-- The creation operator $a_j^\dagger$ raises the particle number. -/
+theorem witness_create_raisesParticleNumber {ι R : Type*} [Ring R] [Algebra ℂ R] (j : ι) :
+    ∃ S : NumberRaisingOp ι R, S.op = create j := sorry
 
 /-- The identity channel: let $\sigma$ be any real bilinear form on $V$. The data
 $L = \mathrm{id}$, $\nu = 0$, $\mu = 0$ satisfy the hypotheses that entry 21 places on each
@@ -1078,5 +1105,944 @@ theorem witness_vector_state {V : Type*} [AddCommGroup V] [Module ℝ V] [Decida
       ∀ (u : V) (a : CCR σ),
         (a : lp (fun _ : V => ℂ) 2 →L[ℂ] lp (fun _ : V => ℂ) 2) = weyl σ u →
           ω a = if u = 0 then 1 else 0 := sorry
+
+open scoped InnerProductSpace
+
+/-! ## The formal Fock space of one mode
+
+For one mode the set of modes $\iota$ has one element, and $a$, $a^\dagger$ are the annihilation and
+creation operators of entry 23 on the formal Fock space with complex coefficients. -/
+
+/-- Anti-normal ordering and the number operator: the monomials $a^m (a^\dagger)^k$ with
+$m, k \in \mathbb N$, in which every annihilation operator stands to the left of every creation
+operator, span the algebra generated by $a$ and $a^\dagger$ as a complex vector space of linear
+maps of the formal Fock space; and the number operator $\hat n = a^\dagger a$ satisfies
+$\hat n^2 = a^2 (a^\dagger)^2 - 3\, a a^\dagger + 1$. -/
+theorem antinormal_span_and_number_sq :
+    Subalgebra.toSubmodule (Algebra.adjoin ℂ
+      {(annihilate () : Module.End ℂ (FormalFock Unit ℂ)), create ()}) =
+      Submodule.span ℂ (Set.range fun p : ℕ × ℕ =>
+        (annihilate () : Module.End ℂ (FormalFock Unit ℂ)) ^ p.1 * create () ^ p.2) ∧
+    ((create () : Module.End ℂ (FormalFock Unit ℂ)) * annihilate ()) ^ 2 =
+      annihilate () ^ 2 * create () ^ 2 - 3 • (annihilate () * create ()) + 1 := sorry
+
+/-! ## The bosonic Fock space
+
+The bosonic Fock space $\Gamma_s(\iota)$ of the modes $\iota$ is the Hilbert space $\ell^2$ of the
+occupation-number configurations $n$, with the inner product
+$\langle\varphi, \psi\rangle = \sum_n \overline{\varphi(n)}\, \psi(n)$; the number state
+$|m\rangle$ is the basis vector at $m$, and the vacuum $|0\rangle$ is the basis vector at the
+configuration $0$. The embedding $\jmath$ sends $\psi \in \Gamma_s(\iota)$ to the formal vector with
+the same coefficients. A linear map $T$ of the formal Fock space $\mathcal F(\iota, \mathbb C)$ is
+coefficient-finite when for every $n$ there is a finite set $s$ of configurations such that
+$(T\varphi)(n) = (T\varphi')(n)$ whenever $\varphi(m) = \varphi'(m)$ for all $m \in s$. -/
+
+/-- The Fock space and the embedding: (definition) $\Gamma_s(\iota)$ is $\ell^2$ of the
+configurations, and the embedding keeps the coefficients, $(\jmath\psi)(n) = \psi(n)$. The
+embedding is injective, and a formal vector $\varphi$ lies in its image if and only if
+$\sum_n |\varphi(n)|^2 < \infty$. (Definition) The squared norm of a formal vector is
+$\|\varphi\|^2 = \sum_n |\varphi(n)|^2 \in [0, \infty]$. Moreover $\|\jmath\psi\|^2$ is the
+squared Hilbert norm of $\psi$, and the number states span a dense subspace of
+$\Gamma_s(\iota)$. -/
+theorem fockSpace_eq (ι : Type*) [DecidableEq ι] :
+    FockSpace ι = lp (fun _ : ι →₀ ℕ => ℂ) 2 ∧
+    (∀ (ψ : FockSpace ι) (n : ι →₀ ℕ), (FockSpace.toFormal ψ).coeff n = ψ n) ∧
+    Function.Injective (FockSpace.toFormal (ι := ι)) ∧
+    (∀ φ : FormalFock ι ℂ, (∃ ψ : FockSpace ι, FockSpace.toFormal ψ = φ) ↔
+      Summable fun n => ‖φ.coeff n‖ ^ 2) ∧
+    (∀ φ : FormalFock ι ℂ, FormalFock.sqNorm φ = ∑' n, (‖φ.coeff n‖₊ : ENNReal) ^ 2) ∧
+    (∀ ψ : FockSpace ι,
+      FormalFock.sqNorm (FockSpace.toFormal ψ) = ENNReal.ofReal (‖ψ‖ ^ 2)) ∧
+    Dense (Submodule.span ℂ (Set.range fun m : ι →₀ ℕ => lp.single 2 m (1 : ℂ)) :
+      Set (FockSpace ι)) := sorry
+
+/-- Maximal realizations: (definition) for a linear map $T$ of $\mathcal F(\iota, \mathbb C)$,
+the maximal realization $\bar T$ is the operator of $\Gamma_s(\iota)$ with the domain of the $\psi$
+for which $T\jmath\psi$ is square-summable, and with $\jmath \bar T\psi = T\jmath\psi$. If $T$ is
+coefficient-finite, then $\bar T$ is closed: its graph is closed in
+$\Gamma_s(\iota) \times \Gamma_s(\iota)$. -/
+theorem maxRealization_isClosed {ι : Type*} (T : Module.End ℂ (FormalFock ι ℂ)) :
+    (∀ ψ : FockSpace ι,
+      ψ ∈ FockSpace.maxDomain T ↔ Memℓp (T (FockSpace.toFormal ψ)).coeff 2) ∧
+    (FockSpace.maxRealization T).domain = FockSpace.maxDomain T ∧
+    (∀ ψ : (FockSpace.maxRealization T).domain,
+      FockSpace.toFormal (FockSpace.maxRealization T ψ) = T (FockSpace.toFormal ψ)) ∧
+    ((∀ n, ∃ s : Finset (ι →₀ ℕ), ∀ φ φ' : FormalFock ι ℂ,
+      (∀ m ∈ s, φ.coeff m = φ'.coeff m) → (T φ).coeff n = (T φ').coeff n) →
+      (FockSpace.maxRealization T).IsClosed) := sorry
+
+/-- Closed forms: let $T_k$, $k$ in a finite index set, be coefficient-finite linear maps of
+$\mathcal F(\iota, \mathbb C)$, and let $\psi_r \to \psi$ in $\Gamma_s(\iota)$ with every
+$T_k\jmath\psi_r$ square-summable and $\sum_k \|T_k\jmath(\psi_r - \psi_s)\|^2 \to 0$ as
+$r, s \to \infty$. Then every $T_k\jmath\psi$ is square-summable and
+$\sum_k \|T_k\jmath(\psi_r - \psi)\|^2 \to 0$: the form with the diagonal
+$\sum_k \|\bar T_k\psi\|^2$ on the intersection of the domains of the $\bar T_k$ is closed. -/
+theorem form_closed {ι κ : Type*} [Fintype κ] (T : κ → Module.End ℂ (FormalFock ι ℂ))
+    (hT : ∀ k n, ∃ s : Finset (ι →₀ ℕ), ∀ φ φ' : FormalFock ι ℂ,
+      (∀ m ∈ s, φ.coeff m = φ'.coeff m) → (T k φ).coeff n = (T k φ').coeff n)
+    (ψs : ℕ → FockSpace ι) (ψ : FockSpace ι)
+    (hdom : ∀ r k, Memℓp (T k (FockSpace.toFormal (ψs r))).coeff 2)
+    (hlim : Filter.Tendsto ψs Filter.atTop (nhds ψ))
+    (hcauchy : Filter.Tendsto (fun p : ℕ × ℕ =>
+      ∑ k, FormalFock.sqNorm (T k (FockSpace.toFormal (ψs p.1 - ψs p.2))))
+        Filter.atTop (nhds 0)) :
+    (∀ k, Memℓp (T k (FockSpace.toFormal ψ)).coeff 2) ∧
+    Filter.Tendsto (fun r => ∑ k, FormalFock.sqNorm (T k (FockSpace.toFormal (ψs r - ψ))))
+      Filter.atTop (nhds 0) := sorry
+
+/-! ## Second quantization
+
+The set of modes $\iota$ is finite, and matrices are indexed by the modes. A complex matrix
+$\mathcal U$ is unitary when $\mathcal U^* \mathcal U = \mathcal U \mathcal U^* = 1$, and the
+exponential of a matrix is $e^h = \sum_{k \ge 0} h^k / k!$. -/
+
+/-- Second quantization (definition): for a complex matrix $g$, $\Gamma(g)$ is the linear map of
+$\mathcal F(\iota, \mathbb C)$ that becomes, under the Bargmann map of entry 27, the substitution of
+the linear forms $(g^T z)_j = \sum_k g_{kj} z_k$ for the variables:
+$\mathfrak B\, \Gamma(g)\psi = (\mathfrak B\psi)(g^T z)$. Since $\mathfrak B$ is a bijection, this
+determines $\Gamma(g)$. -/
+theorem secondQuant_eq {ι : Type*} [Fintype ι] (g : Matrix ι ι ℂ) (ψ : FormalFock ι ℂ) :
+    toBargmann (secondQuant g ψ) =
+      MvPowerSeries.subst (fun j => ∑ k, g k j • (MvPowerSeries.X k : MvPowerSeries ι ℂ))
+        (toBargmann ψ) := sorry
+
+/-- Representation and intertwining: $\Gamma(1) = 1$ and $\Gamma(g g') = \Gamma(g)\Gamma(g')$ for
+all complex matrices $g$, $g'$, and on the whole formal Fock space
+$\Gamma(g)\, a_j^\dagger = \big(\sum_k g_{kj} a_k^\dagger\big)\Gamma(g)$ and
+$a_j\, \Gamma(g) = \Gamma(g) \sum_k g_{jk} a_k$. -/
+theorem secondQuant_representation {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (g g' : Matrix ι ι ℂ) (j : ι) :
+    secondQuant (1 : Matrix ι ι ℂ) = 1 ∧ secondQuant (g * g') = secondQuant g * secondQuant g' ∧
+    secondQuant g * create j = (∑ k, g k j • create k) * secondQuant g ∧
+    annihilate j * secondQuant g = secondQuant g * ∑ k, g j k • annihilate k := sorry
+
+/-- Unitarity and strong continuity: for a unitary matrix $\mathcal U$,
+$\|\Gamma(\mathcal U)\varphi\|^2 = \|\varphi\|^2$ in $[0, \infty]$ for every formal vector
+$\varphi$, and on the whole formal Fock space
+$\Gamma(\mathcal U^*)\, a_j\, \Gamma(\mathcal U) = \sum_k \mathcal U_{jk} a_k$. (Definition) The
+unitary operator $\mathsf U_{\mathcal U}$ of $\Gamma_s(\iota)$ is the restriction of
+$\Gamma(\mathcal U)$: $\jmath\, \mathsf U_{\mathcal U}\psi = \Gamma(\mathcal U)\jmath\psi$. The map
+$\mathcal U \mapsto \mathsf U_{\mathcal U}$ is a group homomorphism from the unitary matrices to the
+unitary operators of $\Gamma_s(\iota)$, with
+$\mathsf U_{\mathcal U}^* = \mathsf U_{\mathcal U^*}$, and $\mathcal U \mapsto \mathsf
+U_{\mathcal U}\psi$ is continuous for every $\psi \in \Gamma_s(\iota)$. -/
+theorem secondQuant_unitary {ι : Type*} [Fintype ι] [DecidableEq ι] :
+    (∀ (U : Matrix.unitaryGroup ι ℂ) (φ : FormalFock ι ℂ),
+      FormalFock.sqNorm (secondQuant (U : Matrix ι ι ℂ) φ) = FormalFock.sqNorm φ) ∧
+    (∀ (U : Matrix.unitaryGroup ι ℂ) (j : ι),
+      secondQuant (U : Matrix ι ι ℂ)ᴴ * annihilate j * secondQuant (U : Matrix ι ι ℂ) =
+        ∑ k, (U : Matrix ι ι ℂ) j k • annihilate k) ∧
+    (∀ (U : Matrix.unitaryGroup ι ℂ) (ψ : FockSpace ι),
+      FockSpace.toFormal ((FockSpace.secondQuantRep U : FockSpace ι →L[ℂ] FockSpace ι) ψ) =
+        secondQuant (U : Matrix ι ι ℂ) (FockSpace.toFormal ψ)) ∧
+    (∀ U V : Matrix.unitaryGroup ι ℂ,
+      FockSpace.secondQuantRep (U * V) = FockSpace.secondQuantRep U * FockSpace.secondQuantRep V) ∧
+    (∀ U : Matrix.unitaryGroup ι ℂ,
+      star (FockSpace.secondQuantRep U : FockSpace ι →L[ℂ] FockSpace ι) =
+        FockSpace.secondQuantRep (star U)) ∧
+    ∀ ψ : FockSpace ι, Continuous fun U : Matrix.unitaryGroup ι ℂ =>
+      (FockSpace.secondQuantRep U : FockSpace ι →L[ℂ] FockSpace ι) ψ := sorry
+
+/-- The exponential form: (definition) for a complex matrix $h$ let
+$\mathrm d\Gamma(h) = \sum_{j, k} h_{jk}\, a_j^\dagger a_k$. For every formal vector $\psi$ and
+every $n$ the series $\sum_{r \ge 0} (\mathrm d\Gamma(h)^r\psi)(n)/r!$ converges, with sum
+$(\Gamma(e^h)\psi)(n)$: $\Gamma(e^h) = e^{\mathrm d\Gamma(h)}$, the exponential taken
+coefficientwise. -/
+theorem secondQuant_exp {ι : Type*} [Fintype ι] [DecidableEq ι] (h : Matrix ι ι ℂ) :
+    dSecondQuant h = ∑ j, ∑ k, h j k • (create j * annihilate k) ∧
+    ∀ (ψ : FormalFock ι ℂ) (n : ι →₀ ℕ),
+      HasSum (fun r : ℕ => ((r.factorial : ℂ)⁻¹) * ((dSecondQuant h ^ r) ψ).coeff n)
+        ((secondQuant (NormedSpace.exp h) ψ).coeff n) := sorry
+
+/-- Unitary matrices are exponentials: every unitary matrix is $e^{iM}$ for a Hermitian matrix
+$M$, and $e^{iM}$ is unitary for every Hermitian $M$. So entry 75 applies to every
+$\Gamma(\mathcal U)$, with $h = iM$. -/
+theorem unitary_eq_exp {ι : Type*} [Fintype ι] [DecidableEq ι] :
+    (∀ U : Matrix.unitaryGroup ι ℂ, ∃ M : Matrix ι ι ℂ, M.IsHermitian ∧
+      NormedSpace.exp (Complex.I • M) = (U : Matrix ι ι ℂ)) ∧
+    ∀ M : Matrix ι ι ℂ, M.IsHermitian →
+      NormedSpace.exp (Complex.I • M) ∈ Matrix.unitaryGroup ι ℂ := sorry
+
+/-! ## Symplectic matrices: the Bloch–Messiah decomposition
+
+A real $2n \times 2n$ matrix $S$, indexed by positions and momenta as in the first section, is
+symplectic when $S \Omega S^T = \Omega$, and orthogonal when $S^T S = 1$. A real matrix $P$ is
+symmetric positive definite when $P^T = P$ and $x^T P x > 0$ for every nonzero real vector $x$. A
+vector $r \in \mathbb R^n$ satisfies $r \ge 0$ when $r_k \ge 0$ for every $k$. -/
+
+/-- The squeezing matrix and the orthogonal symplectic matrix of a unitary (definitions): for
+$r \in \mathbb R^n$, $\Sigma(r) = \mathrm{diag}(e^{-r_1}, \dots, e^{-r_n}, e^{r_1}, \dots,
+e^{r_n})$; for a unitary $n \times n$ matrix $\mathcal U = X + iY$ with $X$, $Y$ real,
+$O_{\mathcal U} = \begin{pmatrix} X & -Y \\ Y & X \end{pmatrix}$. Both are symplectic, and
+$O_{\mathcal U}$ is orthogonal. -/
+theorem squeezingMatrix_eq {n : ℕ} (r : Fin n → ℝ) (U : Matrix.unitaryGroup (Fin n) ℂ) :
+    squeezingMatrix r =
+      Matrix.diagonal (Sum.elim (fun k => Real.exp (-r k)) fun k => Real.exp (r k)) ∧
+    orthogonalSymplecticOfUnitary U =
+      Matrix.fromBlocks ((U : Matrix (Fin n) (Fin n) ℂ).map Complex.re)
+        (-(U : Matrix (Fin n) (Fin n) ℂ).map Complex.im)
+        ((U : Matrix (Fin n) (Fin n) ℂ).map Complex.im)
+        ((U : Matrix (Fin n) (Fin n) ℂ).map Complex.re) ∧
+    squeezingMatrix r * symplecticForm n * (squeezingMatrix r)ᵀ = symplecticForm n ∧
+    orthogonalSymplecticOfUnitary U ∈ Matrix.orthogonalGroup (Fin n ⊕ Fin n) ℝ ∧
+    orthogonalSymplecticOfUnitary U * symplecticForm n * (orthogonalSymplecticOfUnitary U)ᵀ =
+      symplecticForm n := sorry
+
+/-- Orthogonal symplectic matrices and unitaries: a real $2n \times 2n$ matrix $O$ is orthogonal
+and symplectic if and only if $O = O_{\mathcal U}$ for a unitary $\mathcal U$; and
+$O_{\mathcal U \mathcal V} = O_{\mathcal U} O_{\mathcal V}$, $O_1 = 1$,
+$O_{\mathcal U^*} = O_{\mathcal U}^T$. -/
+theorem orthogonalSymplectic_iff {n : ℕ} (O : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ) :
+    (O ∈ Matrix.orthogonalGroup (Fin n ⊕ Fin n) ℝ ∧ O * symplecticForm n * Oᵀ = symplecticForm n ↔
+      ∃ U : Matrix.unitaryGroup (Fin n) ℂ, O = orthogonalSymplecticOfUnitary U) ∧
+    (∀ U V : Matrix.unitaryGroup (Fin n) ℂ, orthogonalSymplecticOfUnitary (U * V) =
+      orthogonalSymplecticOfUnitary U * orthogonalSymplecticOfUnitary V) ∧
+    orthogonalSymplecticOfUnitary (1 : Matrix.unitaryGroup (Fin n) ℂ) = 1 ∧
+    ∀ U : Matrix.unitaryGroup (Fin n) ℂ,
+      orthogonalSymplecticOfUnitary (star U) = (orthogonalSymplecticOfUnitary U)ᵀ := sorry
+
+/-- The Bloch–Messiah decomposition: for every symmetric positive definite symplectic matrix $M$
+there are a unitary $\mathcal U$ and $r \ge 0$ with
+$M = O_{\mathcal U} \Sigma(r)^2 O_{\mathcal U}^T$; for every symplectic matrix $S$ there are
+unitaries $\mathcal U$, $\mathcal V$ and $r \ge 0$ with
+$S = O_{\mathcal U} \Sigma(r) O_{\mathcal V}$. -/
+theorem blochMessiah {n : ℕ} :
+    (∀ M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ, M.PosDef →
+      M * symplecticForm n * Mᵀ = symplecticForm n →
+      ∃ (U : Matrix.unitaryGroup (Fin n) ℂ) (r : Fin n → ℝ), 0 ≤ r ∧
+        M = orthogonalSymplecticOfUnitary U * squeezingMatrix r ^ 2 *
+          (orthogonalSymplecticOfUnitary U)ᵀ) ∧
+    ∀ S : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ,
+      S * symplecticForm n * Sᵀ = symplecticForm n →
+      ∃ (U V : Matrix.unitaryGroup (Fin n) ℂ) (r : Fin n → ℝ), 0 ≤ r ∧
+        S = orthogonalSymplecticOfUnitary U * squeezingMatrix r *
+          orthogonalSymplecticOfUnitary V := sorry
+
+/-- The squeezing parameters are unique up to order: if
+$O_1 \Sigma(r) O_2 = O_3 \Sigma(r') O_4$ with orthogonal $O_1, \dots, O_4$ and $r, r' \ge 0$, then
+$r' = r \circ \pi$ for a permutation $\pi$ of $\{1, \dots, n\}$. -/
+theorem blochMessiah_squeezing_unique {n : ℕ}
+    {O₁ O₂ O₃ O₄ : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ} {r r' : Fin n → ℝ}
+    (h₁ : O₁ ∈ Matrix.orthogonalGroup (Fin n ⊕ Fin n) ℝ)
+    (h₂ : O₂ ∈ Matrix.orthogonalGroup (Fin n ⊕ Fin n) ℝ)
+    (h₃ : O₃ ∈ Matrix.orthogonalGroup (Fin n ⊕ Fin n) ℝ)
+    (h₄ : O₄ ∈ Matrix.orthogonalGroup (Fin n ⊕ Fin n) ℝ) (hr : 0 ≤ r) (hr' : 0 ≤ r')
+    (h : O₁ * squeezingMatrix r * O₂ = O₃ * squeezingMatrix r' * O₄) :
+    ∃ π : Equiv.Perm (Fin n), r' = r ∘ π := sorry
+
+open scoped MatrixOrder in
+/-- The polar decomposition: for symplectic $S$, the positive semidefinite square root
+$P = (S S^T)^{1/2}$ is symmetric positive definite and symplectic, $P^{-1} S$ is orthogonal and
+symplectic, and $S = P\, (P^{-1} S)$. For every real $2n \times 2n$ matrix $S$, if $S = P' O'$
+with $P'$ symmetric positive definite and $O'$ orthogonal, then $P' = (S S^T)^{1/2}$ and
+$O' = P'^{-1} S$. -/
+theorem polar_decomposition_symplectic {n : ℕ} (S : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ) :
+    (S * symplecticForm n * Sᵀ = symplecticForm n →
+      (CFC.sqrt (S * Sᵀ)).PosDef ∧
+      CFC.sqrt (S * Sᵀ) * symplecticForm n * (CFC.sqrt (S * Sᵀ))ᵀ = symplecticForm n ∧
+      (CFC.sqrt (S * Sᵀ))⁻¹ * S ∈ Matrix.orthogonalGroup (Fin n ⊕ Fin n) ℝ ∧
+      (CFC.sqrt (S * Sᵀ))⁻¹ * S * symplecticForm n * ((CFC.sqrt (S * Sᵀ))⁻¹ * S)ᵀ =
+        symplecticForm n ∧
+      S = CFC.sqrt (S * Sᵀ) * ((CFC.sqrt (S * Sᵀ))⁻¹ * S)) ∧
+    ∀ P O : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ, P.PosDef →
+      O ∈ Matrix.orthogonalGroup (Fin n ⊕ Fin n) ℝ → S = P * O →
+        P = CFC.sqrt (S * Sᵀ) ∧ O = (CFC.sqrt (S * Sᵀ))⁻¹ * S := sorry
+
+/-! ## Exponential vectors, displacement and squeezing
+
+The set of modes $\iota$ is finite. For $w, z \in \mathbb C^\iota$, $\langle w, z\rangle$ denotes
+$\sum_j \bar w_j z_j$ and $|z|^2$ denotes $\sum_j |z_j|^2$; for a configuration $m$, $z^m$ denotes
+$\prod_j z_j^{m_j}$ and $m!$ denotes $\prod_j m_j!$. Operators are bounded operators of
+$\Gamma_s(\iota)$, with the adjoint as star; $|0\rangle$ is the vacuum. -/
+
+/-- Exponential vectors: (definition) for $z \in \mathbb C^\iota$ the exponential vector
+$\varepsilon(z) \in \Gamma_s(\iota)$ has the coefficients $\varepsilon(z)(m) = z^m/\sqrt{m!}$; and
+$\langle \varepsilon(w), \varepsilon(z)\rangle = e^{\langle w, z\rangle}$. -/
+theorem expVec_apply {ι : Type*} [Fintype ι] (w z : ι → ℂ) (n : ι →₀ ℕ) :
+    FockSpace.expVec z n =
+      (∏ j, z j ^ n j) / ((Real.sqrt ((n.prod fun _ k => k.factorial : ℕ) : ℝ) : ℝ) : ℂ) ∧
+    ⟪FockSpace.expVec w, FockSpace.expVec z⟫_ℂ = Complex.exp (∑ j, conj (w j) * z j) := sorry
+
+/-- Totality: the exponential vectors span a dense subspace of $\Gamma_s(\iota)$. Hence a vector
+$\psi$ is determined by the inner products $\langle \varepsilon(w), \psi\rangle$,
+$w \in \mathbb C^\iota$, and a continuous linear map from $\Gamma_s(\iota)$ to a Hausdorff
+topological vector space is determined by its values on the exponential vectors. -/
+theorem totality {ι : Type*} [Fintype ι] :
+    Dense (Submodule.span ℂ (Set.range (FockSpace.expVec (ι := ι))) : Set (FockSpace ι)) ∧
+    (∀ ψ ψ' : FockSpace ι,
+      (∀ w, ⟪FockSpace.expVec w, ψ⟫_ℂ = ⟪FockSpace.expVec w, ψ'⟫_ℂ) → ψ = ψ') ∧
+    ∀ {E : Type*} [TopologicalSpace E] [T2Space E] [AddCommGroup E] [Module ℂ E]
+      (f g : FockSpace ι →L[ℂ] E), (∀ z, f (FockSpace.expVec z) = g (FockSpace.expVec z)) →
+        f = g := sorry
+
+/-- Displacement operators: for $\alpha \in \mathbb C^\iota$, $D(\alpha)$ is a unitary operator of
+$\Gamma_s(\iota)$ with $D(\alpha)\varepsilon(z) = e^{-|\alpha|^2/2 - \langle\alpha, z\rangle}
+\varepsilon(z + \alpha)$ for every $z$, which determines it by entry 83; this is the normal-ordered
+form of $\exp\big(\sum_j (\alpha_j a_j^\dagger - \bar\alpha_j a_j)\big)$ (an identification that is
+not part of the statement). Moreover
+$D(\alpha)^* = D(-\alpha)$, $D(0) = 1$, and $D(\alpha)|0\rangle = e^{-|\alpha|^2/2}
+\varepsilon(\alpha)$, the coherent state. -/
+theorem displacement_expVec {ι : Type*} [Fintype ι] [DecidableEq ι] (α z : ι → ℂ) :
+    (FockSpace.displacement α : FockSpace ι →L[ℂ] FockSpace ι) (FockSpace.expVec z) =
+      Complex.exp (-((∑ j, ‖α j‖ ^ 2 : ℝ) : ℂ) / 2 - ∑ j, conj (α j) * z j) •
+        FockSpace.expVec (z + α) ∧
+    star (FockSpace.displacement α) = FockSpace.displacement (-α) ∧
+    FockSpace.displacement (0 : ι → ℂ) = 1 ∧
+    (FockSpace.displacement α : FockSpace ι →L[ℂ] FockSpace ι) (lp.single 2 0 1) =
+      ((Real.exp (-(∑ j, ‖α j‖ ^ 2) / 2) : ℝ) : ℂ) • FockSpace.expVec α := sorry
+
+/-- The Weyl relation and strong continuity: $D(\alpha) D(\beta) = \exp\big(\frac12 \sum_j
+(\alpha_j \bar\beta_j - \bar\alpha_j \beta_j)\big) D(\alpha + \beta)$; along a ray the
+displacements form a one-parameter group, $D(t\alpha) D(s\alpha) = D((t + s)\alpha)$ for real $t$,
+$s$; and $\alpha \mapsto D(\alpha)\psi$ is continuous for every $\psi$. -/
+theorem displacement_mul {ι : Type*} [Fintype ι] :
+    (∀ α β : ι → ℂ,
+      (FockSpace.displacement α : FockSpace ι →L[ℂ] FockSpace ι) * FockSpace.displacement β =
+        Complex.exp ((∑ j, (α j * conj (β j) - conj (α j) * β j)) / 2) •
+          (FockSpace.displacement (α + β) : FockSpace ι →L[ℂ] FockSpace ι)) ∧
+    (∀ (α : ι → ℂ) (t s : ℝ),
+      (FockSpace.displacement ((t : ℂ) • α) : FockSpace ι →L[ℂ] FockSpace ι) *
+          FockSpace.displacement ((s : ℂ) • α) =
+        FockSpace.displacement (((t + s : ℝ) : ℂ) • α)) ∧
+    ∀ ψ : FockSpace ι,
+      Continuous fun α : ι → ℂ =>
+        (FockSpace.displacement α : FockSpace ι →L[ℂ] FockSpace ι) ψ := sorry
+
+/-- Displacement of the ladder operators: let $\psi, \varphi \in \Gamma_s(\iota)$. If
+$a_j\jmath\psi = \jmath\varphi$, then $a_j \jmath D(\alpha)\psi = \jmath D(\alpha)\varphi +
+\alpha_j\, \jmath D(\alpha)\psi$; if $a_j^\dagger\jmath\psi = \jmath\varphi$, then
+$a_j^\dagger \jmath D(\alpha)\psi = \jmath D(\alpha)\varphi + \bar\alpha_j\, \jmath
+D(\alpha)\psi$; and $D(\alpha)\psi$ lies in the domain of the maximal realization of $a_j$ if
+and only if $\psi$ does. So $D(\alpha)^* a_j D(\alpha) = a_j + \alpha_j$ and
+$D(\alpha)^* a_j^\dagger D(\alpha) = a_j^\dagger + \bar\alpha_j$ on these vectors. -/
+theorem displacement_ladder {ι : Type*} [Fintype ι] (α : ι → ℂ) (j : ι)
+    (ψ φ : FockSpace ι) :
+    (annihilate j (FockSpace.toFormal ψ) = FockSpace.toFormal φ →
+      annihilate j (FockSpace.toFormal
+          ((FockSpace.displacement α : FockSpace ι →L[ℂ] FockSpace ι) ψ)) =
+        FockSpace.toFormal ((FockSpace.displacement α : FockSpace ι →L[ℂ] FockSpace ι) φ) +
+          α j • FockSpace.toFormal
+            ((FockSpace.displacement α : FockSpace ι →L[ℂ] FockSpace ι) ψ)) ∧
+    (create j (FockSpace.toFormal ψ) = FockSpace.toFormal φ →
+      create j (FockSpace.toFormal
+          ((FockSpace.displacement α : FockSpace ι →L[ℂ] FockSpace ι) ψ)) =
+        FockSpace.toFormal ((FockSpace.displacement α : FockSpace ι →L[ℂ] FockSpace ι) φ) +
+          conj (α j) • FockSpace.toFormal
+            ((FockSpace.displacement α : FockSpace ι →L[ℂ] FockSpace ι) ψ)) ∧
+    ((FockSpace.displacement α : FockSpace ι →L[ℂ] FockSpace ι) ψ ∈
+        FockSpace.maxDomain (annihilate j) ↔ ψ ∈ FockSpace.maxDomain (annihilate j)) := sorry
+
+/-- Irreducibility: a bounded operator $T$ of $\Gamma_s(\iota)$ that commutes with every
+$D(\alpha)$ is $T = \langle 0|T|0\rangle\, 1$, and a closed subspace that every $D(\alpha)$ maps
+into itself is $0$ or $\Gamma_s(\iota)$. -/
+theorem displacement_irreducible {ι : Type*} [Fintype ι] [DecidableEq ι] :
+    (∀ T : FockSpace ι →L[ℂ] FockSpace ι, (∀ α : ι → ℂ,
+      Commute T (FockSpace.displacement α : FockSpace ι →L[ℂ] FockSpace ι)) →
+        T = ⟪(lp.single 2 0 1 : FockSpace ι), T (lp.single 2 0 1)⟫_ℂ • 1) ∧
+    ∀ K : Submodule ℂ (FockSpace ι), IsClosed (K : Set (FockSpace ι)) →
+      (∀ α : ι → ℂ, ∀ x ∈ K, (FockSpace.displacement α : FockSpace ι →L[ℂ] FockSpace ι) x ∈ K) →
+        K = ⊥ ∨ K = ⊤ := sorry
+
+/-- Squeezing operators: (definition) for $\zeta \in \mathbb C$ let
+$\tau(\zeta) = \zeta \tanh|\zeta| / |\zeta|$, with $\tau(0) = 0$. For $\zeta \in \mathbb C^\iota$
+write $c_j = \cosh|\zeta_j|$ and $\tau_j = \tau(\zeta_j)$. The squeezing operator
+$\mathsf S(\zeta)$ is a unitary operator of $\Gamma_s(\iota)$ with
+$\langle \varepsilon(w), \mathsf S(\zeta)\varepsilon(z)\rangle = (\prod_j c_j)^{-1/2}
+\exp\big(\sum_j \bar\tau_j z_j^2/2\big) \exp\big(\sum_j (-\tau_j \bar w_j^2/2 + z_j \bar w_j /
+c_j)\big)$ for all $w$, $z$, which determines it by entry 83. This is the normal-ordered form of
+the product $\prod_j \exp\big(\frac12 (\bar\zeta_j a_j^2 - \zeta_j a_j^{\dagger 2})\big)$ of
+one-mode squeezers (an identification that is not part of the statement); for real
+$\zeta_j = r_j > 0$ it squeezes $\hat q_j$ (entries 93 and 105). Moreover
+$\mathsf S(\zeta)^* = \mathsf S(-\zeta)$ and $\mathsf S(0) = 1$. -/
+theorem squeeze_inner_expVec {ι : Type*} [Fintype ι] [DecidableEq ι] (ζ w z : ι → ℂ) :
+    (∀ x : ℂ, tanhPhase x = if x = 0 then 0 else x * ((Real.tanh ‖x‖ / ‖x‖ : ℝ) : ℂ)) ∧
+    ⟪FockSpace.expVec w,
+        (FockSpace.squeeze ζ : FockSpace ι →L[ℂ] FockSpace ι) (FockSpace.expVec z)⟫_ℂ =
+      (((∏ j, Real.cosh ‖ζ j‖) ^ (-(1 / 2 : ℝ)) : ℝ) : ℂ) *
+        Complex.exp (∑ j, conj (tanhPhase (ζ j)) * z j ^ 2 / 2) *
+        Complex.exp (∑ j, (-tanhPhase (ζ j) / 2 * conj (w j) ^ 2 +
+          z j / (Real.cosh ‖ζ j‖ : ℂ) * conj (w j))) ∧
+    star (FockSpace.squeeze ζ) = FockSpace.squeeze (-ζ) ∧
+    FockSpace.squeeze (0 : ι → ℂ) = 1 := sorry
+
+/-- Squeezing and displacements: $\mathsf S(\zeta) D(\beta) = D(L_\zeta\beta)\, \mathsf S(\zeta)$
+for every $\beta$, with $(L_\zeta\beta)_j = \cosh|\zeta_j|\, \beta_j - e^{i\phi_j}
+\sinh|\zeta_j|\, \bar\beta_j$, where $e^{i\phi_j} = \zeta_j/|\zeta_j|$ (read as $0$ when
+$\zeta_j = 0$). Along a ray the squeezing operators form a one-parameter group,
+$\mathsf S(t\zeta) \mathsf S(s\zeta) = \mathsf S((t + s)\zeta)$ for real $t$, $s$, and
+$\zeta \mapsto \mathsf S(\zeta)\psi$ is continuous for every $\psi$. -/
+theorem squeeze_mul_displacement {ι : Type*} [Fintype ι] [DecidableEq ι] :
+    (∀ ζ β : ι → ℂ,
+      (FockSpace.squeeze ζ : FockSpace ι →L[ℂ] FockSpace ι) * FockSpace.displacement β =
+        (FockSpace.displacement (fun j => (Real.cosh ‖ζ j‖ : ℂ) * β j -
+            (if ζ j = 0 then 0 else ζ j / (‖ζ j‖ : ℂ)) * (Real.sinh ‖ζ j‖ : ℂ) * conj (β j)) :
+          FockSpace ι →L[ℂ] FockSpace ι) * FockSpace.squeeze ζ) ∧
+    (∀ (ζ : ι → ℂ) (t s : ℝ),
+      (FockSpace.squeeze ((t : ℂ) • ζ) : FockSpace ι →L[ℂ] FockSpace ι) *
+          FockSpace.squeeze ((s : ℂ) • ζ) =
+        FockSpace.squeeze (((t + s : ℝ) : ℂ) • ζ)) ∧
+    ∀ ψ : FockSpace ι,
+      Continuous fun ζ : ι → ℂ => (FockSpace.squeeze ζ : FockSpace ι →L[ℂ] FockSpace ι) ψ := sorry
+
+/-! ## Gaussian unitaries
+
+There are $n$ modes, and $\Gamma_s(n)$ is the Fock space of the modes $\{1, \dots, n\}$. A
+phase-space vector $u = (q, p) \in \mathbb R^{2n}$ is indexed as in the first section, and
+$\sigma(u, v) = u^T \Omega v$. The quadratures $\hat q_j$ and $\hat p_j$ are the linear maps
+$(a_j + a_j^\dagger)/\sqrt2$ and $i(a_j^\dagger - a_j)/\sqrt2$ of the formal Fock space, and
+$\hat R = (\hat q, \hat p)$. -/
+
+/-- Weyl operators on Fock space: (definition) for $u = (q, p)$, $W(u) = D(\alpha(u))$ with
+$\alpha(u)_j = (q_j + i p_j)/\sqrt2$; formally $W(u) = \exp(i(p \cdot \hat q - q \cdot \hat p))$,
+an identification that is not part of the statement. They satisfy the Weyl relation
+$W(u) W(v) = e^{-i\sigma(u, v)/2} W(u + v)$, $W(u)^* = W(-u)$, and
+$\langle 0|W(u)|0\rangle = e^{-|u|^2/4}$. -/
+theorem weylOp_eq {n : ℕ} (u v : Fin n ⊕ Fin n → ℝ) :
+    FockSpace.weylOp u = FockSpace.displacement (fun j =>
+      ((u (Sum.inl j) : ℂ) + (u (Sum.inr j) : ℂ) * Complex.I) / (Real.sqrt 2 : ℂ)) ∧
+    (FockSpace.weylOp u : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) * FockSpace.weylOp v =
+      Complex.exp (((-(u ⬝ᵥ symplecticForm n *ᵥ v) / 2 : ℝ) : ℂ) * Complex.I) •
+        (FockSpace.weylOp (u + v) : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) ∧
+    star (FockSpace.weylOp u) = FockSpace.weylOp (-u) ∧
+    ⟪(lp.single 2 0 1 : FockSpace (Fin n)),
+        (FockSpace.weylOp u : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) (lp.single 2 0 1)⟫_ℂ =
+      ((Real.exp (-(∑ i, u i ^ 2) / 4) : ℝ) : ℂ) := sorry
+
+/-- Gaussian unitaries (definition): a unitary operator $U$ of $\Gamma_s(n)$ is Gaussian with
+symplectic matrix $M$ and displacement vector $d \in \mathbb R^{2n}$, or with data $(M, d)$, when
+$M$ is symplectic and $U^* W(u) U = e^{-i\sigma(u, d)} W(M^{-1}u)$ for every
+$u \in \mathbb R^{2n}$, the exponentiated form of $U^* \hat R U = M \hat R + d$ (entry 95). -/
+theorem isGaussianUnitary_iff {n : ℕ} (U : unitary (FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)))
+    (M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ) (d : Fin n ⊕ Fin n → ℝ) :
+    FockSpace.IsGaussianUnitary U M d ↔ M * symplecticForm n * Mᵀ = symplecticForm n ∧
+      ∀ u, (star U : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) * FockSpace.weylOp u * U =
+        Complex.exp (-((u ⬝ᵥ symplecticForm n *ᵥ d : ℝ) : ℂ) * Complex.I) •
+          (FockSpace.weylOp (M⁻¹ *ᵥ u) : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) := sorry
+
+/-- Composition, adjoint and uniqueness: if $U_1$, $U_2$ are Gaussian with data $(M_1, d_1)$,
+$(M_2, d_2)$, then $U_1 U_2$ is Gaussian with data $(M_1 M_2, d_1 + M_1 d_2)$; if $U$ is Gaussian
+with data $(M, d)$, then $U^*$ is Gaussian with data $(M^{-1}, -M^{-1} d)$; the data of a Gaussian
+unitary are unique; and two Gaussian unitaries with the same data differ by a factor $\lambda$
+with $|\lambda| = 1$. -/
+theorem isGaussianUnitary_mul {n : ℕ} :
+    (∀ (U₁ U₂ : unitary (FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)))
+      (M₁ M₂ : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ) (d₁ d₂ : Fin n ⊕ Fin n → ℝ),
+      FockSpace.IsGaussianUnitary U₁ M₁ d₁ → FockSpace.IsGaussianUnitary U₂ M₂ d₂ →
+        FockSpace.IsGaussianUnitary (U₁ * U₂) (M₁ * M₂) (d₁ + M₁ *ᵥ d₂)) ∧
+    (∀ (U : unitary (FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)))
+      (M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ) (d : Fin n ⊕ Fin n → ℝ),
+      FockSpace.IsGaussianUnitary U M d → FockSpace.IsGaussianUnitary (star U) M⁻¹ (-(M⁻¹ *ᵥ d))) ∧
+    (∀ (U : unitary (FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)))
+      (M M' : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ) (d d' : Fin n ⊕ Fin n → ℝ),
+      FockSpace.IsGaussianUnitary U M d → FockSpace.IsGaussianUnitary U M' d' → M = M' ∧ d = d') ∧
+    ∀ (U V : unitary (FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)))
+      (M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ) (d : Fin n ⊕ Fin n → ℝ),
+      FockSpace.IsGaussianUnitary U M d → FockSpace.IsGaussianUnitary V M d →
+        ∃ c : ℂ, ‖c‖ = 1 ∧ (U : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) =
+          c • (V : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) := sorry
+
+/-- Examples and existence: $D(\alpha)$ is Gaussian with data $(1, \delta(\alpha))$, where
+$\delta(\alpha) = \sqrt2\, (\mathrm{Re}\, \alpha, \mathrm{Im}\, \alpha)$;
+$\mathsf U_{\mathcal U}$ is Gaussian with data $(O_{\mathcal U}, 0)$ for every unitary
+$\mathcal U$; $\mathsf S(r)$ with real squeezing parameters $r \in \mathbb R^n$ is Gaussian with
+data $(\Sigma(r), 0)$; and for every symplectic $M$ and every $d \in \mathbb R^{2n}$ there is a
+Gaussian unitary with data $(M, d)$. -/
+theorem isGaussianUnitary_examples {n : ℕ} :
+    (∀ α : Fin n → ℂ, FockSpace.IsGaussianUnitary (FockSpace.displacement α) 1
+      (Sum.elim (fun j => Real.sqrt 2 * (α j).re) fun j => Real.sqrt 2 * (α j).im)) ∧
+    (∀ U : Matrix.unitaryGroup (Fin n) ℂ, FockSpace.IsGaussianUnitary (FockSpace.secondQuantRep U)
+      (orthogonalSymplecticOfUnitary U) 0) ∧
+    (∀ r : Fin n → ℝ, FockSpace.IsGaussianUnitary (FockSpace.squeeze fun j => (r j : ℂ))
+      (squeezingMatrix r) 0) ∧
+    ∀ M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ, M * symplecticForm n * Mᵀ = symplecticForm n →
+      ∀ d : Fin n ⊕ Fin n → ℝ, ∃ U : unitary (FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)),
+        FockSpace.IsGaussianUnitary U M d := sorry
+
+/-- Factorization, Proposition 5 of Tjoa and Cirac, arXiv:2607.28753: let $U$ be Gaussian with data $(M, d)$. If
+$M = O_{\mathcal U} \Sigma(r) O_{\mathcal V}$ with unitaries $\mathcal U$, $\mathcal V$ and
+$r \in \mathbb R^n$, then $U = \lambda\, \mathsf U_{\mathcal U} D(\alpha) \mathsf S(r) \mathsf
+U_{\mathcal V}$ with $|\lambda| = 1$ and $\alpha = \alpha(O_{\mathcal U}^T d)$, the complex vector
+of $O_{\mathcal U}^T d$ as for the Weyl operators. Such a decomposition of $M$ exists with
+$r \ge 0$: there are unitaries $\mathcal U$, $\mathcal V$, $r \ge 0$ and $\lambda$ with
+$|\lambda| = 1$ such that $M = O_{\mathcal U} \Sigma(r) O_{\mathcal V}$ and
+$U = \lambda\, \mathsf U_{\mathcal U} D(\alpha(O_{\mathcal U}^T d)) \mathsf S(r) \mathsf
+U_{\mathcal V}$. -/
+theorem gaussianUnitary_factorization {n : ℕ}
+    (U : unitary (FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)))
+    (M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ) (d : Fin n ⊕ Fin n → ℝ)
+    (hU : FockSpace.IsGaussianUnitary U M d) :
+    (∀ (𝒰 𝒱 : Matrix.unitaryGroup (Fin n) ℂ) (r : Fin n → ℝ),
+      M = orthogonalSymplecticOfUnitary 𝒰 * squeezingMatrix r * orthogonalSymplecticOfUnitary 𝒱 →
+      ∃ c : ℂ, ‖c‖ = 1 ∧ (U : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) =
+        c • ((FockSpace.secondQuantRep 𝒰 : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) *
+          FockSpace.displacement (fun j =>
+            ((((orthogonalSymplecticOfUnitary 𝒰)ᵀ *ᵥ d) (Sum.inl j) : ℂ) +
+              (((orthogonalSymplecticOfUnitary 𝒰)ᵀ *ᵥ d) (Sum.inr j) : ℂ) * Complex.I) /
+                (Real.sqrt 2 : ℂ)) *
+          FockSpace.squeeze (fun j => (r j : ℂ)) * FockSpace.secondQuantRep 𝒱)) ∧
+    ∃ (c : ℂ) (𝒰 𝒱 : Matrix.unitaryGroup (Fin n) ℂ) (r : Fin n → ℝ),
+      0 ≤ r ∧ ‖c‖ = 1 ∧
+      M = orthogonalSymplecticOfUnitary 𝒰 * squeezingMatrix r * orthogonalSymplecticOfUnitary 𝒱 ∧
+      (U : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) =
+        c • ((FockSpace.secondQuantRep 𝒰 : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) *
+          FockSpace.displacement (fun j =>
+            ((((orthogonalSymplecticOfUnitary 𝒰)ᵀ *ᵥ d) (Sum.inl j) : ℂ) +
+              (((orthogonalSymplecticOfUnitary 𝒰)ᵀ *ᵥ d) (Sum.inr j) : ℂ) * Complex.I) /
+                (Real.sqrt 2 : ℂ)) *
+          FockSpace.squeeze (fun j => (r j : ℂ)) * FockSpace.secondQuantRep 𝒱) := sorry
+
+/-- Action on the quadratures: (definition) the quadratures $\hat q_j$ and $\hat p_j$ are
+$(a_j + a_j^\dagger)/\sqrt2$ and $i(a_j^\dagger - a_j)/\sqrt2$. Let $U$ be Gaussian with data
+$(M, d)$, and let $\mathcal Q$ be the set of $\psi \in \Gamma_s(n)$ in the domain of the maximal
+realization of every $a_j$. Then $U\psi \in \mathcal Q$ if and only if $\psi \in \mathcal Q$. For
+$\psi \in \mathcal Q$ and every phase-space index $k$ there is $\xi \in \Gamma_s(n)$ with
+$\jmath\xi = \sum_l M_{kl} \hat R_l \jmath\psi + d_k \jmath\psi$, and for every such $\xi$,
+$\hat R_k \jmath U\psi = \jmath U\xi$: $U^* \hat R_k U = \sum_l M_{kl} \hat R_l + d_k$ on
+$\mathcal Q$. -/
+theorem gaussianUnitary_quadratures {n : ℕ} :
+    (∀ j : Fin n, FockSpace.quadrature (Sum.inl j) =
+        ((Real.sqrt 2 : ℂ)⁻¹) • (annihilate j + create j) ∧
+      FockSpace.quadrature (Sum.inr j) =
+        (Complex.I / (Real.sqrt 2 : ℂ)) • (create j - annihilate j)) ∧
+    ∀ (U : unitary (FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)))
+      (M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ) (d : Fin n ⊕ Fin n → ℝ),
+      FockSpace.IsGaussianUnitary U M d → ∀ ψ : FockSpace (Fin n),
+        ((∀ j, (U : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) ψ ∈
+            FockSpace.maxDomain (annihilate j)) ↔ ∀ j, ψ ∈ FockSpace.maxDomain (annihilate j)) ∧
+        ((∀ j, ψ ∈ FockSpace.maxDomain (annihilate j)) → ∀ k : Fin n ⊕ Fin n,
+          (∃ ξ : FockSpace (Fin n), FockSpace.toFormal ξ =
+            (∑ l, (M k l : ℂ) • FockSpace.quadrature l : Module.End ℂ (FormalFock (Fin n) ℂ))
+              (FockSpace.toFormal ψ) + (d k : ℂ) • FockSpace.toFormal ψ) ∧
+          ∀ ξ : FockSpace (Fin n), FockSpace.toFormal ξ =
+            (∑ l, (M k l : ℂ) • FockSpace.quadrature l : Module.End ℂ (FormalFock (Fin n) ℂ))
+              (FockSpace.toFormal ψ) + (d k : ℂ) • FockSpace.toFormal ψ →
+            FockSpace.quadrature k
+                (FockSpace.toFormal ((U : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) ψ)) =
+              FockSpace.toFormal ((U : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) ξ)) := sorry
+
+/-! ## Pure Gaussian states
+
+The characteristic function of $\psi \in \Gamma_s(n)$ is $\chi_\psi(u) = \langle \psi,
+W(u)\psi\rangle$, $u \in \mathbb R^{2n}$. A pure Gaussian state is a vector $U|0\rangle$ with $U$ a
+Gaussian unitary. The covariance matrix $\gamma$ is normalized as twice the symmetrized covariance,
+$\gamma_{kl} = \langle \{\hat R_k - d_k, \hat R_l - d_l\}\rangle$, so that the vacuum has
+$\gamma = 1$ (entry 103); the matrix $\Gamma$ of Eq. (13) of Tjoa and Cirac is $\gamma/2$. -/
+
+/-- A vector is determined up to a phase by its characteristic function: if $\psi \ne 0$ and
+$\chi_\varphi = \chi_\psi$, then $\varphi = \lambda\psi$ with $|\lambda| = 1$. If $U$ is Gaussian
+with data $(M, d)$, then $\chi_{U\psi}(u) = e^{-i\sigma(u, d)} \chi_\psi(M^{-1}u)$. -/
+theorem charFun_determines {n : ℕ} :
+    (∀ ψ φ : FockSpace (Fin n), ψ ≠ 0 →
+      (∀ u : Fin n ⊕ Fin n → ℝ,
+        ⟪φ, (FockSpace.weylOp u : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) φ⟫_ℂ =
+          ⟪ψ, (FockSpace.weylOp u : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) ψ⟫_ℂ) →
+        ∃ c : ℂ, ‖c‖ = 1 ∧ φ = c • ψ) ∧
+    ∀ (U : unitary (FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)))
+      (M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ) (d : Fin n ⊕ Fin n → ℝ),
+      FockSpace.IsGaussianUnitary U M d → ∀ (ψ : FockSpace (Fin n)) (u : Fin n ⊕ Fin n → ℝ),
+        ⟪(U : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) ψ,
+            (FockSpace.weylOp u : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n))
+              ((U : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) ψ)⟫_ℂ =
+          Complex.exp (-((u ⬝ᵥ symplecticForm n *ᵥ d : ℝ) : ℂ) * Complex.I) *
+            ⟪ψ, (FockSpace.weylOp (M⁻¹ *ᵥ u) : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n))
+              ψ⟫_ℂ := sorry
+
+/-- Gaussian characteristic functions (definition): $\psi \in \Gamma_s(n)$ has the Gaussian
+characteristic function with displacement vector $d \in \mathbb R^{2n}$ and covariance matrix
+$\gamma$ when $\gamma^T = \gamma$ and
+$\chi_\psi(u) = \exp\big(-i\sigma(u, d) - \frac14 u^T \Omega \gamma \Omega^T u\big)$ for every
+$u$. -/
+theorem hasGaussianCharFun_iff {n : ℕ} (ψ : FockSpace (Fin n)) (d : Fin n ⊕ Fin n → ℝ)
+    (γ : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ) :
+    FockSpace.HasGaussianCharFun ψ d γ ↔ γᵀ = γ ∧ ∀ u : Fin n ⊕ Fin n → ℝ,
+      ⟪ψ, (FockSpace.weylOp u : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) ψ⟫_ℂ =
+        Complex.exp (-((u ⬝ᵥ symplecticForm n *ᵥ d : ℝ) : ℂ) * Complex.I -
+          ((u ⬝ᵥ (symplecticForm n * γ * (symplecticForm n)ᵀ) *ᵥ u : ℝ) : ℂ) / 4) := sorry
+
+/-- Properties of Gaussian characteristic functions: if $\psi$ has the Gaussian characteristic
+function with $(d, \gamma)$, then $\|\psi\| = 1$; the data $(d, \gamma)$ are unique; $\gamma$ is
+admissible; $\gamma$ is symplectic, $\gamma \Omega \gamma^T = \Omega$; and every $\varphi$ with the
+Gaussian characteristic function with the same $(d, \gamma)$ is $\varphi = \lambda\psi$ with
+$|\lambda| = 1$. -/
+theorem hasGaussianCharFun_props {n : ℕ} {ψ : FockSpace (Fin n)} {d : Fin n ⊕ Fin n → ℝ}
+    {γ : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ} (h : FockSpace.HasGaussianCharFun ψ d γ) :
+    ‖ψ‖ = 1 ∧
+    (∀ (d' : Fin n ⊕ Fin n → ℝ) (γ' : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ),
+      FockSpace.HasGaussianCharFun ψ d' γ' → d = d' ∧ γ = γ') ∧
+    IsAdmissible γ ∧ γ * symplecticForm n * γᵀ = symplecticForm n ∧
+    ∀ φ : FockSpace (Fin n), FockSpace.HasGaussianCharFun φ d γ →
+      ∃ c : ℂ, ‖c‖ = 1 ∧ φ = c • ψ := sorry
+
+/-- Gaussian unitaries on the vacuum: if $U$ is Gaussian with data $(M, d)$, then $U|0\rangle$ has
+the Gaussian characteristic function with displacement vector $d$ and covariance matrix $M M^T$.
+Its moments, Eq. (13) of Tjoa and Cirac: there are $\phi_k \in \Gamma_s(n)$, one for each phase-space index
+$k$, with $\hat R_k \jmath U|0\rangle = \jmath\phi_k$, $\langle U|0\rangle, \phi_k\rangle = d_k$ and
+$\langle \phi_k - d_k U|0\rangle, \phi_l - d_l U|0\rangle\rangle = \frac12 ((M M^T)_{kl} +
+i\Omega_{kl})$. So twice the real part of the left side, the symmetrized covariance
+$\langle\{\hat R_k - d_k, \hat R_l - d_l\}\rangle$, is $\gamma_{kl}$ with $\gamma = M M^T$, and the
+$\Gamma$ of Tjoa and Cirac is $\gamma/2$. -/
+theorem gaussianUnitary_vacuum {n : ℕ} (U : unitary (FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)))
+    (M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ) (d : Fin n ⊕ Fin n → ℝ)
+    (hU : FockSpace.IsGaussianUnitary U M d) :
+    FockSpace.HasGaussianCharFun
+      ((U : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) (lp.single 2 0 1)) d (M * Mᵀ) ∧
+    ∃ φ : Fin n ⊕ Fin n → FockSpace (Fin n),
+      (∀ k, FockSpace.quadrature k (FockSpace.toFormal
+        ((U : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) (lp.single 2 0 1))) =
+          FockSpace.toFormal (φ k)) ∧
+      (∀ k, ⟪(U : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) (lp.single 2 0 1), φ k⟫_ℂ =
+        (d k : ℂ)) ∧
+      ∀ k l, ⟪φ k - (d k : ℂ) • (U : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) (lp.single 2 0 1),
+          φ l - (d l : ℂ) • (U : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) (lp.single 2 0 1)⟫_ℂ =
+        (((M * Mᵀ) k l : ℂ) + Complex.I * (symplecticForm n k l : ℂ)) / 2 := sorry
+
+/-- The two definitions of pure Gaussian states agree: $\psi = U|0\rangle$ for a Gaussian unitary
+$U$ if and only if $\psi$ has the Gaussian characteristic function with some $(d, \gamma)$. If
+$\psi$ has it with $(d, \gamma)$ and $M$ is symplectic with $\gamma = M M^T$, then
+$\psi = U|0\rangle$ for a Gaussian unitary $U$ with data $(M, d)$. -/
+theorem isPureGaussian_iff {n : ℕ} (ψ : FockSpace (Fin n)) :
+    ((∃ (U : unitary (FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)))
+        (M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ) (d : Fin n ⊕ Fin n → ℝ),
+        FockSpace.IsGaussianUnitary U M d ∧
+          ψ = (U : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) (lp.single 2 0 1)) ↔
+      ∃ (d : Fin n ⊕ Fin n → ℝ) (γ : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ),
+        FockSpace.HasGaussianCharFun ψ d γ) ∧
+    ∀ (d : Fin n ⊕ Fin n → ℝ) (γ M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ),
+      FockSpace.HasGaussianCharFun ψ d γ → M * symplecticForm n * Mᵀ = symplecticForm n →
+        γ = M * Mᵀ → ∃ U : unitary (FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)),
+          FockSpace.IsGaussianUnitary U M d ∧
+            ψ = (U : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) (lp.single 2 0 1) := sorry
+
+/-- The vacuum component: every pure Gaussian state $\psi = U|0\rangle$ has a nonzero coefficient
+$\psi(0)$ at the vacuum configuration, its component along $|0\rangle$. Hence a nonzero $\Phi$
+with $\Phi(0) = 0$, for example a number state $|m\rangle$ with $m \ne 0$, is not a multiple
+$c\psi$ of a pure Gaussian state $\psi$. -/
+theorem pureGaussian_vacuum_ne_zero {n : ℕ} :
+    (∀ (U : unitary (FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)))
+      (M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ) (d : Fin n ⊕ Fin n → ℝ),
+      FockSpace.IsGaussianUnitary U M d →
+        (U : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) (lp.single 2 0 1) 0 ≠ 0) ∧
+    (∀ Φ : FockSpace (Fin n), Φ ≠ 0 → Φ 0 = 0 →
+      ∀ (U : unitary (FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)))
+        (M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ) (d : Fin n ⊕ Fin n → ℝ),
+        FockSpace.IsGaussianUnitary U M d → ∀ c : ℂ,
+          Φ ≠ c • (U : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) (lp.single 2 0 1)) := sorry
+
+/-! ## Further examples: Fock space and pure Gaussian states
+
+These examples show that the hypotheses of entries 70 and 71, and the hypothesis of a Gaussian
+characteristic function in entries 97 to 101, can be met; Gaussian unitaries exist by entry 93. -/
+
+/-- The ladder operators are coefficient-finite, so that entries 70 and 71 apply to $a_j$ and
+$a_j^\dagger$. -/
+theorem witness_ladder_coeffFinite {ι : Type*} (j : ι) :
+    (∀ n, ∃ s : Finset (ι →₀ ℕ), ∀ φ φ' : FormalFock ι ℂ,
+      (∀ m ∈ s, φ.coeff m = φ'.coeff m) → (annihilate j φ).coeff n = (annihilate j φ').coeff n) ∧
+    ∀ n, ∃ s : Finset (ι →₀ ℕ), ∀ φ φ' : FormalFock ι ℂ,
+      (∀ m ∈ s, φ.coeff m = φ'.coeff m) → (create j φ).coeff n = (create j φ').coeff n := sorry
+
+/-- The vacuum: on $n$ modes the vacuum $|0\rangle$ has the Gaussian characteristic function with
+$d = 0$ and $\gamma = 1$. -/
+theorem witness_vacuum (n : ℕ) :
+    FockSpace.HasGaussianCharFun (lp.single 2 0 1 : FockSpace (Fin n)) 0 1 := sorry
+
+/-- A coherent state: for $\alpha \in \mathbb C^n$ the coherent state $D(\alpha)|0\rangle$ has the
+coefficients $(D(\alpha)|0\rangle)(m) = e^{-|\alpha|^2/2} \alpha^m/\sqrt{m!}$ and the Gaussian
+characteristic function with the displacement vector
+$\delta(\alpha) = \sqrt2\, (\mathrm{Re}\, \alpha, \mathrm{Im}\, \alpha)$ and the vacuum covariance
+$\gamma = 1$. -/
+theorem witness_coherent_state {n : ℕ} (α : Fin n → ℂ) :
+    (∀ m : Fin n →₀ ℕ,
+      (FockSpace.displacement α : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) (lp.single 2 0 1) m =
+        ((Real.exp (-(∑ j, ‖α j‖ ^ 2) / 2) : ℝ) : ℂ) * ((∏ j, α j ^ m j) /
+          ((Real.sqrt ((m.prod fun _ k => k.factorial : ℕ) : ℝ) : ℝ) : ℂ))) ∧
+    FockSpace.HasGaussianCharFun
+      ((FockSpace.displacement α : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) (lp.single 2 0 1))
+      (Sum.elim (fun j => Real.sqrt 2 * (α j).re) fun j => Real.sqrt 2 * (α j).im) 1 := sorry
+
+/-- A squeezed vacuum: on one mode, for real $r$, the squeezed vacuum $\mathsf S(r)|0\rangle$ has
+the Gaussian characteristic function with $d = 0$ and the covariance matrix
+$\gamma = \mathrm{diag}(e^{-2r}, e^{2r})$. For $r > 0$ the position quadrature is squeezed,
+$\gamma_{qq} = e^{-2r} < 1$; $r$ may have either sign. -/
+theorem witness_squeezed_vacuum (r : ℝ) :
+    FockSpace.HasGaussianCharFun
+      ((FockSpace.squeeze (fun _ : Fin 1 => (r : ℂ)) : FockSpace (Fin 1) →L[ℂ] FockSpace (Fin 1))
+        (lp.single 2 0 1)) 0
+      (Matrix.diagonal (Sum.elim (fun _ : Fin 1 => Real.exp (-2 * r))
+        fun _ => Real.exp (2 * r))) := sorry
+
+/-! ## Existence of pure Gaussian states
+
+The notation is that of the section on pure Gaussian states. -/
+
+/-- Every admissible symplectic covariance matrix occurs: let $\gamma$ be admissible and
+symplectic, $\gamma \Omega \gamma^T = \Omega$, and let $d \in \mathbb R^{2n}$. There is a
+Gaussian unitary $U$, with data $(M, d)$ for some symplectic $M$, such that $U|0\rangle$ has the
+Gaussian characteristic function with displacement vector $d$ and covariance matrix $\gamma$.
+Hence a vector with the Gaussian characteristic function with $(d, \gamma)$ exists if and only if
+$\gamma$ is admissible and symplectic. -/
+theorem exists_hasGaussianCharFun_iff {n : ℕ} (d : Fin n ⊕ Fin n → ℝ)
+    (γ : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ) :
+    (IsAdmissible γ → γ * symplecticForm n * γᵀ = symplecticForm n →
+      ∃ (U : unitary (FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)))
+        (M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ), FockSpace.IsGaussianUnitary U M d ∧
+          FockSpace.HasGaussianCharFun
+            ((U : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) (lp.single 2 0 1)) d γ) ∧
+    ((∃ ψ : FockSpace (Fin n), FockSpace.HasGaussianCharFun ψ d γ) ↔
+      IsAdmissible γ ∧ γ * symplecticForm n * γᵀ = symplecticForm n) := sorry
+
+/-! ## Quadratic Hamiltonians
+
+Here $E$ is a complex Hilbert space, with the inner product linear in the second argument. An
+operator $A$ on $E$ is a linear map defined on a subspace $\mathrm{dom}\, A$ of $E$; $A^*$ is its
+adjoint, $\overline A$ its closure, the operator whose graph is the closure of the graph of $A$,
+and $A \restriction E_0$ its restriction to a subspace $E_0$. An operator $A$ is self-adjoint when
+$A^* = A$, domains included. A one-parameter group generated by $A$ carries the physicist's sign,
+$U_t = e^{-itA}$. On Fock space there are $n$ modes, $\hat R = (\hat q, \hat p)$ are the
+quadratures of entry 95, normalized so that $[\hat R_k, \hat R_l] = i\Omega_{kl}$, and $\bar T$
+is the maximal realization of a linear map $T$ of the formal Fock space (entry 70). For a
+configuration $m$, $|m| = \sum_j m_j$ is its number of particles. -/
+
+/-- One-parameter unitary groups and their generators (definitions): a map $t \mapsto U_t$ from
+$\mathbb R$ to the unitary operators of $E$ is a strongly continuous one-parameter unitary group
+when $U_0 = 1$, $U_{s+t} = U_s U_t$ for all real $s$, $t$, and $t \mapsto U_t\psi$ is continuous
+for every $\psi$. An operator $A$ generates $U$, written $U_t = e^{-itA}$, when $U$ is such a
+group, $\mathrm{dom}\, A$ is the set of the $\psi$ at which $t \mapsto U_t\psi$ is differentiable
+at $t = 0$, and $\frac{d}{dt} U_t\psi\big|_{t=0} = -iA\psi$ for these $\psi$. -/
+theorem isGenerator_iff {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
+    [CompleteSpace E] (A : E →ₗ.[ℂ] E) (U : ℝ → unitary (E →L[ℂ] E)) :
+    (BosonicLean.IsUnitaryGroup U ↔ U 0 = 1 ∧ (∀ s t, U (s + t) = U s * U t) ∧
+      ∀ ψ, Continuous fun t => (U t : E →L[ℂ] E) ψ) ∧
+    (BosonicLean.IsGenerator A U ↔ BosonicLean.IsUnitaryGroup U ∧
+      (∀ ψ, ψ ∈ A.domain ↔ ∃ v, HasDerivAt (fun t : ℝ => (U t : E →L[ℂ] E) ψ) v 0) ∧
+      ∀ ψ : A.domain,
+        HasDerivAt (fun t : ℝ => (U t : E →L[ℂ] E) ψ) (-(Complex.I • A ψ)) 0) := sorry
+
+/-- Generators, first properties: let $A$ generate $U$. For $\psi \in \mathrm{dom}\, A$ and every
+real $t$, $U_t\psi \in \mathrm{dom}\, A$ with $AU_t\psi = U_tA\psi$, and
+$\frac{d}{dt} U_t\psi = -iU_tA\psi$. The domain of $A$ is dense, and $A$ is self-adjoint. If $A$
+also generates $V$, then $U = V$. -/
+theorem isGenerator_props {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
+    [CompleteSpace E] {A : E →ₗ.[ℂ] E} {U : ℝ → unitary (E →L[ℂ] E)}
+    (hA : BosonicLean.IsGenerator A U) :
+    (∀ (ψ : A.domain) (t : ℝ), ∃ φ : A.domain, (φ : E) = (U t : E →L[ℂ] E) ψ ∧
+      A φ = (U t : E →L[ℂ] E) (A ψ) ∧
+      HasDerivAt (fun s : ℝ => (U s : E →L[ℂ] E) ψ) (-(Complex.I • (U t : E →L[ℂ] E) (A ψ))) t) ∧
+    Dense (A.domain : Set E) ∧ IsSelfAdjoint A ∧
+    ∀ V : ℝ → unitary (E →L[ℂ] E), BosonicLean.IsGenerator A V → U = V := sorry
+
+/-- Generators from a core, conjugates, shifts and bounded generators. Let $B$ be self-adjoint and
+$E_0 \subseteq \mathrm{dom}\, B$ a subspace with $\overline{B \restriction E_0} = B$ (a core for
+$B$). If $V$ is a strongly continuous one-parameter unitary group with
+$\frac{d}{dt} V_t\psi\big|_{t=0} = -iB\psi$ for every $\psi \in E_0$, then $B$ generates $V$. Let
+$A$ generate $U$. For a unitary $Z$, the operator $Z^*AZ$ with domain
+$\{\psi : Z\psi \in \mathrm{dom}\, A\}$ generates $t \mapsto Z^*U_tZ$; for real $c$, the operator
+$A + c$ with domain $\mathrm{dom}\, A$ generates $t \mapsto e^{-itc}U_t$. A bounded self-adjoint
+operator $T$ generates $t \mapsto e^{-itT} = \sum_{k \ge 0} (-itT)^k/k!$. -/
+theorem isGenerator_of_core {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
+    [CompleteSpace E] :
+    (∀ B : E →ₗ.[ℂ] E, IsSelfAdjoint B → ∀ (E₀ : Submodule ℂ E) (hE₀ : E₀ ≤ B.domain),
+      (B.domRestrict E₀).closure = B → ∀ V : ℝ → unitary (E →L[ℂ] E),
+        BosonicLean.IsUnitaryGroup V →
+        (∀ ψ : E₀, HasDerivAt (fun t : ℝ => (V t : E →L[ℂ] E) ψ)
+          (-(Complex.I • B ⟨ψ, hE₀ ψ.2⟩)) 0) → BosonicLean.IsGenerator B V) ∧
+    (∀ (A B : E →ₗ.[ℂ] E) (U : ℝ → unitary (E →L[ℂ] E)) (Z : unitary (E →L[ℂ] E)),
+      BosonicLean.IsGenerator A U → (∀ ψ, ψ ∈ B.domain ↔ (Z : E →L[ℂ] E) ψ ∈ A.domain) →
+      (∀ (ψ : B.domain) (φ : A.domain), (φ : E) = (Z : E →L[ℂ] E) ψ →
+        B ψ = (star (Z : E →L[ℂ] E)) (A φ)) →
+      BosonicLean.IsGenerator B fun t => star Z * U t * Z) ∧
+    (∀ (A B : E →ₗ.[ℂ] E) (U V : ℝ → unitary (E →L[ℂ] E)) (c : ℝ),
+      BosonicLean.IsGenerator A U → B.domain = A.domain →
+      (∀ (ψ : B.domain) (φ : A.domain), (φ : E) = ψ → B ψ = A φ + (c : ℂ) • (ψ : E)) →
+      (∀ t : ℝ, (V t : E →L[ℂ] E) =
+        Complex.exp (-((t * c : ℝ) : ℂ) * Complex.I) • (U t : E →L[ℂ] E)) →
+      BosonicLean.IsGenerator B V) ∧
+    ∀ T : E →L[ℂ] E, IsSelfAdjoint T → ∃ V : ℝ → unitary (E →L[ℂ] E),
+      (∀ t : ℝ, (V t : E →L[ℂ] E) = NormedSpace.exp ((-(t : ℂ) * Complex.I) • T)) ∧
+      BosonicLean.IsGenerator ((T : E →ₗ[ℂ] E).toPMap ⊤) V := sorry
+
+/-- Analytic vectors with a common radius: let $E_0 \subseteq E$ be a dense subspace,
+$A : E_0 \to E_0$ linear and symmetric, $\langle Ax, y\rangle = \langle x, Ay\rangle$ for
+$x, y \in E_0$, and $\rho > 0$ with $\sum_n \rho^n \|A^n x\|/n! < \infty$ for every $x \in E_0$.
+Regard $A$ as an operator on $E$ with domain $E_0$. Then its closure $\overline A$ is self-adjoint,
+$\overline A$ generates exactly one strongly continuous one-parameter unitary group $U$, and
+$U_t x = \sum_n (-it)^n A^n x/n!$ for $|t| < \rho$ and $x \in E_0$. -/
+theorem analytic_vectors {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
+    [CompleteSpace E] (E₀ : Submodule ℂ E) (hE₀ : Dense (E₀ : Set E)) (A : E₀ →ₗ[ℂ] E₀)
+    (hA : ∀ x y : E₀, ⟪(A x : E), (y : E)⟫_ℂ = ⟪(x : E), (A y : E)⟫_ℂ) {ρ : ℝ} (hρ : 0 < ρ)
+    (han : ∀ x : E₀, Summable fun n : ℕ => ρ ^ n / n.factorial * ‖((A ^ n) x : E)‖) :
+    IsSelfAdjoint (⟨E₀, E₀.subtype ∘ₗ A⟩ : E →ₗ.[ℂ] E).closure ∧
+      (∃! U : ℝ → unitary (E →L[ℂ] E),
+        BosonicLean.IsGenerator (⟨E₀, E₀.subtype ∘ₗ A⟩ : E →ₗ.[ℂ] E).closure U) ∧
+      ∀ U : ℝ → unitary (E →L[ℂ] E),
+        BosonicLean.IsGenerator (⟨E₀, E₀.subtype ∘ₗ A⟩ : E →ₗ.[ℂ] E).closure U →
+        ∀ t : ℝ, |t| < ρ → ∀ x : E₀,
+          HasSum (fun n : ℕ => ((-(t : ℂ) * Complex.I) ^ n / (n.factorial : ℂ)) • ((A ^ n) x : E))
+            ((U t : E →L[ℂ] E) x) := sorry
+
+/-- The quadratic Hamiltonian (definitions) and its first properties: $\mathcal D$ is the subspace of the finitely supported
+vectors of $\Gamma_s(n)$, the $\psi$ with $\psi(m) \ne 0$ for only finitely many configurations
+$m$. For a real $2n \times 2n$ matrix $K$ and $f \in \mathbb R^{2n}$, the quadratic Hamiltonian is
+the linear map $H = \sum_{k,l} \frac12 K_{kl} \hat R_k \hat R_l + \sum_k f_k \hat R_k$ of the
+formal Fock space. Let $C_H = \sum_{k,l} |K_{kl}| + \sqrt2 \sum_k |f_k|$. If $\psi \in
+\Gamma_s(n)$ vanishes above $\nu$ particles, $\psi(m) = 0$ whenever $|m| > \nu$, then $H\jmath\psi
+= \jmath\varphi$ for a $\varphi \in \Gamma_s(n)$ that vanishes above $\nu + 2$ particles, with
+$\|\varphi\| \le C_H(\nu + 2)\|\psi\|$. For $\psi \in \mathcal D$ and $\rho \ge 0$ with
+$2C_H\rho < 1$ there are $\psi_r \in \Gamma_s(n)$, $r \in \mathbb N$, with
+$\jmath\psi_r = H^r\jmath\psi$ and $\sum_r \rho^r \|\psi_r\|/r! < \infty$. If $K$ is symmetric,
+$H$ is symmetric on $\mathcal D$: for $\psi, \varphi \in \mathcal D$,
+$\langle H\psi, \varphi\rangle = \langle \psi, H\varphi\rangle$, where $H\psi$ is the vector
+$\psi'$ with $\jmath\psi' = H\jmath\psi$. -/
+theorem quadraticHamiltonian_eq {n : ℕ} (K : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ)
+    (f : Fin n ⊕ Fin n → ℝ) :
+    (∀ ψ : FockSpace (Fin n),
+      ψ ∈ FockSpace.finiteSupport (Fin n) ↔ (Function.support ψ).Finite) ∧
+    FockSpace.quadraticHamiltonian K f =
+      ∑ k, ∑ l, ((K k l / 2 : ℝ) : ℂ) • (FockSpace.quadrature k * FockSpace.quadrature l) +
+        ∑ k, (f k : ℂ) • FockSpace.quadrature k ∧
+    (∀ (ν : ℕ) (ψ : FockSpace (Fin n)), (∀ m : Fin n →₀ ℕ, ν < m.degree → ψ m = 0) →
+      ∃ φ : FockSpace (Fin n),
+        FockSpace.toFormal φ = FockSpace.quadraticHamiltonian K f (FockSpace.toFormal ψ) ∧
+        (∀ m : Fin n →₀ ℕ, ν + 2 < m.degree → φ m = 0) ∧
+        ‖φ‖ ≤ (∑ k, ∑ l, |K k l| + Real.sqrt 2 * ∑ k, |f k|) * (ν + 2) * ‖ψ‖) ∧
+    (∀ ψ ∈ FockSpace.finiteSupport (Fin n), ∀ ρ : ℝ, 0 ≤ ρ →
+      2 * (∑ k, ∑ l, |K k l| + Real.sqrt 2 * ∑ k, |f k|) * ρ < 1 →
+      ∃ ψs : ℕ → FockSpace (Fin n), (∀ r, FockSpace.toFormal (ψs r) =
+          (FockSpace.quadraticHamiltonian K f ^ r) (FockSpace.toFormal ψ)) ∧
+        Summable fun r : ℕ => ρ ^ r / r.factorial * ‖ψs r‖) ∧
+    (Kᵀ = K → ∀ ψ φ ψ' φ' : FockSpace (Fin n), ψ ∈ FockSpace.finiteSupport (Fin n) →
+      φ ∈ FockSpace.finiteSupport (Fin n) →
+      FockSpace.toFormal ψ' = FockSpace.quadraticHamiltonian K f (FockSpace.toFormal ψ) →
+      FockSpace.toFormal φ' = FockSpace.quadraticHamiltonian K f (FockSpace.toFormal φ) →
+      ⟪ψ', φ⟫_ℂ = ⟪ψ, φ'⟫_ℂ) := sorry
+
+/-- Commutators: on the formal Fock space $[\hat R_k, \hat R_l] = i\Omega_{kl}$. Let $K$ be
+symmetric. Then $[\hat R_k, H] = i\big(\sum_m (\Omega K)_{km} \hat R_m + (\Omega f)_k\big)$, and
+for $v \in \mathbb R^{2n}$ the field $\Phi_v = \sigma(v, \hat R) = \sum_i (\Omega^T v)_i \hat R_i$
+satisfies $[\Phi_v, H] = -i(\Phi_{\Omega K v} + f^T v)$. -/
+theorem quadraticHamiltonian_commutators {n : ℕ} (K : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ)
+    (f : Fin n ⊕ Fin n → ℝ) (k l : Fin n ⊕ Fin n) (v : Fin n ⊕ Fin n → ℝ) :
+    FockSpace.quadrature k * FockSpace.quadrature l -
+        FockSpace.quadrature l * FockSpace.quadrature k =
+      (Complex.I * (symplecticForm n k l : ℂ)) • 1 ∧
+    (Kᵀ = K →
+      FockSpace.quadrature k * FockSpace.quadraticHamiltonian K f -
+          FockSpace.quadraticHamiltonian K f * FockSpace.quadrature k =
+        Complex.I • (∑ m, (((symplecticForm n * K) k m : ℝ) : ℂ) • FockSpace.quadrature m +
+          (((symplecticForm n *ᵥ f) k : ℝ) : ℂ) • 1) ∧
+      (∑ i, ((((symplecticForm n)ᵀ *ᵥ v) i : ℝ) : ℂ) • FockSpace.quadrature i) *
+            FockSpace.quadraticHamiltonian K f -
+          FockSpace.quadraticHamiltonian K f *
+            ∑ i, ((((symplecticForm n)ᵀ *ᵥ v) i : ℝ) : ℂ) • FockSpace.quadrature i =
+        (-Complex.I) •
+          (∑ i, ((((symplecticForm n)ᵀ *ᵥ ((symplecticForm n * K) *ᵥ v)) i : ℝ) : ℂ) •
+            FockSpace.quadrature i + ((f ⬝ᵥ v : ℝ) : ℂ) • 1)) := sorry
+
+/-- Essential self-adjointness and the unitary group: let $K$ be symmetric, let $\bar H$ be the
+maximal realization of $H$, and $\bar H \restriction \mathcal D$ its restriction to the finitely
+supported vectors. Then $\bar H$ is self-adjoint and is the closure of
+$\bar H \restriction \mathcal D$, and $(\bar H \restriction \mathcal D)^* = \bar H$. The operator
+$\bar H$ generates exactly one strongly continuous one-parameter unitary group,
+$t \mapsto e^{-it\bar H}$. For $\psi \in \mathcal D$ and $2C_H|t| < 1$,
+$e^{-it\bar H}\psi = \sum_r (-it)^r \psi_r/r!$, with $C_H$ and the vectors $\psi_r$,
+$\jmath\psi_r = H^r\jmath\psi$, of entry 111. -/
+theorem quadraticHamiltonian_isSelfAdjoint {n : ℕ}
+    {K : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ} (hK : Kᵀ = K) (f : Fin n ⊕ Fin n → ℝ) :
+    IsSelfAdjoint (FockSpace.maxRealization (FockSpace.quadraticHamiltonian K f)) ∧
+    ((FockSpace.maxRealization (FockSpace.quadraticHamiltonian K f)).domRestrict
+        (FockSpace.finiteSupport (Fin n))).closure =
+      FockSpace.maxRealization (FockSpace.quadraticHamiltonian K f) ∧
+    ((FockSpace.maxRealization (FockSpace.quadraticHamiltonian K f)).domRestrict
+        (FockSpace.finiteSupport (Fin n))).adjoint =
+      FockSpace.maxRealization (FockSpace.quadraticHamiltonian K f) ∧
+    (∃! U : ℝ → unitary (FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)),
+      BosonicLean.IsGenerator (FockSpace.maxRealization (FockSpace.quadraticHamiltonian K f)) U) ∧
+    ∀ U : ℝ → unitary (FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)),
+      BosonicLean.IsGenerator (FockSpace.maxRealization (FockSpace.quadraticHamiltonian K f)) U →
+      ∀ t : ℝ, 2 * (∑ k, ∑ l, |K k l| + Real.sqrt 2 * ∑ k, |f k|) * |t| < 1 →
+      ∀ (ψ : FockSpace (Fin n)) (ψs : ℕ → FockSpace (Fin n)), ψ ∈ FockSpace.finiteSupport (Fin n) →
+        (∀ r, FockSpace.toFormal (ψs r) =
+          (FockSpace.quadraticHamiltonian K f ^ r) (FockSpace.toFormal ψ)) →
+        HasSum (fun r : ℕ => ((-(t : ℂ) * Complex.I) ^ r / (r.factorial : ℂ)) • ψs r)
+          ((U t : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) ψ) := sorry
+
+/-- Quadratic Hamiltonians generate Gaussian unitaries: let $K$ be symmetric and
+$U_t = e^{-it\bar H}$ the group generated by $\bar H$ (entry 113). Let $M(t) = e^{t\Omega K}$ and
+$d(t) = \int_0^t M(s)\Omega f\, ds$; these give the flow $x(t) = M(t)x(0) + d(t)$ of the
+classical equations of motion $\dot x = \Omega K x + \Omega f$ of the Hamilton function
+$\frac12 x^T K x + f^T x$ (a remark that is not part of the statement). For every real $t$,
+$U_t$ is a Gaussian unitary with data $(M(t), d(t))$:
+$e^{it\bar H} W(u) e^{-it\bar H} = e^{-i\sigma(u, d(t))} W(M(t)^{-1}u)$ for every
+$u \in \mathbb R^{2n}$. In particular $e^{-i\bar H}$ has data $(e^{\Omega K}, d(1))$, and by
+entry 95 $e^{i\bar H} \hat R e^{-i\bar H} = e^{\Omega K} \hat R + d(1)$ on the vectors in the
+domain of every $\bar a_j$, Eq. (3) of Tjoa and Cirac. -/
+theorem quadraticHamiltonian_isGaussianUnitary {n : ℕ}
+    {K : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ} (hK : Kᵀ = K) (f : Fin n ⊕ Fin n → ℝ)
+    {U : ℝ → unitary (FockSpace (Fin n) →L[ℂ] FockSpace (Fin n))}
+    (hU : BosonicLean.IsGenerator (FockSpace.maxRealization (FockSpace.quadraticHamiltonian K f)) U)
+    (t : ℝ) :
+    FockSpace.IsGaussianUnitary (U t) (NormedSpace.exp (t • (symplecticForm n * K)))
+      (∫ s in (0 : ℝ)..t,
+        NormedSpace.exp (s • (symplecticForm n * K)) *ᵥ (symplecticForm n *ᵥ f)) := sorry
+
+/-- Eqs. (1) and (5) of Tjoa and Cirac. (Definitions) For complex $n \times n$ matrices $h$,
+$\Delta$ and $\eta \in \mathbb C^n$, the Hamiltonian of Eq. (1) is the linear map
+$H_G = \sum_{i,j} h_{ij} a_i^\dagger a_j + \frac12 \sum_{i,j} (\Delta_{ij} a_i^\dagger a_j^\dagger
++ \bar\Delta_{ij} a_i a_j) + \sum_j (\eta_j a_j^\dagger + \bar\eta_j a_j)$ of the formal Fock space,
+and its matrix is $K = \begin{pmatrix} \mathrm{Re}\, h + \mathrm{Re}\, \Delta & \mathrm{Im}\,
+\Delta - \mathrm{Im}\, h \\ \mathrm{Im}\, \Delta + \mathrm{Im}\, h & \mathrm{Re}\, h -
+\mathrm{Re}\, \Delta \end{pmatrix}$. Let $h$ be Hermitian and $\Delta$ symmetric, and let $H$
+be the quadratic Hamiltonian of $K$ and $f = \delta(\eta)$, with
+$\delta(\eta) = \sqrt2\, (\mathrm{Re}\, \eta, \mathrm{Im}\, \eta)$ as in entry 93. Then $K$ is
+symmetric and $H_G = H - \frac12 \mathrm{tr}\, h$. The maximal realization $\bar H_G$ is
+self-adjoint and generates exactly one strongly continuous one-parameter unitary group, and for
+every real $\theta$ the operator $e^{i\theta} e^{-i\bar H_G}$ is a Gaussian unitary with data
+$(e^{\Omega K}, d(1))$, where $d(1) = \int_0^1 e^{s\Omega K}\Omega f\, ds$. For
+$\alpha, \zeta \in \mathbb C^n$, the maximal realizations $A_\alpha$ of
+$i \sum_j (\alpha_j a_j^\dagger - \bar\alpha_j a_j)$ and $B_\zeta$ of
+$\frac i2 \sum_j (\bar\zeta_j a_j^2 - \zeta_j a_j^{\dagger 2})$ generate $s \mapsto D(s\alpha)$
+and $s \mapsto \mathsf S(s\zeta)$: $D(\alpha) = e^{-iA_\alpha}$ and
+$\mathsf S(\zeta) = e^{-iB_\zeta}$, which Eq. (5) writes as
+$e^{\alpha \cdot a^\dagger - \bar\alpha \cdot a}$ and
+$e^{\frac12 \sum_j (\bar\zeta_j a_j^2 - \zeta_j a_j^{\dagger 2})}$. -/
+theorem ladderHamiltonian_isGaussianUnitary {n : ℕ} :
+    (∀ (h Δ : Matrix (Fin n) (Fin n) ℂ) (η : Fin n → ℂ),
+      FockSpace.ladderHamiltonian h Δ η =
+        ∑ i, ∑ j, h i j • (create i * annihilate j : Module.End ℂ (FormalFock (Fin n) ℂ)) +
+          (1 / 2 : ℂ) • ∑ i, ∑ j, (Δ i j • (create i * create j) +
+            conj (Δ i j) • (annihilate i * annihilate j)) +
+          ∑ j, (η j • create j + conj (η j) • annihilate j) ∧
+      FockSpace.ladderMatrix h Δ =
+        Matrix.fromBlocks (h.map Complex.re + Δ.map Complex.re)
+          (Δ.map Complex.im - h.map Complex.im) (Δ.map Complex.im + h.map Complex.im)
+          (h.map Complex.re - Δ.map Complex.re)) ∧
+    (∀ (h Δ : Matrix (Fin n) (Fin n) ℂ) (η : Fin n → ℂ), h.IsHermitian → Δᵀ = Δ →
+      (FockSpace.ladderMatrix h Δ)ᵀ = FockSpace.ladderMatrix h Δ ∧
+      FockSpace.ladderHamiltonian h Δ η =
+        FockSpace.quadraticHamiltonian (FockSpace.ladderMatrix h Δ)
+          (Sum.elim (fun j => Real.sqrt 2 * (η j).re) fun j => Real.sqrt 2 * (η j).im) -
+          (Matrix.trace h / 2) • 1 ∧
+      IsSelfAdjoint (FockSpace.maxRealization (FockSpace.ladderHamiltonian h Δ η)) ∧
+      (∃! U : ℝ → unitary (FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)),
+        BosonicLean.IsGenerator (FockSpace.maxRealization (FockSpace.ladderHamiltonian h Δ η)) U) ∧
+      ∀ U : ℝ → unitary (FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)),
+        BosonicLean.IsGenerator (FockSpace.maxRealization (FockSpace.ladderHamiltonian h Δ η)) U →
+        ∀ (θ : ℝ) (V : unitary (FockSpace (Fin n) →L[ℂ] FockSpace (Fin n))),
+          (V : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) =
+            Complex.exp (θ * Complex.I) • (U 1 : FockSpace (Fin n) →L[ℂ] FockSpace (Fin n)) →
+          FockSpace.IsGaussianUnitary V
+            (NormedSpace.exp (symplecticForm n * FockSpace.ladderMatrix h Δ))
+            (∫ s in (0 : ℝ)..1,
+              NormedSpace.exp (s • (symplecticForm n * FockSpace.ladderMatrix h Δ)) *ᵥ
+                (symplecticForm n *ᵥ
+                Sum.elim (fun j => Real.sqrt 2 * (η j).re) fun j => Real.sqrt 2 * (η j).im))) ∧
+    (∀ α : Fin n → ℂ, BosonicLean.IsGenerator
+      (FockSpace.maxRealization (Complex.I • ∑ j, (α j • create j - conj (α j) • annihilate j) :
+        Module.End ℂ (FormalFock (Fin n) ℂ)))
+      (fun s : ℝ => FockSpace.displacement ((s : ℂ) • α))) ∧
+    ∀ ζ : Fin n → ℂ, BosonicLean.IsGenerator
+      (FockSpace.maxRealization ((Complex.I / 2) • ∑ j, (conj (ζ j) • annihilate j ^ 2 -
+        ζ j • create j ^ 2) : Module.End ℂ (FormalFock (Fin n) ℂ)))
+      (fun s : ℝ => FockSpace.squeeze ((s : ℂ) • ζ)) := sorry
 
 end Sealed

@@ -1,0 +1,264 @@
+% Section 13: one-parameter unitary groups and their generators, analytic vectors with a common radius, the quadratic
+% Hamiltonian and its essential self-adjointness, e^{-itH} as a Gaussian unitary, the paper's (1), (3) and (5).
+% BosonicLean milestone QH (proposal and statements approved 30 Oct 2026). Text accepted 31 Oct 2026 (vetqenv, set plain);
+% fixes of the blind audit of 31 Oct 2026 in \vetr / vetrenv.
+\providecommand{\sS}{\mathsf S}
+\providecommand{\Sp}{\mathrm{Sp}(2N,\R)}
+\providecommand{\Rh}{\hat R}
+\providecommand{\Dc}{\mathcal D}
+\providecommand{\ran}{\operatorname{ran}}
+\providecommand{\cl}[1]{\overline{#1}}
+\providecommand{\Hb}{\bar H}
+\providecommand{\ad}{^{\dagger}}
+\providecommand{\sU}{\mathsf U}
+\begin{vetqenv}
+\setlength{\emergencystretch}{3em}
+\section{Quadratic Hamiltonians}\label{sec:quadratic}
+
+\vetr{Gaussian unitaries are defined by their action on the Weyl operators (Definition~\ref{def:gu-weyl}); they are often
+written as $e^{-iH}$ with $H$ quadratic in the quadratures~\cite[(1)]{tjoacirac}.} For $H=\tfrac12\Rh^TK\Rh+f^T\Rh$ with $K$ real symmetric and $f$ real, $H$ is essentially
+self-adjoint on the finitely supported vectors, its closure generates exactly one unitary group $e^{-itH}$, and
+$e^{-itH}$ is a Gaussian unitary whose data are the classical flow of the Hamilton function $\tfrac12x^TKx+f^Tx$.
+\vetr{The construction does not use the spectral theorem:} the group is built from the exponential series, which on finitely supported vectors
+converges with a radius independent of the vector.
+
+\medskip
+\noindent\textbf{Notation for this section.}
+\begin{center}
+\begin{tabular}{@{}L{0.3\textwidth}L{0.64\textwidth}@{}}
+$E$; $A$, $\dom A$, $A^*$, $\cl A$ & a complex Hilbert space; an operator on $E$, its domain, adjoint and closure\\
+$U$, $U_t$ & a one-parameter unitary group\\
+$\Dc$ & the finitely supported vectors of $\Gs$, \vetr{$\iota=\{1,\dots,N\}$,} $N\ge1$ modes\\
+$K$, $f$, $H$, $C_H$ & a real symmetric $2N\times2N$ matrix, a vector of $\R^{2N}$, $\tfrac12\Rh^TK\Rh+f^T\Rh$, Definition~\ref{def:qh-ham}\\
+\vetr{$M(t)$, $d(t)$} & $e^{t\Omega K}$ and $\int_0^te^{s\Omega K}\Omega f\,ds$ \vetr{(not to be confused with the matrix $M_\zeta$ of
+$\sS(\zeta)$)}\\
+$\Phi_v$ & the field $\sigma(v,\Rh)$; \vetr{$W(v)=e^{-i\bar\Phi_v}$ (proof of Theorem~\ref{thm:qh-main})}\\
+\end{tabular}
+\end{center}
+An \emph{operator} is a linear map defined on a subspace; $\bar T$ with a short bar is still the maximal realization of a map
+$T$ of $\Fock$ (Definition~\ref{def:fock-maxreal}), and $\cl A$ with a long bar is a closure. Inner products are linear in the
+second argument.
+
+\subsection{One-parameter unitary groups}\label{sec:qh-groups}
+
+\begin{definition}[One-parameter unitary group; generator]\label{def:qh-group}
+A \emph{strongly continuous one-parameter unitary group} on $E$ is a map $t\mapsto U_t$ from $\R$ to the unitary operators
+with $U_0=1$, $U_{s+t}=U_sU_t$ and $t\mapsto U_t\psi$ continuous for every $\psi$. An operator $A$ is its \emph{generator},
+and $U$ is \emph{generated} by $A$, written $U_t=e^{-itA}$, if $\dom A$ consists of the $\psi$ at which $t\mapsto U_t\psi$ is
+differentiable at $0$, and $\frac d{dt}U_t\psi|_{t=0}=-iA\psi$ there.
+\end{definition}
+
+\vetr{These $\psi$ form a subspace, on which $\psi\mapsto i\frac d{dt}U_t\psi|_{t=0}$ is linear; so every such group has exactly one
+generator.} Reed and Simon write $U(t)=e^{itA}$~\cite[\vetx{Sec.~VIII.4}]{rs1}; we keep the physicist's sign. \vetr{The group
+$e^{-itA}$ of the functional calculus of a self-adjoint $A$ has generator $A$ in this
+sense~\cite{rs1}}, so by Theorem~\ref{thm:qh-gen}(c) below the two meanings of $e^{-itA}$ agree. The zero
+operator generates only $U_t=1$.
+
+\begin{theorem}[Generators]\label{thm:qh-gen}
+Let $A$ generate $U$.
+\begin{enumerate}
+\item[(a)] For $\psi\in\dom A$ and every $t$: $U_t\psi\in\dom A$, $AU_t\psi=U_tA\psi$, and $\frac d{dt}U_t\psi=-iU_tA\psi$.
+\item[(b)] $\dom A$ is dense, and $A$ is self-adjoint.
+\item[(c)] If $A$ also generates $V$, then $U=V$.
+\item[(d)] Let $B$ be self-adjoint and $E_0\subseteq\dom B$ a subspace with $\cl{B\restriction E_0}=B$ \vetr{($E_0$ is a \emph{core}
+for $B$)}. If $V$ is a strongly continuous one-parameter unitary group with $\frac d{dt}V_t\psi|_{t=0}=-iB\psi$ for every
+$\psi\in E_0$, then $B$ generates $V$.
+\item[(e)] For a unitary $Z$, the operator $Z^*AZ$ on $\{\psi:Z\psi\in\dom A\}$ generates $t\mapsto Z^*U_tZ$; for real $c$,
+$A+c$ generates $t\mapsto e^{-itc}U_t$.
+\item[(f)] A bounded self-adjoint $T$ generates $t\mapsto\exp(-itT)$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\begin{enumerate}
+\item[(a)] The quotient \vetr{$(U_\tau U_t\psi-U_t\psi)/\tau=U_t(U_\tau\psi-\psi)/\tau$} tends to $-iU_tA\psi$, and it is also the difference
+quotient of $s\mapsto U_s\psi$ at $t$.
+\item[(b)] For $\varepsilon>0$ put $\psi_\varepsilon=\varepsilon^{-1}\int_0^\varepsilon U_s\psi\,ds$. Then
+\vetr{$(U_\tau\psi_\varepsilon-\psi_\varepsilon)/\tau=\varepsilon^{-1}\tau^{-1}\bigl(\int_\varepsilon^{\varepsilon+\tau}-\int_0^\tau\bigr)U_s\psi\,ds$} tends to
+$\varepsilon^{-1}(U_\varepsilon\psi-\psi)$, so $\psi_\varepsilon\in\dom A$, and $\psi_\varepsilon\to\psi$: the domain is dense. Differentiating
+\vetr{$\langle U_\tau\psi,U_\tau\varphi\rangle=\langle\psi,\varphi\rangle$ at $\tau=0$} shows that $A$ is symmetric. If $\psi_n\to\psi$ and $A\psi_n\to\xi$, then
+\vetr{$U_\tau\psi_n-\psi_n=-i\int_0^\tau U_sA\psi_n\,ds$} by (a), and in the limit \vetr{$U_\tau\psi-\psi=-i\int_0^\tau U_s\xi\,ds$, whose quotient by
+$\tau$} tends to $-i\xi$; so $A$ is closed. Finally let $A^*\varphi=\pm i\varphi$. For $\psi\in\dom A$, $g(t)=\langle\varphi,U_t\psi\rangle$ satisfies
+$g'=\mp g$, so $g(t)=e^{\mp t}g(0)$; as $g$ is bounded, $g(0)=0$, and $\varphi=0$ because $\dom A$ is dense. A closed symmetric
+operator with $\ker(A^*\mp i)=0$ has $\ran(A\pm i)=E$ and is self-adjoint~\cite{rs1}.
+\item[(c)] For $\psi,\varphi\in\dom A$ the function $s\mapsto\langle V_s\varphi,U_s\psi\rangle$ has derivative $i\langle AV_s\varphi,U_s\psi\rangle
+-i\langle V_s\varphi,AU_s\psi\rangle=0$ by (a) and symmetry, so $\langle V_t\varphi,U_t\psi\rangle=\langle\varphi,\psi\rangle=\langle V_t\varphi,V_t\psi\rangle$.
+Since $V_t$ maps $\dom A$ onto itself, $U_t\psi=V_t\psi$ on the dense $\dom A$, \vetr{and by continuity on $E$}.
+\item[(d)] The generator $C$ of $V$ extends $B\restriction E_0$ and is closed by (b), so $C\supseteq B$. As $C$ is symmetric,
+$C\subseteq C^*\subseteq B^*=B$.
+\item[(e)] The quotient for $Z^*U_\tau Z\psi$ converges exactly when that for $U_\tau Z\psi$ does; the shift is the product rule.
+\item[(f)] \vetr{The norm-continuous group $\exp(-itT)$ has derivative $-iT\psi$ at $0$ for every $\psi$; so its generator extends the
+everywhere defined $T$ and equals it.}\qedhere
+\end{enumerate}
+\end{proof}
+
+\begin{theorem}[Analytic vectors with a common radius]\label{thm:qh-analytic}
+Let $E_0\subseteq E$ be a dense subspace, $A:E_0\to E_0$ linear and symmetric, and $\rho>0$ with
+$\sum_n\rho^n\lVert A^nx\rVert/n!<\infty$ for every $x\in E_0$. Then $\cl A$ is self-adjoint, it generates exactly one strongly
+continuous one-parameter unitary group $U$, and $U_tx=\sum_n(-it)^nA^nx/n!$ for $\lvert t\rvert<\rho$ and $x\in E_0$.
+\end{theorem}
+
+\begin{proof}
+For $\lvert t\rvert\le\rho$ the series $V_tx=\sum_n(-it)^nA^nx/n!$ converges absolutely on $E_0$. Expanding
+$\langle V_tx,V_ty\rangle$ as a double series and using $\langle A^mx,A^ny\rangle=\langle x,A^{m+n}y\rangle$, the terms with $m+n=k$ sum to
+$\langle x,A^ky\rangle(it-it)^k/k!$; so $V_t$ preserves inner products and extends to an isometry of $E$. For
+$\lvert s\rvert+\lvert t\rvert\le\rho$ the double series of $V_sV_tx$ converges absolutely, and summing along $m+n=k$ with the binomial
+theorem gives $V_sV_t=V_{s+t}$; in particular $V_t$ is unitary for $\lvert t\rvert\le\rho/2$. The group is
+$U_t=V_{t/m}^m$ for any $m\ge1$ with $\lvert t\rvert/m\le\rho/2$, which does not depend on $m$ \vetr{(by the local law both $V_{t/m}^m$ and
+$V_{t/m'}^{m'}$ equal $V_{t/(mm')}^{mm'}$)}; the local law gives
+$U_{s+t}=U_sU_t$ and $U_t=V_t$ for $\lvert t\rvert<\rho$. On $E_0$, $t\mapsto V_tx$ is a convergent power series with derivative
+$-iAx$ at $0$; uniform boundedness and density give strong continuity.
+
+$\cl A$ is closed and symmetric. If $\langle\varphi,(A-i)\xi\rangle=0$ for all $\xi\in E_0$, then, since $A$ maps $E_0$ into itself,
+$\langle\varphi,A^nx\rangle=i^n\langle\varphi,x\rangle$, so $\langle\varphi,U_tx\rangle=e^t\langle\varphi,x\rangle$ for $\lvert t\rvert<\rho$, then for every $x\in E$, and by
+the group law for every $t$. Boundedness forces $\varphi=0$; likewise for $A+i$. So $\ran(\cl A\pm i)$ is dense; \vetr{it is also closed,
+because $\lVert(\cl A\pm i)x\rVert^2=\lVert\cl Ax\rVert^2+\lVert x\rVert^2$ and $\cl A$ is closed. Hence $\ran(\cl A\pm i)=E$} and $\cl A$ is
+self-adjoint~\cite{rs1}. Theorem~\ref{thm:qh-gen}(d), with core $E_0$, shows that $\cl A$ generates $U$, and (c) gives uniqueness.
+\end{proof}
+
+The hypothesis is stronger than that of Nelson's analytic vector theorem~\cite[\vetx{Thm.~X.39}]{rs2}, which allows the
+radius to depend on the vector and needs no invariant domain\vetr{. Quadratic Hamiltonians satisfy it (Lemma~\ref{lem:qh-ham});
+polynomials of higher degree in the quadratures in general do not: for one mode and $A=\hat q^{\,3}$ on $\Dc$,
+$\lVert A^m\ket0\rVert^2=\lVert\hat q^{\,3m}\ket0\rVert^2=(6m-1)!!/8^m$ grows like $(m!)^3$ up to exponential factors, so
+$\sum_m\rho^m\lVert A^m\ket0\rVert/m!$ diverges for every $\rho>0$.}
+
+\subsection{The quadratic Hamiltonian}\label{sec:qh-ham}
+
+\begin{definition}[Quadratic Hamiltonian]\label{def:qh-ham}
+For a real symmetric $2N\times2N$ matrix $K$ and $f\in\R^{2N}$, the \emph{quadratic Hamiltonian} is \vetr{the linear map of $\Fock$
+\[
+ H=\sum_{k,l}\tfrac12K_{kl}\Rh_k\Rh_l+\sum_kf_k\Rh_k,
+\]
+and $\Hb$ is its maximal realization. We write
+\[
+ C_H=\sum_{k,l}\lvert K_{kl}\rvert+\sqrt2\sum_k\lvert f_k\rvert,\qquad M(t)=e^{t\Omega K},\qquad d(t)=\int_0^tM(s)\Omega f\,ds.
+\]}
+\end{definition}
+
+The pair \vetr{$(M(t),d(t))$} is the flow of the classical equations of motion $\dot x=\Omega Kx+\Omega f$ of $\tfrac12x^TKx+f^Tx$:
+\vetr{$x(t)=M(t)x(0)+d(t)$. Hence $M(s+t)=M(s)M(t)$ and $d(s+t)=d(s)+M(s)d(t)$, and $M(t)\in\Sp$} because $\Omega K$ is a Hamiltonian
+matrix, $\Omega^{-1}(\Omega K)^T\Omega=-\Omega K$. \vetr{For one mode, $K=1$ and $f=0$, $H=a\ad a+\tfrac12$ and $M(t)=O_{e^{-it}}$, the symplectic matrix of
+$\sU_{e^{-it}}$ in Theorem~\ref{thm:gu-implement}(b); for $K=0$, $d(t)=t\Omega f$.}
+
+\begin{lemma}[Bounds, symmetry and commutators]\label{lem:qh-ham}
+\begin{enumerate}
+\item[(a)] If $\psi\in\Gs$ vanishes above $\nu$ particles, then $H\jmath\psi=\jmath\varphi$ for a $\varphi\in\Gs$ vanishing above $\nu+2$, with
+$\lVert\varphi\rVert\le C_H(\nu+2)\lVert\psi\rVert$. $H$ is symmetric on $\Dc$, and for \vetr{$\rho\ge0$ with $2C_H\rho<1$ and $\psi\in\Dc$,
+$\sum_m\rho^m\lVert H^m\psi\rVert/m!<\infty$.}
+\item[(b)] On $\Fock$: $[\Rh_k,\Rh_l]=i\Omega_{kl}$, $[\Rh_k,H]=i\bigl(\sum_m(\Omega K)_{km}\Rh_m+(\Omega f)_k\bigr)$, and for the field
+$\Phi_v=\sigma(v,\Rh)=\sum_k(\Omega^Tv)_k\Rh_k$, $[\Phi_v,H]=-i(\Phi_{\Omega Kv}+f^Tv)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+\begin{enumerate}
+\item[(a)] On vectors vanishing above $\mu$, \vetr{$\lVert a_j\omega\rVert^2\le\mu\lVert\omega\rVert^2$ and $\lVert a_j\ad\omega\rVert^2\le(\mu+1)\lVert\omega\rVert^2$ by
+$\lVert a_j\omega\rVert^2=\sum_mm_j\lvert\omega(m)\rvert^2$ and $\lVert a_j\ad\omega\rVert^2=\lVert a_j\omega\rVert^2+\lVert\omega\rVert^2$; so $\lVert\Rh_k\omega\rVert\le\sqrt2\sqrt{\mu+1}\lVert\omega\rVert$ and
+$\lVert\Rh_k\Rh_l\omega\rVert\le2(\mu+2)\lVert\omega\rVert$}, which gives the bound on $H$. Iterating, \vetr{for $\psi\in\Dc$ vanishing above $\nu$,
+\[
+ \lVert H^m\psi\rVert\le C_H^m\prod_{j<m}(\nu+2j+2)\,\lVert\psi\rVert\le(2C_H)^m\,m!\binom{m+\nu}{\nu}\lVert\psi\rVert,
+\]
+and} $\sum_m\binom{m+\nu}\nu x^m$ converges for $x<1$. \vetr{$H$ is a polynomial in the $a_j$ and $a_j\ad$, hence coefficient-finite
+(Lemma~\ref{lem:fock-coefffinite}(a)). Symmetry follows from the identity
+\begin{equation}\label{eq:qh-formal-adjoint}
+ \textstyle\sum_n\overline{(Hx)(n)}\,(\jmath\varphi)(n)=\sum_n\overline{x(n)}\,(H\jmath\varphi)(n)\qquad(x\in\Fock,\ \varphi\in\Dc),
+\end{equation}
+both sums being finite. It holds for $a_j$ in place of $H$ with $a_j\ad$ on the right, and for $a_j\ad$ with $a_j$, since
+$(a_jx)(n)=\sqrt{n_j+1}\,x(n+e_j)$ and the sums run over the finitely many $n$ at which $\jmath\varphi$, $a_j\ad\jmath\varphi$ or $a_j\jmath\varphi$ is
+nonzero. It follows for each $\Rh_k$, and for $H$} because $K$ is symmetric and $K$, $f$ are real.
+\item[(b)] The first identity follows from $[a_j,a_k\ad]=\delta_{jk}$. With $K=K^T$, $[\Rh_k,\Rh_l\Rh_m]=i\Omega_{kl}\Rh_m+i\Omega_{km}\Rh_l$
+gives the second. For the third, $[\Phi_v,\Rh_l]=-iv_l$ since $\Omega^T\Omega^T=-1$, so
+$[\Phi_v,H]=-i(v^TK\Rh+f^Tv)$, and $v^TK\Rh=\Phi_{\Omega Kv}$.\qedhere
+\end{enumerate}
+\end{proof}
+
+\begin{theorem}[Essential self-adjointness and the unitary group]\label{thm:qh-sa}
+\vetr{Let $H$ be a quadratic Hamiltonian.}
+\begin{enumerate}
+\item[(a)] $\Hb$ is self-adjoint and is the closure of $H\restriction\Dc$; moreover $(H\restriction\Dc)^*=\Hb$.
+\item[(b)] $\Hb$ generates exactly one strongly continuous one-parameter unitary group, $t\mapsto e^{-it\Hb}$.
+\item[(c)] For \vetr{$\psi\in\Dc$ and $2C_H\lvert t\rvert<1$, $e^{-it\Hb}\psi=\sum_m(-it)^mH^m\psi/m!$}.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Theorem~\ref{thm:qh-analytic} applies to $H\restriction\Dc$ with every \vetr{$\rho>0$ such that $2C_H\rho<1$}, by Lemma~\ref{lem:qh-ham}(a); $\Dc$ is dense
+(Lemma~\ref{lem:fock-hilbert}\vetr{(c)}). So $\cl{H\restriction\Dc}$ is self-adjoint. It is contained in $\Hb$, which is closed
+(Theorem~\ref{thm:fock-maxreal-closed}\vetr{, since $H$ is coefficient-finite}). Conversely $\Hb\subseteq(H\restriction\Dc)^*$, because for $\psi\in\dom\Hb$ and
+$\varphi\in\Dc$ \vetr{the identity~\eqref{eq:qh-formal-adjoint} with $x=\jmath\psi$} gives $\langle\Hb\psi,\varphi\rangle=\langle\psi,H\varphi\rangle$; and
+$(H\restriction\Dc)^*$ is contained in the adjoint of the closure, which is the closure itself. The three operators therefore coincide.
+\end{proof}
+
+\subsection{The affine symplectic map}\label{sec:qh-main}
+
+\begin{theorem}[$e^{-itH}$ is a Gaussian unitary]\label{thm:qh-main}
+\vetr{Let $H$ be a quadratic Hamiltonian. For every real $t$, $e^{-it\Hb}$ is a Gaussian unitary with data $(M(t),d(t))$:
+\[
+ e^{it\Hb}\,W(u)\,e^{-it\Hb}=e^{-i\sigma(u,d(t))}\,W(M(t)^{-1}u)\qquad(u\in\R^{2N}).
+\]
+In particular $e^{-i\Hb}$ has data $(e^{\Omega K},d(1))$, and by Corollary~\ref{cor:gu-vacuum}(c)
+$e^{i\Hb}\Rh e^{-i\Hb}=e^{\Omega K}\Rh+d(1)$} on $\bigcap_j\dom\bar a_j$, the paper's (3).
+\end{theorem}
+
+\begin{proof}
+Write $U_t=e^{-it\Hb}$. The field $\Phi_v$ is $H$ for $K=0$ and $f=\Omega^Tv$, and $D(\alpha(v))=e^{-i\Phi_v}$ formally. By
+Theorem~\ref{thm:dsq-disp-group} the map $s\mapsto W(sv)$ is a strongly continuous unitary group whose derivative at $0$ on $\Dc$
+is $-i\Phi_v$, so by Theorems~\ref{thm:qh-sa} and~\ref{thm:qh-gen}(d) it is generated by $\bar\Phi_v$: $W(sv)=e^{-is\bar\Phi_v}$.
+
+\vetr{Let $2C_H\lvert t\rvert<1$, $\psi\in\Dc$ and $u\in\R^{2N}$. We show $\bar\Phi_uU_t\psi=U_t\xi$ with
+$\jmath\xi=(\Phi_{M(t)^{-1}u}+\sigma(u,d(t)))\jmath\psi$.} Write $\operatorname{ad}X=XH-HX$. Then
+$\Phi_uH^m=\sum_k\binom mkH^{m-k}\operatorname{ad}^k\Phi_u$, and by Lemma~\ref{lem:qh-ham}(b)
+$\operatorname{ad}^k\Phi_u=(-i)^k(\Phi_{(\Omega K)^ku}+\lambda_k)$ with $\lambda_0=0$ and $\lambda_k=f^T(\Omega K)^{k-1}u$. Substituting into the series of
+Theorem~\ref{thm:qh-sa}(c) and summing first over $k$ uses \vetr{
+\[
+ \sum_k\frac{(-t)^k}{k!}(\Omega K)^ku=M(t)^{-1}u,\qquad\sum_{k\ge1}\frac{(-t)^k}{k!}\lambda_k=\sigma(u,d(t)).
+\]}%
+The double series reduces to finitely many products of absolutely convergent series, since
+$\Phi_w$ is a finite combination of the $\Rh_k$, and the series of $\Hb$ on the finitely supported vectors $\Rh_k\psi$ converge by
+Lemma~\ref{lem:qh-ham}(a). Comparing coefficients, each of which is a continuous function on $\Gs$ \vetr{by
+Lemma~\ref{lem:fock-coefffinite}(c)}, gives the identity.
+
+\vetr{Now $s\mapsto e^{is\sigma(u,d(t))}U_t^*W(su)U_t$ is a strongly continuous unitary group; by Theorem~\ref{thm:qh-gen}(e) and the
+identity just proved, its derivative at $0$ on $\Dc$ is $-i\Phi_{M(t)^{-1}u}$. By Theorem~\ref{thm:qh-gen}(d) and (c) it equals
+$s\mapsto W(sM(t)^{-1}u)$; at $s=1$ this is the claim for small $t$.} For arbitrary $t$, $U_t=U_{t/m}^m$ with $2C_H\lvert t\rvert/m<1$, and
+Proposition~\ref{prop:gu-weyl}(b) with the flow laws gives the data \vetr{$(M(t),d(t))$}.
+\end{proof}
+
+\begin{corollary}[The paper's (1) and (5)]\label{cor:qh-paper}
+\begin{enumerate}
+\item[(a)] \vetr{Let $h$ and $\Delta$ be complex $N\times N$ matrices, $h$ Hermitian and $\Delta$ symmetric, let $\eta\in\C^N$, and let
+\[
+ H_G=\sum_{ij}h_{ij}a_i\ad a_j+\tfrac12\sum_{ij}\bigl(\Delta_{ij}a_i\ad a_j\ad+\bar\Delta_{ij}a_ia_j\bigr)+\sum_j\bigl(\eta_ja_j\ad+\bar\eta_ja_j\bigr),
+\]
+the paper's (1). Then $H_G=H-\tfrac12\operatorname{tr}h$ on $\Fock$ for $f=\delta(\eta)$ and the symmetric matrix
+\[
+ K=\begin{pmatrix}\operatorname{Re}h+\operatorname{Re}\Delta&\operatorname{Im}\Delta-\operatorname{Im}h\\
+ \operatorname{Im}\Delta+\operatorname{Im}h&\operatorname{Re}h-\operatorname{Re}\Delta\end{pmatrix}.
+\]
+So $\bar H_G$ is self-adjoint and generates exactly one unitary group, and $e^{ic}e^{-i\bar H_G}$ is a Gaussian unitary with data
+$(e^{\Omega K},d(1))$ for every real $c$.}
+\item[(b)] \vetr{For $\alpha,\zeta\in\C^N$ let $A_\alpha$ and $B_\zeta$ be the maximal realizations of $i\sum_j(\alpha_ja_j\ad-\bar\alpha_ja_j)$ and
+$\tfrac i2\sum_j(\bar\zeta_ja_j^2-\zeta_ja_j^{\dagger2})$. Then $A_\alpha$ generates $s\mapsto D(s\alpha)$ and $B_\zeta$ generates
+$s\mapsto\sS(s\zeta)$: $D(\alpha)=e^{-iA_\alpha}$ and $\sS(\zeta)=e^{-iB_\zeta}$, which the paper's (5) writes as
+$e^{\alpha\cdot a\ad-\bar\alpha\cdot a}$ and $e^{\frac12\sum_j(\bar\zeta_ja_j^2-\zeta_ja_j^{\dagger2})}$.}
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+\begin{enumerate}
+\item[(a)] Substitute $a_j=(\hat q_j+i\hat p_j)/\sqrt2$; in each mode pair the coefficients of $a_i\ad a_j\ad$, $a_ia_j$, $a_i\ad a_j$ and $a_ia_j\ad$ in
+$\tfrac12\Rh^TK\Rh$ are $\tfrac12\Delta_{ij}$, $\tfrac12\bar\Delta_{ij}$, $\tfrac12h_{ij}$ and $\tfrac12\bar h_{ij}$, and normal ordering
+$a_ia_j\ad=a_j\ad a_i+\delta_{ij}$ with $\bar h_{ij}=h_{ji}$ produces $\tfrac12\operatorname{tr}h$. The linear terms give $f=\delta(\eta)$. A real constant
+multiplies the group by a phase (Theorem~\ref{thm:qh-gen}(e)), and phases are Gaussian with data $(1,0)$.
+\item[(b)] Both operators are of the form (a) with $h=0$; Theorems~\ref{thm:dsq-disp-group} and~\ref{thm:dsq-squeeze-group}
+supply the groups, their continuity and their derivatives on $\Dc$, and Theorem~\ref{thm:qh-gen}(d) applies.\qedhere
+\end{enumerate}
+\end{proof}
+
+\subsection*{Notes and references}
+
+\vetr{Tjoa and Cirac~\cite[(1), (3), (5)]{tjoacirac} write Gaussian unitaries as $e^{-iH_G}$ up to a phase and state that they act on the
+quadratures by affine symplectic maps; Theorem~\ref{thm:qh-main} and Corollary~\ref{cor:qh-paper} supply the domains and the data
+$(M(t),d(t))$.} The standard rigorous routes use Nelson's theorem with Stone's theorem, or the metaplectic
+representation~\cite[\vetx{Ch.~4}]{folland}\vetr{; Theorem~\ref{thm:qh-analytic} replaces both.}
+\end{vetqenv}

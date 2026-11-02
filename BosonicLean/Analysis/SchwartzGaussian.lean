@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 BosonicLean contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: BosonicLean contributors
+-/
 import Mathlib.Analysis.Asymptotics.SpecificAsymptotics
 import Mathlib.Analysis.Distribution.SchwartzSpace.Basic
 import Mathlib.Analysis.SpecialFunctions.Gaussian.PoissonSummation

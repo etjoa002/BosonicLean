@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 BosonicLean contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: BosonicLean contributors
+-/
 import BosonicLean.GaussianTNLean.MPS.ThreeSiteBlocks
 import BosonicLean.PhaseSpace.Covariance
 import BosonicLean.PhaseSpace.DirectSum
@@ -89,28 +94,13 @@ lemma threeSiteShear_symplectic :
       Matrix.fromBlocks, Matrix.mul_apply, Matrix.one_apply,
       Fintype.sum_sum_type]
 
-private def phaseSplitEquivThreeSite (n m : Nat) :
-    PhaseIndex (n + m) ≃ PhaseIndex n ⊕ PhaseIndex m :=
-  (Equiv.sumCongr finSumFinEquiv.symm finSumFinEquiv.symm).trans
-    (Equiv.sumSumSumComm (Fin n) (Fin m) (Fin n) (Fin m))
-
-private lemma phaseSplitEquivThreeSite_coe (n m : Nat) :
-    (phaseSplitEquivThreeSite n m : PhaseIndex (n + m) →
-      PhaseIndex n ⊕ PhaseIndex m) = splitPhase := by
-  funext i
-  rcases i with i | i <;>
-    obtain ⟨j, rfl⟩ :=
-      (finSumFinEquiv : Fin n ⊕ Fin m ≃ Fin (n + m)).surjective i <;>
-    cases j <;>
-    simp [phaseSplitEquivThreeSite, splitPhase, Equiv.sumSumSumComm]
-
 private lemma directSumCov_one (n m : Nat) :
     directSumCov
         (1 : Matrix (PhaseIndex n) (PhaseIndex n) ℝ)
         (1 : Matrix (PhaseIndex m) (PhaseIndex m) ℝ) =
       (1 : Matrix (PhaseIndex (n + m)) (PhaseIndex (n + m)) ℝ) := by
   unfold directSumCov
-  rw [← phaseSplitEquivThreeSite_coe n m, Matrix.fromBlocks_one,
+  rw [← phaseSplitEquiv_coe n m, Matrix.fromBlocks_one,
     Matrix.submatrix_one_equiv]
 
 lemma threeSiteLocalCovariance_admissible :

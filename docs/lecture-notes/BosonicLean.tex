@@ -5,17 +5,61 @@
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage{tikz}
+% One set of TikZ styles for every figure (whole-document pass, 20 Oct 2026): arrow tip, line widths,
+% node fonts, dot size and colours.
+\usetikzlibrary{patterns}
+\tikzset{
+  >=stealth,
+  every picture/.append style={font=\small},
+  note/.style={font=\footnotesize},
+  site/.style={circle,draw,fill=white,minimum size=0.6cm,inner sep=0pt},
+  tens/.style={draw,fill=white,rounded corners=2pt,minimum width=0.95cm,minimum height=0.62cm},
+  op/.style={circle,draw,fill=white,minimum size=0.6cm,inner sep=1pt},
+  sec/.style={draw,rounded corners=2pt,text width=4.2cm,align=center,minimum height=0.95cm,
+    inner sep=3pt,execute at begin node={\hyphenpenalty=10000}},
+  frame/.style={draw,rounded corners=6pt},
+  region/.style={draw},
+  map/.style={->,thick},
+  lead/.style={->},
+  dot/.style={circle,fill,inner sep=0pt,minimum size=3.5pt},
+  odot/.style={circle,draw,fill=white,inner sep=0pt,minimum size=3.5pt},
+  aux/.style={gray!60},
+  shade/.style={fill=gray!20},
+}
 \usepackage{needspace}
 \usepackage{array}
+\usepackage{longtable}
+\usepackage{enumitem}
+\setlist[enumerate]{font=\upshape}  % item labels upright inside theorem statements (user, 20 Oct 2026)
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 \AddToHook{cmd/subsection/before}{\ifnum\value{section}=3\Needspace{18\baselineskip}\fi}
 \usepackage[hidelinks]{hyperref}
+% Table of contents: room for two-digit subsection numbers, and tighter space between sections.
+\makeatletter
+\renewcommand*\l@subsection{\@dottedtocline{2}{1.5em}{2.9em}}
+\renewcommand*\l@section[2]{%
+  \ifnum\c@tocdepth>\z@
+    \addpenalty\@secpenalty
+    \addvspace{0.55em \@plus\p@}%
+    \setlength\@tempdima{1.5em}%
+    \begingroup
+      \parindent\z@ \rightskip\@pnumwidth
+      \parfillskip -\@pnumwidth
+      \leavevmode\bfseries
+      \advance\leftskip\@tempdima
+      \hskip -\leftskip
+      #1\nobreak\hfil
+      \nobreak\hb@xt@\@pnumwidth{\hss #2\kern-\p@\kern\p@}\par
+    \endgroup
+  \fi}
+\makeatother
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{lemma}[theorem]{Lemma}
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
 \theoremstyle{plain}
 \newcommand{\R}{\mathbb R}
 \newcommand{\C}{\mathbb C}
@@ -24,11 +68,55 @@
 \newcommand{\Rea}{\operatorname{Re}}
 % Vetting rounds: blue until accepted, then redefined as plain text with the date.
 \newcommand{\reva}[1]{#1}
+\newcommand{\vetb}[1]{#1}
+\definecolor{vetbblue}{rgb}{0,0,0}  % accepted, 20 Oct 2026 (figures set plain)
+\newcommand{\vetbcolor}{}
+\newenvironment{vetbenv}{}{}
 \newcommand{\revb}[1]{#1}
 \newcommand{\revtag}[1]{#1}
 % Lecture-form pass of 15 Oct 2026 (front matter, reading guide, roadmap, index of terms, filler):
 % blue until vetted by the user; the export sets it plain.
 \newcommand{\revs}[1]{#1}
+% meaning-pass edits, 20 Oct 2026: for vetting
+\newcommand{\vetc}[1]{#1}
+\newenvironment{vetcenv}{}{}
+% Chapters of GA-BMPS B5.1 and B5.2 (Sections 8 and 9, 22 Oct 2026): dark blue until vetted by the user;
+% the export sets \vetd, vetdenv, \vetdcolor and \vetsource plain.
+\definecolor{vetdblue}{rgb}{0,0,0}  % B5 chapters accepted and set plain (user, 22 Oct 2026: "I accept the blue passages. Set them plain and commit the B5 notes on gabmps-programme (no push).")
+\definecolor{vetsrcblue}{rgb}{0,0,0.55}  % citations still to be checked at their source
+\newcommand{\vetd}[1]{#1}
+\newcommand{\vetdcolor}{}
+\newenvironment{vetdenv}{}{}
+% Chapters of GA-BMPS B5.3a and B5.4 (Sections 10-12, 30 Oct 2026): accepted and set plain (user, 30 Oct 2026:
+% "I approve, but I need you to do a _very thorough_ check on citations").
+\definecolor{veteblue}{rgb}{0,0,0}
+\newcommand{\vete}[1]{#1}
+\newcommand{\vetecolor}{}
+\newenvironment{veteenv}{}{}
+% Attributions added by the citation check of 30 Oct 2026: accepted and set plain (user, 30 Oct 2026: "I approve").
+\newcommand{\vetx}[1]{#1}
+\newenvironment{vetxenv}{}{}
+% Hermite notation He_k (user, 30 Oct 2026: "Do whatever is most natural for physicists"): dark blue until vetted;
+% the export sets \vety plain.
+\newcommand{\vety}[1]{#1}
+% B6 passages (anti-normal ordering in Section 6, the vacuum component in Section 12; 30 Oct 2026): dark blue until
+% vetted; the export sets vetyenv plain.
+\newenvironment{vetyenv}{}{}
+% Milestone QH (Section 13, the remark after Definition 11.3, Section 11 notes; 30 Oct 2026): dark blue until
+% vetted; the export sets \vetq and vetqenv plain.
+\newcommand{\vetq}[1]{#1}
+\newenvironment{vetqenv}{}{}
+% QH notes checks after the vetting (blind audit, reading guide, roadmap; 31 Oct 2026): dark blue until
+% vetted; the export sets \vetr and vetrenv plain.
+\definecolor{vetrblue}{rgb}{0,0,0}  % accepted and set plain (user, 31 Oct 2026: "Approve both", to "Do you approve the new blue passages and a commit of them on gabmps-programme (no push)?")
+\newcommand{\vetr}[1]{#1}
+\newenvironment{vetrenv}{}{}
+% Existence of pure Gaussian states for every admissible symplectic covariance (2 Nov 2026): dark blue
+% until vetted; the export sets \vets plain.
+\definecolor{vetsblue}{rgb}{0,0,0}  % accepted (user, 2 Nov 2026: "I approve", to "Do you approve entries 106-115 and the blue Corollary 12.16?")
+\newcommand{\vets}[1]{#1}
+% A citation still to be checked against its source (pinpoint or bibliographic data).
+\newcommand{\vetsource}[1]{#1}
 \title{Gaussian states, covariance matrices and the formal Fock space}
 \author{}
 \date{}
@@ -44,10 +132,17 @@ determine the state: the former give its mean position and momentum, and the lat
 describe its fluctuations. These notes develop the matrix algebra of covariances
 and connect it with explicit normalized Gaussian wave functions, laying foundations
 for the study of Gaussian matrix product states. For general background, see
-Weedbrook et al.~\cite[Sec.~II]{weedbrook}.
+Weedbrook et al.~\cite[Sec.~II]{weedbrook}. \vetb{Sections~\ref{sec:fock} and~\ref{sec:fockspace} construct the
+formal Fock space of all coefficient families over the number basis, with its ladder operators and the Bargmann
+picture, and place the bosonic Fock space inside it, where coefficient-finite maps define closed operators and
+closed forms.} \vetd{Section~\ref{sec:secondquant} second-quantizes complex matrices on the formal Fock space, and
+Section~\ref{sec:blochmessiah} factors every real symplectic matrix into orthogonal symplectic matrices and squeezing.}
+\vete{Sections~\ref{sec:displacement} and~\ref{sec:gaussunitary} construct the displacement and squeezing operators and
+the Gaussian unitaries on the bosonic Fock space, and Section~\ref{sec:puregaussian} characterizes the pure Gaussian
+states by their characteristic functions.}
 
 \medskip
-\enlargethispage{2\baselineskip}
+\enlargethispage{\baselineskip}
 \tableofcontents
 \clearpage
 
@@ -55,7 +150,10 @@ Weedbrook et al.~\cite[Sec.~II]{weedbrook}.
 \noindent\revs{These notes are the mathematical account of the Lean library BosonicLean. We assume}
 finite-dimensional linear algebra, complex inner products,
 Lebesgue integration and elementary differential calculus\revs{; Section~\ref{sec:fock} needs only
-algebra and formal power series. The reading guide below relates our conventions to those of the
+algebra and formal power series}\vetb{, and Section~\ref{sec:fockspace} assumes the elements of closed operators
+and forms on Hilbert space, as in Kato~\cite{kato}}\vetd{; Sections~\ref{sec:secondquant} and~\ref{sec:blochmessiah}
+use the spectral theorem for normal and symmetric matrices, the positive square root, and, in Proposition~\ref{prop:sq-passive-exp}, the functional calculus of direct sums of self-adjoint operators}\vete{; Sections~\ref{sec:displacement}--\ref{sec:puregaussian}
+use bounded and unitary operators on Hilbert space and the square root of a positive semidefinite matrix}\revs{. The reading guide below relates our conventions to those of the
 literature, the roadmap after it shows which sections use which, and an index of terms precedes
 the references.}
 
@@ -72,6 +170,13 @@ here has been reviewed; the declaration index at the end names the checked decla
 \input{fourier}
 \input{products}
 \input{fock}
+\input{fockspace}
+\input{secondquant}
+\input{blochmessiah}
+\input{displacement}
+\input{gaussunitary}
+\input{puregaussian}
+\input{quadratic}
 \input{terms}
 \input{references}
 \input{lean-index}

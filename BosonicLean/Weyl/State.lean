@@ -20,7 +20,9 @@ A state on `CCR(V, σ)` is a continuous normalized linear functional with `ω(a�
 Its characteristic function `χ(u) = ω(W(u))` has positive semidefinite twisted kernels
 and determines the state. A Gaussian state carries a covariance form `γ` and a
 displacement `d` with `χ(u) = exp(i d(u) − γ(u,u)/4)`; its covariance satisfies the state
-condition `γ + iσ ≥ 0`, in three equivalent forms. A state is bounded by the norm.
+condition `γ + iσ ≥ 0`, in three equivalent forms. The second-order argument behind it uses only
+that `χ` has this form and positive semidefinite twisted kernels, and is stated for any such
+function (`isStateConditionC_of_posSemidef_twistedKernel`). A state is bounded by the norm.
 -/
 
 open Matrix
@@ -354,68 +356,80 @@ theorem IsStateConditionC.smul {γ σ : LinearMap.BilinForm ℝ V} (h : IsStateC
 
 end StateCondition
 
-section Gaussian
+section PositiveKernel
 
-variable {V : Type*} [AddCommGroup V] [Module ℝ V] {σ : LinearMap.BilinForm ℝ V}
+/-! ### The state condition from positive semidefinite kernels
 
-variable (σ) in
-/-- A Gaussian state, a state with a symmetric covariance form `cov` and a displacement `disp` such
-that `χ(u) = exp(i disp(u) − cov(u,u)/4)`. (QCALean notes: `def:gs-gaussian`) -/
-structure GaussianState extends State σ where
-  /-- The covariance form. -/
-  cov : LinearMap.BilinForm ℝ V
-  isSymm : cov.IsSymm
-  /-- The displacement. -/
-  disp : V →ₗ[ℝ] ℝ
-  charFun_eq : ∀ u, toState.charFun u =
-    Complex.exp (Complex.I * (disp u : ℂ) - (cov u u : ℂ) / 4)
+The second-order argument behind the state condition uses two facts about a function `χ` only: its
+twisted kernels are positive semidefinite, and `χ(u) = exp(i disp(u) − cov(u,u)/4)` with a linear
+form `disp` and a symmetric form `cov`. It is stated here for such a function; the statements
+about `GaussianState` below are its instances. -/
 
-namespace GaussianState
+variable {V : Type*} [AddCommGroup V] [Module ℝ V] {σ : LinearMap.BilinForm ℝ V} {χ : V → ℂ}
+  {cov : LinearMap.BilinForm ℝ V}
 
-theorem charFun_ne_zero (ω : GaussianState σ) (u : V) : ω.charFun u ≠ 0 := by
-  rw [ω.charFun_eq]; exact Complex.exp_ne_zero _
+/-- Positive semidefinite twisted kernels on the families `Fin m → V` give a non-negative
+quadratic form on every finite family. -/
+private theorem sum_conj_mul_twistedKernel_nonneg
+    (hpos : ∀ (m : ℕ) (u : Fin m → V), (twistedKernel σ χ u).PosSemidef) {ι : Type*}
+    [Fintype ι] (u : ι → V) (c : ι → ℂ) :
+    0 ≤ ∑ j, ∑ k, conj (c j) * c k * twistedKernel σ χ u j k := by
+  set e := Fintype.equivFin ι
+  have h : (twistedKernel σ χ u).PosSemidef := by
+    have := (hpos _ (u ∘ e.symm)).submatrix e
+    convert this using 1
+    ext j k
+    simp [twistedKernel]
+  rw [← star_dotProduct_mulVec_eq]
+  exact h.dotProduct_mulVec_nonneg c
 
-/-- The twisted kernel of a Gaussian state on the family `s u_k` factorizes as
-`conj χ(s u_j) χ(s u_k) e^{s² H_{jk}}` with `H = (γ + iσ)/2`. -/
-theorem twistedKernel_smul (ω : GaussianState σ) {ι : Type*} (w : ι → V) (s : ℝ) (j k : ι) :
-    twistedKernel σ ω.charFun (fun i => s • w i) j k =
-      conj (ω.charFun (s • w j)) * ω.charFun (s • w k) *
+/-- For `χ(u) = exp(i disp(u) − cov(u,u)/4)` with symmetric `cov`, the twisted kernel on the family
+`s wₖ` factorizes as `conj χ(s wⱼ) χ(s wₖ) e^{s² Hⱼₖ}` with `H = (cov + iσ)/2`. -/
+theorem twistedKernel_smul_of_eq_exp (hcov : cov.IsSymm) (disp : V →ₗ[ℝ] ℝ)
+    (hχ : ∀ u, χ u = Complex.exp (Complex.I * (disp u : ℂ) - (cov u u : ℂ) / 4)) {ι : Type*}
+    (w : ι → V) (s : ℝ) (j k : ι) :
+    twistedKernel σ χ (fun i => s • w i) j k =
+      conj (χ (s • w j)) * χ (s • w k) *
         Complex.exp ((s : ℂ) ^ 2 *
-          (((ω.cov (w j) (w k) : ℂ) + Complex.I * (σ (w j) (w k) : ℂ)) / 2)) := by
-  simp only [twistedKernel, Matrix.of_apply, ω.charFun_eq, ← Complex.exp_conj,
-    ← Complex.exp_add]
+          (((cov (w j) (w k) : ℂ) + Complex.I * (σ (w j) (w k) : ℂ)) / 2)) := by
+  simp only [twistedKernel, Matrix.of_apply, hχ, ← Complex.exp_conj, ← Complex.exp_add]
   congr 1
-  have h := ω.isSymm.eq (w k) (w j)
+  have h := hcov.eq (w k) (w j)
   simp only [map_sub, map_smul, LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul,
     map_mul, map_div₀, Complex.conj_I, Complex.conj_ofReal, map_ofNat, h]
   push_cast
   ring
 
 /-- The Schur-complement step: for coefficients with `Σ b = 0`,
-`Σ conj b_j b_k (e^{s² H_{jk}} − 1) ≥ 0`. -/
-theorem sum_exp_sub_one_nonneg_of_sum_eq_zero (hσ : σ.IsAlt) (ω : GaussianState σ)
-    {ι : Type*} [Fintype ι] (w : ι → V) (b : ι → ℂ) (hb : ∑ i, b i = 0) (s : ℝ) :
+`Σ conj b_j b_k (e^{s² H_{jk}} − 1) ≥ 0`, for a function `χ = exp(i disp − cov/4)` with positive
+semidefinite twisted kernels. -/
+theorem sum_exp_sub_one_nonneg_of_sum_eq_zero_of_posSemidef_twistedKernel (hcov : cov.IsSymm)
+    (disp : V →ₗ[ℝ] ℝ)
+    (hχ : ∀ u, χ u = Complex.exp (Complex.I * (disp u : ℂ) - (cov u u : ℂ) / 4))
+    (hpos : ∀ (m : ℕ) (u : Fin m → V), (twistedKernel σ χ u).PosSemidef) {ι : Type*}
+    [Fintype ι] (w : ι → V) (b : ι → ℂ) (hb : ∑ i, b i = 0) (s : ℝ) :
     0 ≤ ∑ j, ∑ k, conj (b j) * b k * (Complex.exp ((s : ℂ) ^ 2 *
-      (((ω.cov (w j) (w k) : ℂ) + Complex.I * (σ (w j) (w k) : ℂ)) / 2)) - 1) := by
-  have h := ω.toState.twisted_nonneg hσ (fun i => s • w i)
-    (fun i => b i / ω.charFun (s • w i))
-  simp only [ω.twistedKernel_smul] at h
-  have e1 : ∀ j k, conj (b j / ω.charFun (s • w j)) * (b k / ω.charFun (s • w k)) *
-      (conj (ω.charFun (s • w j)) * ω.charFun (s • w k) * Complex.exp ((s : ℂ) ^ 2 *
-        (((ω.cov (w j) (w k) : ℂ) + Complex.I * (σ (w j) (w k) : ℂ)) / 2))) =
+      (((cov (w j) (w k) : ℂ) + Complex.I * (σ (w j) (w k) : ℂ)) / 2)) - 1) := by
+  have hne : ∀ u, χ u ≠ 0 := fun u => by rw [hχ]; exact Complex.exp_ne_zero _
+  have h := sum_conj_mul_twistedKernel_nonneg hpos (fun i => s • w i)
+    (fun i => b i / χ (s • w i))
+  simp only [twistedKernel_smul_of_eq_exp hcov disp hχ] at h
+  have e1 : ∀ j k, conj (b j / χ (s • w j)) * (b k / χ (s • w k)) *
+      (conj (χ (s • w j)) * χ (s • w k) * Complex.exp ((s : ℂ) ^ 2 *
+        (((cov (w j) (w k) : ℂ) + Complex.I * (σ (w j) (w k) : ℂ)) / 2))) =
       conj (b j) * b k * Complex.exp ((s : ℂ) ^ 2 *
-        (((ω.cov (w j) (w k) : ℂ) + Complex.I * (σ (w j) (w k) : ℂ)) / 2)) := by
+        (((cov (w j) (w k) : ℂ) + Complex.I * (σ (w j) (w k) : ℂ)) / 2)) := by
     intro j k
-    have hj := ω.charFun_ne_zero (s • w j)
-    have hk := ω.charFun_ne_zero (s • w k)
-    have hj' : conj (ω.charFun (s • w j)) ≠ 0 := (map_ne_zero _).2 hj
+    have hj := hne (s • w j)
+    have hk := hne (s • w k)
+    have hj' : conj (χ (s • w j)) ≠ 0 := (map_ne_zero _).2 hj
     rw [map_div₀]
     field_simp
   simp only [e1] at h
   have e2 : ∑ j, ∑ k, conj (b j) * b k * (Complex.exp ((s : ℂ) ^ 2 *
-      (((ω.cov (w j) (w k) : ℂ) + Complex.I * (σ (w j) (w k) : ℂ)) / 2)) - 1) =
+      (((cov (w j) (w k) : ℂ) + Complex.I * (σ (w j) (w k) : ℂ)) / 2)) - 1) =
       ∑ j, ∑ k, conj (b j) * b k * Complex.exp ((s : ℂ) ^ 2 *
-        (((ω.cov (w j) (w k) : ℂ) + Complex.I * (σ (w j) (w k) : ℂ)) / 2)) -
+        (((cov (w j) (w k) : ℂ) + Complex.I * (σ (w j) (w k) : ℂ)) / 2)) -
       (∑ j, conj (b j)) * ∑ k, b k := by
     rw [Finset.sum_mul_sum, ← Finset.sum_sub_distrib]
     refine Finset.sum_congr rfl fun j _ => ?_
@@ -424,24 +438,32 @@ theorem sum_exp_sub_one_nonneg_of_sum_eq_zero (hσ : σ.IsAlt) (ω : GaussianSta
   rw [e2, hb, mul_zero, sub_zero]
   exact h
 
-/-- `Σ conj b_j b_k (e^{s² H_{jk}} − 1) ≥ 0` for every family and all coefficients: the family
+/-- `Σ conj b_j b_k (e^{s² H_{jk}} − 1) ≥ 0` for every family and all coefficients, for a function
+`χ = exp(i disp − cov/4)` with positive semidefinite twisted kernels: the family
 `(0, s u_1, …, s u_m)` with the coefficient `−Σ b_k` at `0`. -/
-theorem sum_exp_sub_one_nonneg (hσ : σ.IsAlt) (ω : GaussianState σ) {ι : Type*} [Fintype ι]
-    (u : ι → V) (b : ι → ℂ) (s : ℝ) :
+theorem sum_exp_sub_one_nonneg_of_posSemidef_twistedKernel (hcov : cov.IsSymm)
+    (disp : V →ₗ[ℝ] ℝ)
+    (hχ : ∀ u, χ u = Complex.exp (Complex.I * (disp u : ℂ) - (cov u u : ℂ) / 4))
+    (hpos : ∀ (m : ℕ) (u : Fin m → V), (twistedKernel σ χ u).PosSemidef) {ι : Type*}
+    [Fintype ι] (u : ι → V) (b : ι → ℂ) (s : ℝ) :
     0 ≤ ∑ j, ∑ k, conj (b j) * b k * (Complex.exp ((s : ℂ) ^ 2 *
-      (((ω.cov (u j) (u k) : ℂ) + Complex.I * (σ (u j) (u k) : ℂ)) / 2)) - 1) := by
-  have h := ω.sum_exp_sub_one_nonneg_of_sum_eq_zero hσ (fun o : Option ι => o.elim 0 u)
-    (fun o => o.elim (-∑ i, b i) b) (by simp [Fintype.sum_option]) s
+      (((cov (u j) (u k) : ℂ) + Complex.I * (σ (u j) (u k) : ℂ)) / 2)) - 1) := by
+  have h := sum_exp_sub_one_nonneg_of_sum_eq_zero_of_posSemidef_twistedKernel hcov disp hχ hpos
+    (fun o : Option ι => o.elim 0 u) (fun o => o.elim (-∑ i, b i) b)
+    (by simp [Fintype.sum_option]) s
   simpa [Fintype.sum_option] using h
 
-/-- The linear term: `Re Σ conj b_j b_k (γ + iσ)(u_j,u_k) ≥ 0`, from
+/-- The linear term: `Re Σ conj b_j b_k (cov + iσ)(u_j,u_k) ≥ 0` for a function
+`χ = exp(i disp − cov/4)` with positive semidefinite twisted kernels, from
 `|e^z − 1 − z| ≤ |z|²` for `|z| ≤ 1` and an elementary limit. -/
-theorem re_sum_nonneg (hσ : σ.IsAlt) (ω : GaussianState σ) {ι : Type*} [Fintype ι]
-    (u : ι → V) (b : ι → ℂ) :
+theorem re_sum_nonneg_of_posSemidef_twistedKernel (hcov : cov.IsSymm) (disp : V →ₗ[ℝ] ℝ)
+    (hχ : ∀ u, χ u = Complex.exp (Complex.I * (disp u : ℂ) - (cov u u : ℂ) / 4))
+    (hpos : ∀ (m : ℕ) (u : Fin m → V), (twistedKernel σ χ u).PosSemidef) {ι : Type*}
+    [Fintype ι] (u : ι → V) (b : ι → ℂ) :
     0 ≤ (∑ j, ∑ k, conj (b j) * b k *
-      ((ω.cov (u j) (u k) : ℂ) + Complex.I * (σ (u j) (u k) : ℂ))).re := by
+      ((cov (u j) (u k) : ℂ) + Complex.I * (σ (u j) (u k) : ℂ))).re := by
   set H : ι → ι → ℂ := fun j k =>
-    ((ω.cov (u j) (u k) : ℂ) + Complex.I * (σ (u j) (u k) : ℂ)) / 2 with hH
+    ((cov (u j) (u k) : ℂ) + Complex.I * (σ (u j) (u k) : ℂ)) / 2 with hH
   set h := (∑ j, ∑ k, conj (b j) * b k * H j k).re with hh
   set C := ∑ j, ∑ k, ‖b j‖ * ‖b k‖ * ‖H j k‖ ^ 2 with hC
   set D := ∑ j, ∑ k, ‖H j k‖ with hD
@@ -449,7 +471,8 @@ theorem re_sum_nonneg (hσ : σ.IsAlt) (ω : GaussianState σ) {ι : Type*} [Fin
   have hD0 : 0 ≤ D := Finset.sum_nonneg fun j _ => Finset.sum_nonneg fun k _ => by positivity
   have key : ∀ τ : ℝ, 0 < τ → (∀ j k, τ * ‖H j k‖ ≤ 1) → 0 ≤ τ * h + τ ^ 2 * C := by
     intro τ hτ hsmall
-    have hB := ω.sum_exp_sub_one_nonneg hσ u b (Real.sqrt τ)
+    have hB := sum_exp_sub_one_nonneg_of_posSemidef_twistedKernel hcov disp hχ hpos u b
+      (Real.sqrt τ)
     have hs : ((Real.sqrt τ : ℝ) : ℂ) ^ 2 = (τ : ℂ) := by
       rw [← Complex.ofReal_pow, Real.sq_sqrt hτ.le]
     rw [hs] at hB
@@ -493,7 +516,7 @@ theorem re_sum_nonneg (hσ : σ.IsAlt) (ω : GaussianState σ) {ι : Type*} [Fin
       (Complex.exp ((τ : ℂ) * H j k) - 1 - (τ : ℂ) * H j k))
     linarith
   have h2 : ∑ j, ∑ k, conj (b j) * b k *
-      ((ω.cov (u j) (u k) : ℂ) + Complex.I * (σ (u j) (u k) : ℂ)) =
+      ((cov (u j) (u k) : ℂ) + Complex.I * (σ (u j) (u k) : ℂ)) =
       ((2 : ℝ) : ℂ) * ∑ j, ∑ k, conj (b j) * b k * H j k := by
     rw [Finset.mul_sum]
     refine Finset.sum_congr rfl fun j _ => ?_
@@ -521,19 +544,95 @@ theorem re_sum_nonneg (hσ : σ.IsAlt) (ω : GaussianState σ) {ι : Type*} [Fin
   have := key τ hτ hsmall
   nlinarith [mul_le_mul_of_nonneg_left h1 hτ.le, pow_pos hτ 2]
 
+/-- **The state condition from positive semidefinite kernels** (GA-BMPS B5.4, decision 2): a
+function `χ(u) = exp(i disp(u) − cov(u,u)/4)`, `cov` symmetric, whose twisted kernels
+`[e^{iσ(uⱼ,uₖ)/2} χ(uₖ − uⱼ)]` are positive semidefinite satisfies the state condition
+`cov + iσ ≥ 0`. -/
+theorem isStateConditionC_of_posSemidef_twistedKernel (hσ : σ.IsAlt) (hcov : cov.IsSymm)
+    (disp : V →ₗ[ℝ] ℝ)
+    (hχ : ∀ u, χ u = Complex.exp (Complex.I * (disp u : ℂ) - (cov u u : ℂ) / 4))
+    (hpos : ∀ (m : ℕ) (u : Fin m → V), (twistedKernel σ χ u).PosSemidef) :
+    IsStateConditionC cov σ := by
+  intro m u
+  refine PosSemidef.of_dotProduct_mulVec_nonneg (isHermitian_stateMatrix hcov hσ u) fun c => ?_
+  rw [star_dotProduct_mulVec_eq]
+  simp only [Matrix.of_apply]
+  have h := re_sum_nonneg_of_posSemidef_twistedKernel hcov disp hχ hpos u c
+  rw [sum_conj_mul_stateMatrix hcov hσ] at h ⊢
+  rw [Complex.ofReal_re] at h
+  exact Complex.zero_le_real.2 h
+
+end PositiveKernel
+
+section Gaussian
+
+variable {V : Type*} [AddCommGroup V] [Module ℝ V] {σ : LinearMap.BilinForm ℝ V}
+
+variable (σ) in
+/-- A Gaussian state, a state with a symmetric covariance form `cov` and a displacement `disp` such
+that `χ(u) = exp(i disp(u) − cov(u,u)/4)`. (QCALean notes: `def:gs-gaussian`) -/
+structure GaussianState extends State σ where
+  /-- The covariance form. -/
+  cov : LinearMap.BilinForm ℝ V
+  isSymm : cov.IsSymm
+  /-- The displacement. -/
+  disp : V →ₗ[ℝ] ℝ
+  charFun_eq : ∀ u, toState.charFun u =
+    Complex.exp (Complex.I * (disp u : ℂ) - (cov u u : ℂ) / 4)
+
+namespace GaussianState
+
+theorem charFun_ne_zero (ω : GaussianState σ) (u : V) : ω.charFun u ≠ 0 := by
+  rw [ω.charFun_eq]; exact Complex.exp_ne_zero _
+
+/-- The twisted kernel of a Gaussian state on the family `s u_k` factorizes as
+`conj χ(s u_j) χ(s u_k) e^{s² H_{jk}}` with `H = (γ + iσ)/2`. -/
+theorem twistedKernel_smul (ω : GaussianState σ) {ι : Type*} (w : ι → V) (s : ℝ) (j k : ι) :
+    twistedKernel σ ω.charFun (fun i => s • w i) j k =
+      conj (ω.charFun (s • w j)) * ω.charFun (s • w k) *
+        Complex.exp ((s : ℂ) ^ 2 *
+          (((ω.cov (w j) (w k) : ℂ) + Complex.I * (σ (w j) (w k) : ℂ)) / 2)) :=
+  twistedKernel_smul_of_eq_exp ω.isSymm ω.disp ω.charFun_eq w s j k
+
+/-- The twisted kernels of a Gaussian state on the families `Fin m → V` are positive
+semidefinite. -/
+private theorem posSemidef_twistedKernel (hσ : σ.IsAlt) (ω : GaussianState σ) (m : ℕ)
+    (u : Fin m → V) : (twistedKernel σ ω.charFun u).PosSemidef :=
+  ω.toState.twistedKernel_posSemidef hσ u
+
+/-- The Schur-complement step: for coefficients with `Σ b = 0`,
+`Σ conj b_j b_k (e^{s² H_{jk}} − 1) ≥ 0`. -/
+theorem sum_exp_sub_one_nonneg_of_sum_eq_zero (hσ : σ.IsAlt) (ω : GaussianState σ)
+    {ι : Type*} [Fintype ι] (w : ι → V) (b : ι → ℂ) (hb : ∑ i, b i = 0) (s : ℝ) :
+    0 ≤ ∑ j, ∑ k, conj (b j) * b k * (Complex.exp ((s : ℂ) ^ 2 *
+      (((ω.cov (w j) (w k) : ℂ) + Complex.I * (σ (w j) (w k) : ℂ)) / 2)) - 1) :=
+  sum_exp_sub_one_nonneg_of_sum_eq_zero_of_posSemidef_twistedKernel ω.isSymm ω.disp
+    ω.charFun_eq (posSemidef_twistedKernel hσ ω) w b hb s
+
+/-- `Σ conj b_j b_k (e^{s² H_{jk}} − 1) ≥ 0` for every family and all coefficients: the family
+`(0, s u_1, …, s u_m)` with the coefficient `−Σ b_k` at `0`. -/
+theorem sum_exp_sub_one_nonneg (hσ : σ.IsAlt) (ω : GaussianState σ) {ι : Type*} [Fintype ι]
+    (u : ι → V) (b : ι → ℂ) (s : ℝ) :
+    0 ≤ ∑ j, ∑ k, conj (b j) * b k * (Complex.exp ((s : ℂ) ^ 2 *
+      (((ω.cov (u j) (u k) : ℂ) + Complex.I * (σ (u j) (u k) : ℂ)) / 2)) - 1) :=
+  sum_exp_sub_one_nonneg_of_posSemidef_twistedKernel ω.isSymm ω.disp ω.charFun_eq
+    (posSemidef_twistedKernel hσ ω) u b s
+
+/-- The linear term: `Re Σ conj b_j b_k (γ + iσ)(u_j,u_k) ≥ 0`, from
+`|e^z − 1 − z| ≤ |z|²` for `|z| ≤ 1` and an elementary limit. -/
+theorem re_sum_nonneg (hσ : σ.IsAlt) (ω : GaussianState σ) {ι : Type*} [Fintype ι]
+    (u : ι → V) (b : ι → ℂ) :
+    0 ≤ (∑ j, ∑ k, conj (b j) * b k *
+      ((ω.cov (u j) (u k) : ℂ) + Complex.I * (σ (u j) (u k) : ℂ))).re :=
+  re_sum_nonneg_of_posSemidef_twistedKernel ω.isSymm ω.disp ω.charFun_eq
+    (posSemidef_twistedKernel hσ ω) u b
+
 /-- Necessity (thesis (4.5)–(4.6)): the covariance form of a Gaussian state satisfies the state
 condition `γ + iσ ≥ 0`. (QCALean notes: `thm:gs-necessity`) -/
 theorem isStateConditionC (hσ : σ.IsAlt) (ω : GaussianState σ) :
-    IsStateConditionC ω.cov σ := by
-  intro m u
-  refine PosSemidef.of_dotProduct_mulVec_nonneg (isHermitian_stateMatrix ω.isSymm hσ u)
-    fun c => ?_
-  rw [star_dotProduct_mulVec_eq]
-  simp only [Matrix.of_apply]
-  have h := ω.re_sum_nonneg hσ u c
-  rw [sum_conj_mul_stateMatrix ω.isSymm hσ] at h ⊢
-  rw [Complex.ofReal_re] at h
-  exact Complex.zero_le_real.2 h
+    IsStateConditionC ω.cov σ :=
+  isStateConditionC_of_posSemidef_twistedKernel hσ ω.isSymm ω.disp ω.charFun_eq
+    (posSemidef_twistedKernel hσ ω)
 
 /-- The covariance form of a Gaussian state satisfies the state condition in real-pair form.
 (QCALean notes: `thm:gs-necessity`) -/

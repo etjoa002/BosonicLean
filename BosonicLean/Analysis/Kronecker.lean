@@ -29,6 +29,10 @@ to a series in one Banach algebra.
 * `BosonicLean.linfty_opNorm_map_conj`: `‖X̄‖ = ‖X‖` for the entrywise conjugate.
 * `BosonicLean.kronecker_pow`: `(X ⊗ₖ Y)ᵏ = Xᵏ ⊗ₖ Yᵏ`.
 * `BosonicLean.list_ofFn_prod_kronecker`: the mixed-product rule for ordered products.
+* `BosonicLean.hasSum_kronecker_left`: `X ⊗ₖ ·` preserves sums.
+* `BosonicLean.list_ofFn_prod_sum`: an ordered product of sums is the sum of ordered products.
+* `BosonicLean.trace_kronecker_mul_list_ofFn_sum`: the trace of a product of rank-one Kronecker
+  sums factorizes into a trace and a product of bilinear pairings.
 -/
 
 open Matrix
@@ -181,5 +185,82 @@ theorem HasPowerBound.map_conj_kronecker_self {K : Matrix β β ℂ} {C r : ℝ}
     _ = C * C * (r * r) ^ m := by ring
 
 end PowerBound
+
+/-! ### Sums -/
+
+section Sum
+
+variable {ι l m n p α : Type*} [NonUnitalNonAssocSemiring α] [TopologicalSpace α]
+  [IsTopologicalSemiring α]
+
+/-- `X ⊗ₖ ·` preserves sums: if `Σᵢ fᵢ = S`, then `Σᵢ X ⊗ₖ fᵢ = X ⊗ₖ S`. -/
+theorem hasSum_kronecker_left {f : ι → Matrix n p α} {S : Matrix n p α} (h : HasSum f S)
+    (X : Matrix l m α) : HasSum (fun i => X ⊗ₖ f i) (X ⊗ₖ S) :=
+  Pi.hasSum.2 fun ij => Pi.hasSum.2 fun kl => by
+    simpa only [kroneckerMap_apply] using
+      ((Pi.hasSum.1 (Pi.hasSum.1 h ij.2) kl.2).mul_left (X ij.1 kl.1))
+
+end Sum
+
+/-! ### Products of rank-one Kronecker factors -/
+
+section RankOne
+
+open Finset
+
+variable {ι κ : Type*} [Fintype ι] [Fintype κ] [DecidableEq κ]
+
+/-- The ordered product of sums is the sum of ordered products. -/
+theorem list_ofFn_prod_sum {R : Type*} [Ring R] :
+    ∀ {M : ℕ} (x : Fin M → ι → R),
+      (List.ofFn fun j => ∑ I, x j I).prod = ∑ I : Fin M → ι, (List.ofFn fun j => x j (I j)).prod
+  | 0, x => by simp
+  | M + 1, x => by
+    rw [List.ofFn_succ, List.prod_cons, list_ofFn_prod_sum fun j => x j.succ, sum_mul_sum,
+      ← (Fin.consEquiv fun _ : Fin (M + 1) => ι).sum_comp, Fintype.sum_prod_type]
+    refine sum_congr rfl fun I _ => sum_congr rfl fun J _ => ?_
+    simp [Fin.consEquiv, List.ofFn_succ]
+
+/-- `Tr(uvᵀ · u w₁ᵀ ⋯ u w_Mᵀ) = (v⬝u)(w₁⬝u) ⋯ (w_M⬝u)`. -/
+theorem trace_vecMulVec_mul_list_prod (u : κ → ℂ) :
+    ∀ (l : List (κ → ℂ)) (v : κ → ℂ),
+      trace (vecMulVec u v * (l.map (vecMulVec u)).prod) = (v ⬝ᵥ u) * (l.map (· ⬝ᵥ u)).prod
+  | [], v => by rw [List.map_nil, List.prod_nil, Matrix.mul_one, trace_vecMulVec,
+      dotProduct_comm, List.map_nil, List.prod_nil, mul_one]
+  | w :: l, v => by
+    rw [List.map_cons, List.prod_cons, ← Matrix.mul_assoc, vecMulVec_mul_vecMulVec, vecMulVec_smul,
+      Matrix.smul_mul, trace_smul, trace_vecMulVec_mul_list_prod u l w, List.map_cons,
+      List.prod_cons, smul_eq_mul]
+
+/-- For `M ≥ 1`, `Tr(u w₁ᵀ ⋯ u w_Mᵀ) = ∏ⱼ (wⱼ⬝u)`. -/
+theorem trace_list_ofFn_vecMulVec {M : ℕ} (hM : 1 ≤ M) (u : κ → ℂ) (w : Fin M → κ → ℂ) :
+    trace (List.ofFn fun j => vecMulVec u (w j)).prod = ∏ j, (w j ⬝ᵥ u) := by
+  obtain ⟨M, rfl⟩ : ∃ M', M = M' + 1 := ⟨M - 1, by omega⟩
+  have hl : (List.ofFn fun i : Fin M => vecMulVec u (w i.succ)) =
+      (List.ofFn fun i : Fin M => w i.succ).map (vecMulVec u) := by
+    rw [List.map_ofFn]
+    rfl
+  have hr : (List.ofFn fun i : Fin M => w i.succ).map (· ⬝ᵥ u) =
+      List.ofFn fun i : Fin M => w i.succ ⬝ᵥ u := by
+    rw [List.map_ofFn]
+    rfl
+  rw [List.ofFn_succ, List.prod_cons, hl, trace_vecMulVec_mul_list_prod, hr, List.prod_ofFn,
+    Fin.prod_univ_succ]
+
+/-- **Trace of a product of rank-one Kronecker sums.** For `M ≥ 1` sites, matrices `fⱼ(I)`,
+vectors `gⱼ(I)` and `u`:
+`Tr((B ⊗ 1) ∏ⱼ Σ_I fⱼ(I) ⊗ u gⱼ(I)ᵀ) = Σ_{I₁,…,I_M} Tr(B f₁(I₁) ⋯ f_M(I_M)) ∏ⱼ (gⱼ(Iⱼ)⬝u)`. -/
+theorem trace_kronecker_mul_list_ofFn_sum {D M : ℕ} (hM : 1 ≤ M) (B : Matrix (Fin D) (Fin D) ℂ)
+    (f : Fin M → ι → Matrix (Fin D) (Fin D) ℂ) (g : Fin M → ι → κ → ℂ) (u : κ → ℂ) :
+    trace ((B ⊗ₖ (1 : Matrix κ κ ℂ)) *
+        (List.ofFn fun j => ∑ I, f j I ⊗ₖ vecMulVec u (g j I)).prod) =
+      ∑ I : Fin M → ι, trace (B * (List.ofFn fun j => f j (I j)).prod) *
+        ∏ j, (g j (I j) ⬝ᵥ u) := by
+  rw [list_ofFn_prod_sum, Matrix.mul_sum, trace_sum]
+  refine sum_congr rfl fun I _ => ?_
+  rw [← list_ofFn_prod_kronecker, ← mul_kronecker_mul, Matrix.one_mul, trace_kronecker,
+    trace_list_ofFn_vecMulVec hM]
+
+end RankOne
 
 end BosonicLean

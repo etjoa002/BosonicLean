@@ -1,0 +1,429 @@
+% Section 9: orthogonal symplectic matrices and unitary matrices, the squeezing matrix, the symplectic
+% diagonalization of positive definite symplectic matrices, the Bloch--Messiah decomposition, uniqueness of
+% the squeezing parameters, the polar decomposition.
+% GA-BMPS milestone B5.2 (chapter written 22 Oct 2026). New text for vetting (vetdenv).
+\providecommand{\cU}{\mathcal U}
+\providecommand{\cV}{\mathcal V}
+\providecommand{\Sp}{\mathrm{Sp}(2N,\R)}
+\providecommand{\Or}{\mathrm{O}(2N)}
+\providecommand{\Un}{\mathrm{U}(N)}
+\providecommand{\SpO}{\mathrm{Sp}(2N,\R)\cap\mathrm{O}(2N)}
+\providecommand{\spn}{\operatorname{span}}
+\begin{vetdenv}
+\section{The Bloch--Messiah decomposition}\label{sec:blochmessiah}
+
+Section~\ref{sec:secondquant} lifts unitary $N\times N$ matrices to Fock space; on phase space these unitaries are the
+orthogonal symplectic matrices, and every real symplectic matrix $S$ factors through them as $S=O\,\Sigma(r)\,O'$,
+with $O$ and $O'$ orthogonal and symplectic and $\Sigma(r)=\diag(e^{-r},e^{r})$ a diagonal squeezing matrix with
+$r\ge0$. In optics this says that every linear canonical transformation of $N$ modes is an interferometer, followed by
+$N$ single-mode squeezers, followed by a second interferometer. The singular values of $S$ are the $e^{\pm r_k}$, so the
+squeezing parameters are fixed up to order, while the orthogonal factors are not, and the polar decomposition of $S$
+follows from the factorization. The lift of the factorization to Fock space is planned for a later section of these notes.
+
+\medskip
+\noindent\textbf{Notation for this section.}
+\begin{center}
+\begin{tabular}{@{}L{0.3\textwidth}L{0.64\textwidth}@{}}
+$N$, $\Omega$, $I$ & number of modes, $N\ge1$; $\Omega=\Omega_N$ of Section~\ref{sec:covariance}; identity matrix\\
+$v^Tw$ & Euclidean inner product of column vectors in $\R^{2N}$\\
+$\Sp$, $\Or$, $\Un$ & symplectic, orthogonal and unitary groups (Lemma~\ref{lem:bm-symplectic})\\
+$O$, $O'$, $\tilde O$, $\tilde O'$ & orthogonal matrices, the factors of a decomposition\\
+$\cU=X+iY$, $O_\cU$ & a unitary matrix with real and imaginary parts $X,Y$; its orthogonal symplectic matrix
+(Definition~\ref{def:bm-osp})\\
+$r$, $s$, $\Sigma(r)$ & squeezing parameters in $\R^N$, $r\ge0$ meaning $r_k\ge0$ for every $k$; squeezing matrix
+(Definition~\ref{def:bm-sigma})\\
+$S$, $M$ & a symplectic matrix; a positive definite symplectic matrix\\
+$\ker(M-\mu)$ & the eigenspace of $M$ for the eigenvalue $\mu$\\
+$f_k$, $V_k$ & vectors of an eigenbasis; the span of $f_1,\ldots,f_k,-\Omega f_1,\ldots,-\Omega f_k$\\
+$P$, $Q$ & the factors of the polar decomposition (Corollary~\ref{cor:bm-polar})\\
+\end{tabular}
+\end{center}
+The roman $\mathrm O$ denotes the orthogonal group, an italic $O$ a matrix. The letters $O$, $M$, $P$, $r$ and $s$
+do not carry their meanings from Section~\ref{sec:secondquant}.
+
+\subsection{Orthogonal symplectic matrices}
+
+Throughout, $N\ge1$, and phase-space vectors are the columns $(q_1,\ldots,q_N,p_1,\ldots,p_N)^T$ of $\R^{2N}$, with the
+positions first. The symplectic form is that of Section~\ref{sec:covariance},
+\[
+ \Omega=\Omega_N=\begin{pmatrix}0&I\\-I&0\end{pmatrix},\qquad\Omega^T=\Omega^{-1}=-\Omega .
+\]
+The \emph{symplectic group} $\Sp$ is the group of the symplectic matrices of
+Section~\ref{sec:covariance}, $S\Omega S^T=\Omega$; $\Or$ is the orthogonal group and $\Un$ the group of unitary
+$N\times N$ matrices. A real matrix $A$ is \emph{positive definite} if it is symmetric and $v^TAv>0$ for every $v\ne0$.
+Both signs of the standard symplectic matrix occur in the literature, and the first statement of the next lemma
+shows that they define the same group.
+
+\begin{lemma}[The symplectic group]\label{lem:bm-symplectic}
+Let $S$ be a real $2N\times2N$ matrix and $J=-\Omega=\left(\begin{smallmatrix}0&-I\\I&0\end{smallmatrix}\right)$.
+Then $S\Omega S^T=\Omega$ if and only if $SJS^T=J$, if and only if $S^T\Omega S=\Omega$. Every $S\in\Sp$ is invertible.
+\end{lemma}
+
+\begin{proof}
+The first equivalence is multiplication by $-1$. If $S\Omega S^T=\Omega$, then $\det(S)^2\det\Omega=\det\Omega$ and
+$\det\Omega=1$, so $S$ is invertible; inverting both sides and using $\Omega^{-1}=-\Omega$ gives
+$(S^T)^{-1}\Omega S^{-1}=\Omega$, that is, $S^T\Omega S=\Omega$. The converse is the same argument for $S^T$.
+\end{proof}
+
+We identify $\C^N$ with $\R^{2N}$ by $q+ip\leftrightarrow(q,p)$, the identification behind
+$a=(q+ip)/\sqrt2$ in~\cite[(A18)]{tjoacirac}. Multiplication by $i$ sends $(q,p)$ to $(-p,q)$, so it is the matrix
+$-\Omega$. For $u\leftrightarrow f$ and $u'\leftrightarrow f'$, the Hermitian product of $\C^N$, antilinear in its first
+argument, is
+\begin{equation}\label{eq:bm-herm}
+ u^*u'=f^Tf'+i\,f^T\Omega f' .
+\end{equation}
+A complex matrix acts on $\C^N$ as a real-linear map, and its real $2N\times2N$ matrix is the following.
+
+\begin{definition}[Orthogonal symplectic matrix of a unitary]\label{def:bm-osp}
+For $\cU=X+iY\in\Un$, with $X$ and $Y$ real $N\times N$ matrices, the \emph{orthogonal symplectic matrix of $\cU$} is
+\[
+ O_\cU=\begin{pmatrix}X&-Y\\Y&X\end{pmatrix},\qquad
+ O_\cU\begin{pmatrix}q\\p\end{pmatrix}=\begin{pmatrix}Xq-Yp\\Yq+Xp\end{pmatrix}\ \leftrightarrow\ \cU(q+ip).
+\]
+\end{definition}
+
+This is the block form of~\cite[(A14)]{tjoacirac}, with $\cU=X+iY$ as in~\cite[(A16)]{tjoacirac}. That $O_\cU$ is
+orthogonal and symplectic is part of Theorem~\ref{thm:bm-unitary}, which rests on a block computation.
+
+\begin{lemma}[Commutant of $\Omega$]\label{lem:bm-commute}
+An orthogonal matrix $O$ lies in $\Sp$ if and only if $O\Omega=\Omega O$. A real $2N\times2N$ matrix $O$ satisfies
+$O\Omega=\Omega O$ if and only if $O=\left(\begin{smallmatrix}X&-Y\\Y&X\end{smallmatrix}\right)$ for some real $N\times N$
+matrices $X$ and $Y$, that is, if and only if $O$ is the real matrix of $X+iY$ acting on $\C^N\cong\R^{2N}$.
+\end{lemma}
+
+\begin{proof}
+For orthogonal $O$, multiplying $O\Omega O^T=\Omega$ on the right by $O$ gives $O\Omega=\Omega O$, and conversely.
+For $O=\left(\begin{smallmatrix}A&B\\C&D\end{smallmatrix}\right)$,
+\[
+ O\Omega=\begin{pmatrix}-B&A\\-D&C\end{pmatrix},\qquad \Omega O=\begin{pmatrix}C&D\\-A&-B\end{pmatrix},
+\]
+which agree exactly when $C=-B$ and $D=A$, that is, when $O$ has the stated form with $X=A$ and $Y=C$.
+\end{proof}
+
+\begin{theorem}[Orthogonal symplectic and unitary matrices;~{\cite[(A14)--(A16)]{tjoacirac}}]\label{thm:bm-unitary}
+\begin{enumerate}
+\item[(a)] For all $\cU,\cV\in\Un$: $O_{\cU\cV}=O_\cU O_\cV$, $O_I=I$, $O_{\cU^*}=O_\cU^T$, and $\cU\mapsto O_\cU$ is
+injective. Moreover $O_{-\cU}=-O_\cU$, and $O_{iI}=-\Omega$.
+\item[(b)] $O_\cU\in\SpO$ for every $\cU\in\Un$, and a matrix $O$ lies in $\SpO$ if and only if $O=O_\cU$ for some
+$\cU\in\Un$. In blocks, $O\in\SpO$ if and only if $O=\left(\begin{smallmatrix}X&-Y\\Y&X\end{smallmatrix}\right)$ with $X$,
+$Y$ real and $X+iY\in\Un$.
+\item[(c)] The map that sends $O\in\SpO$, written in $N\times N$ blocks as
+$O=\left(\begin{smallmatrix}X&B\\Y&D\end{smallmatrix}\right)$, to $X+iY$ is a group isomorphism $\SpO\to\Un$, with
+inverse $\cU\mapsto O_\cU$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The block formula of Definition~\ref{def:bm-osp} assigns a real matrix to every complex matrix $X+iY$, and the
+computations in (a) hold for all complex matrices.
+\begin{enumerate}
+\item[(a)] $(X_1+iY_1)(X_2+iY_2)=(X_1X_2-Y_1Y_2)+i(X_1Y_2+Y_1X_2)$, and the block product of the two real matrices has
+the same blocks. For $I$ the blocks are $I$ and $0$. The adjoint $X^T-iY^T$ has the real matrix
+$\left(\begin{smallmatrix}X^T&Y^T\\-Y^T&X^T\end{smallmatrix}\right)=O_\cU^T$. Injectivity holds because $X$ and $Y$ are
+blocks of $O_\cU$. The real matrix is linear in $X+iY$, which gives $O_{-\cU}=-O_\cU$, and $iI$ has $X=0$, $Y=I$.
+\item[(b)] By (a), $O_\cU^TO_\cU=O_{\cU^*\cU}=O_I=I$, so $O_\cU$ is orthogonal; it commutes with $\Omega$ by
+Lemma~\ref{lem:bm-commute}, so it is symplectic by the same lemma. Conversely, an $O\in\SpO$ commutes with $\Omega$,
+so $O=\left(\begin{smallmatrix}X&-Y\\Y&X\end{smallmatrix}\right)$, and $O^TO=I$ is the real form of
+\[
+ (X+iY)^*(X+iY)=(X^TX+Y^TY)+i(X^TY-Y^TX)=I,
+\]
+the identity~\cite[(A15), (A16)]{tjoacirac}; by injectivity, $X+iY$ is unitary and $O=O_{X+iY}$.
+\item[(c)] By (b) the map is the inverse of the bijection $\cU\mapsto O_\cU$ from $\Un$ onto $\SpO$, which is a
+homomorphism by (a).\qedhere
+\end{enumerate}
+\end{proof}
+
+The orthogonal symplectic matrices are the \emph{passive} transformations: on quadrature operators
+$\hat q_j=(a_j+a_j^\dagger)/\sqrt2$ and $\hat p_j=(a_j-a_j^\dagger)/(i\sqrt2)$ they preserve
+$\sum_j(\hat q_j^2+\hat p_j^2)=2\ntot+N$, hence the total particle number.
+
+If a unitary $\mathsf V$ on Fock space
+implements $O\in\SpO$ in the sense that $\mathsf V^\dagger\hat{\mathbf R}\mathsf V=O\hat{\mathbf R}$ for the column
+$\hat{\mathbf R}=(\hat q_1,\ldots,\hat q_N,\hat p_1,\ldots,\hat p_N)^T$, then on $a=(\hat q+i\hat p)/\sqrt2$ it acts by
+$\mathsf V^\dagger a\mathsf V=(X+iY)a$~\cite[(A17)--(A19)]{tjoacirac}. This is the convention $\mathsf U^\dagger a_j\mathsf U=
+\sum_k\cU_{jk}a_k$ of~\cite[(29), (A26)]{tjoacirac} with $\cU=X+iY$, which Theorem~\ref{thm:sq-unitary}(c) proves for
+$\Gamma(\cU)$; both $\cU\mapsto O_\cU$ and $\cU\mapsto\Gamma(\cU)$ are multiplicative. The lift to Fock
+space, the statement that $\Gamma(\cU)$ implements $O_\cU$, is planned for a later section of these notes. The other parametrization
+$\left(\begin{smallmatrix}X&Y\\-Y&X\end{smallmatrix}\right)$ of the same group is $O_{\bar\cU}$, $\bar\cU=X-iY$, and
+gives $(X-iY)a$ in this reading.
+
+\subsection{The squeezing matrix}
+
+\begin{definition}[Squeezing matrix]\label{def:bm-sigma}
+For $r=(r_1,\ldots,r_N)\in\R^N$, the \emph{squeezing matrix} is
+$\Sigma(r)=\diag(e^{-r_1},\ldots,e^{-r_N},e^{r_1},\ldots,e^{r_N})$.
+\end{definition}
+
+It scales the position $q_k$ by $e^{-r_k}$ and the momentum $p_k$ by $e^{r_k}$, as the single-mode squeezers
+of~\cite[(A10), (A28)--(A29)]{tjoacirac}. In coordinates with the momenta first, the same transformation has the
+matrix $\Sigma(-r)$.
+
+\begin{lemma}[Squeezing matrices]\label{lem:bm-sigma}
+For all $r,s\in\R^N$: $\Sigma(r)\in\Sp$, $\Sigma(r+s)=\Sigma(r)\Sigma(s)$, $\Sigma(0)=I$, $\Sigma(r)^T=\Sigma(r)$,
+$\Sigma(r)$ is positive definite, and $\Sigma(-r)\Sigma(r)=\Sigma(r)\Sigma(-r)=I$. In particular $\Sigma(r)^2=\Sigma(2r)$.
+\end{lemma}
+
+\begin{proof}
+All matrices involved are diagonal with positive entries, and $e^{-r_k}e^{-s_k}=e^{-(r_k+s_k)}$. With
+$D=\diag(e^{r_1},\ldots,e^{r_N})$,
+\[
+ \Sigma(r)\,\Omega\,\Sigma(r)^T=\begin{pmatrix}D^{-1}&0\\0&D\end{pmatrix}\begin{pmatrix}0&I\\-I&0\end{pmatrix}
+ \begin{pmatrix}D^{-1}&0\\0&D\end{pmatrix}=\begin{pmatrix}0&D^{-1}D\\-DD^{-1}&0\end{pmatrix}=\Omega .\qedhere
+\]
+\end{proof}
+
+\subsection{Positive definite symplectic matrices}\label{sec:bm-positive}
+
+The squeezing parameters of $S$ are read off from the positive definite matrix $M=SS^T$, which forgets the
+orthogonal factor on the right. The next two lemmas collect what is used about $M$.
+
+\begin{lemma}[The matrix $SS^T$]\label{lem:bm-positive}
+For $S\in\Sp$, $SS^T$ is positive definite and lies in $\Sp$. Every symmetric $M\in\Sp$ satisfies
+$M\Omega=\Omega M^{-1}$.
+\end{lemma}
+
+\begin{proof}
+$S^T\in\Sp$ by Lemma~\ref{lem:bm-symplectic}, so $SS^T\in\Sp$; it is symmetric, and $v^TSS^Tv=\lvert S^Tv\rvert^2>0$ for
+$v\ne0$ because $S$ is invertible. If $M=M^T\in\Sp$, then $M\Omega M=\Omega$, which is $M\Omega=\Omega M^{-1}$.
+\end{proof}
+
+A subspace $V\subseteq\R^{2N}$ is \emph{isotropic} (with respect to $\Omega$) if $v^T\Omega w=0$ for all $v,w\in V$.
+
+\begin{lemma}[Eigenspaces;~{\cite[(A6)--(A7)]{tjoacirac}}]\label{lem:bm-eigen}
+Every eigenvalue of a matrix $M\in\Sp$ is nonzero. Let $M\in\Sp$ be symmetric.
+\begin{enumerate}
+\item[(i)] Let $\mu\ne0$. If $Mv=\mu v$, then $M\Omega v=\mu^{-1}\Omega v$, and $\Omega$ maps $\ker(M-\mu)$ onto
+$\ker(M-\mu^{-1})$.
+\item[(ii)] If $Mv=\mu v$, $Mw=\nu w$ and $\mu\nu\ne1$, then $v^T\Omega w=0$. If $M$ is positive definite and $\mu\ne1$,
+then $\ker(M-\mu)$ is isotropic.
+\item[(iii)] $\Omega$ maps $\ker(M-1)$ into itself.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+$M$ is invertible (Lemma~\ref{lem:bm-symplectic}), so its eigenvalues are nonzero.
+\begin{enumerate}
+\item[(i)] $M^{-1}v=\mu^{-1}v$, so $M\Omega v=\Omega M^{-1}v=\mu^{-1}\Omega v$ by Lemma~\ref{lem:bm-positive}. Applied to $\mu^{-1}$, this shows that $\Omega$ maps
+$\ker(M-\mu^{-1})$ into $\ker(M-\mu)$; so every $w\in\ker(M-\mu^{-1})$ is $\Omega(-\Omega w)$ with $-\Omega w\in
+\ker(M-\mu)$, since $\Omega^2=-I$.
+\item[(ii)] If $w=0$ there is nothing to prove; otherwise $\nu\ne0$, and by Lemma~\ref{lem:bm-positive}
+\[
+ \mu\,v^T\Omega w=(Mv)^T\Omega w=v^TM\Omega w=v^T\Omega M^{-1}w=\nu^{-1}v^T\Omega w,
+\]
+with $\mu\ne\nu^{-1}$. For the second statement, if $\ker(M-\mu)\ne0$, then $\mu$ is an eigenvalue of the positive definite $M$, so $\mu>0$ and $\mu^2\ne1$ when $\mu\ne1$; otherwise there is nothing to prove.
+\item[(iii)] This is (i) with $\mu=1$.\qedhere
+\end{enumerate}
+\end{proof}
+
+So the eigenvalues of $M$ come in pairs $\mu,\mu^{-1}$, and we look for an orthonormal basis of eigenvectors of the
+form $f_k,-\Omega f_k$. For $\mu<1$ any orthonormal basis of $\ker(M-\mu)$ could serve as the $f_k$, by (ii). On
+$\ker(M-1)$, which (iii) makes a complex subspace of $\C^N$, the $f_k$ must be orthonormal for the Hermitian
+product~\eqref{eq:bm-herm}. The construction below chooses one vector at a time and treats every eigenvalue
+alike; it uses only (i), an eigenvector of a symmetric matrix on an invariant subspace, and orthogonal complements.
+
+\begin{lemma}[Orthonormal families $f_k,-\Omega f_k$, and invariant subspaces]\label{lem:bm-family}
+For vectors $f_1,\ldots,f_k\in\R^{2N}$ let
+\[
+ V_k=\spn\{f_1,\ldots,f_k,-\Omega f_1,\ldots,-\Omega f_k\}.
+\]
+\begin{enumerate}
+\item[(a)] If $f_1,\ldots,f_k$ are orthonormal and $f_i^T\Omega f_j=0$ for all $i,j$, then the $2k$ vectors $f_j$ and
+$-\Omega f_j$, $j\le k$, are orthonormal, and $\dim V_k^\perp+2k=2N$.
+\item[(b)] If $M\in\Sp$ is symmetric and $Mf_j=\mu_jf_j$ for $j\le k$, then $v\in V_k^\perp$ implies $Mv\in V_k^\perp$
+and $\Omega v\in V_k^\perp$.
+\item[(c)] If $M\in\Sp$ is symmetric, $f_1,\ldots,f_N$ are orthonormal, $f_i^T\Omega f_j=0$ for all $i,j$, and
+$Mf_j=\mu_jf_j$ for every $j$, then the matrix $O$ with the columns $f_1,\ldots,f_N,-\Omega f_1,\ldots,-\Omega f_N$ lies
+in $\SpO$, and $MO=O\diag(\mu_1,\ldots,\mu_N,\mu_1^{-1},\ldots,\mu_N^{-1})$.
+\item[(d)] If $M$ is positive definite and $W\ne0$ is a subspace of $\R^{2N}$ with $MW\subseteq W$, there are $v\in W$
+with $v^Tv=1$ and $\mu>0$ with $Mv=\mu v$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+\begin{enumerate}
+\item[(a)] $\Omega$ is orthogonal, so $(\Omega f_i)^T(\Omega f_j)=f_i^Tf_j=\delta_{ij}$, and $f_i^T(-\Omega f_j)=0$ by
+hypothesis. Orthonormal vectors are linearly independent, so $\dim V_k=2k$.
+\item[(b)] $V_k$ is invariant under $M$, since $M(-\Omega f_j)=\mu_j^{-1}(-\Omega f_j)$ by Lemma~\ref{lem:bm-eigen}(i)
+when $f_j\ne0$, and then $\mu_j\ne0$,
+and under $\Omega$, since $\Omega f_j=-(-\Omega f_j)$ and $\Omega(-\Omega f_j)=f_j$. For $v\in V_k^\perp$ and $w\in V_k$,
+$w^TMv=(Mw)^Tv=0$ because $M$ is symmetric, and $w^T\Omega v=-(\Omega w)^Tv=0$ because $\Omega^T=-\Omega$.
+\item[(c)] The columns are orthonormal by (a), so $O^TO=I$. The blocks of $O^T\Omega O$ are $f_i^T\Omega f_j=0$,
+$f_i^T\Omega(-\Omega f_j)=f_i^Tf_j=\delta_{ij}$, $(-\Omega f_i)^T\Omega f_j=f_i^T\Omega^2f_j=-\delta_{ij}$ and
+$(-\Omega f_i)^T\Omega(-\Omega f_j)=-f_i^T\Omega^3f_j=f_i^T\Omega f_j=0$, so $O^T\Omega O=\Omega$ and $O\in\Sp$ by
+Lemma~\ref{lem:bm-symplectic}. Each $\mu_j$ is nonzero, since $f_j\ne0$ and $M$ is invertible
+(Lemma~\ref{lem:bm-eigen}), and the eigenvalue equation for $MO$ holds column by column, by
+Lemma~\ref{lem:bm-eigen}(i) for the second half.
+\item[(d)] The restriction of $M$ to $W$ is a symmetric linear map of $W\ne0$, so by the spectral theorem it has a
+unit eigenvector $v\in W$, with eigenvalue $\mu=v^TMv>0$.\qedhere
+\end{enumerate}
+\end{proof}
+
+The sign of the second block of columns matters: with the columns $f_k$ and $+\Omega f_k$ the same computation gives
+$O^T\Omega O=-\Omega$.
+
+\begin{theorem}[Orthogonal symplectic diagonalization of positive definite symplectic matrices;~{\cite[(A8)--(A10)]{tjoacirac}}]\label{thm:bm-diag}
+Let $M\in\Sp$ be positive definite.
+\begin{enumerate}
+\item[(a)] For every $k\le N$ there are orthonormal vectors $f_1,\ldots,f_k$ and numbers $\mu_1,\ldots,\mu_k\in(0,1]$
+with $Mf_j=\mu_jf_j$ for every $j$ and $f_i^T\Omega f_j=0$ for all $i,j$.
+\item[(b)] There are orthonormal $f_1,\ldots,f_N$ with $f_j^T\Omega f_k=0$ for all $j,k$ and $r\in\R^N$, $r\ge0$, with
+$Mf_k=e^{-2r_k}f_k$, such that the matrix $O$ with the columns $f_1,\ldots,f_N,-\Omega f_1,\ldots,-\Omega f_N$ lies in
+$\SpO$ and $M=O\,\Sigma(r)^2\,O^T$. In particular $M=O\,\Sigma(r)^2\,O^T$ for some $O\in\SpO$ and some $r\ge0$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\begin{enumerate}
+\item[(a)] Induction on $k$; for $k=0$ the family is empty. Given a family for some $k<N$, the subspace
+$W=V_k^\perp$ has dimension $2N-2k>0$ and is invariant under $M$ and $\Omega$ (Lemma~\ref{lem:bm-family}(a),(b)).
+By Lemma~\ref{lem:bm-family}(d) it contains a unit eigenvector $v$ of $M$ with an eigenvalue $\mu>0$. If $\mu\le1$, put $f_{k+1}=v$ and $\mu_{k+1}=\mu$. Otherwise put
+$f_{k+1}=\Omega v$, a unit vector in $W$ with the eigenvalue $\mu_{k+1}=\mu^{-1}<1$ (Lemma~\ref{lem:bm-eigen}(i)).
+Since $f_{k+1}$ is orthogonal to $f_j$ and to $-\Omega f_j$ for $j\le k$, we get $f_{k+1}^Tf_j=f_{k+1}^T\Omega f_j=0$ and
+$f_j^T\Omega f_{k+1}=-(\Omega f_j)^Tf_{k+1}=0$; and $f_{k+1}^T\Omega f_{k+1}=0$ because $\Omega$ is antisymmetric.
+\item[(b)] Take $k=N$ in (a) and $r_k=-\tfrac12\log\mu_k$, which is $\ge0$ because $\mu_k\in(0,1]$. Then, by
+Lemma~\ref{lem:bm-sigma},
+\[
+ \diag(\mu_1,\ldots,\mu_N,\mu_1^{-1},\ldots,\mu_N^{-1})=\Sigma(2r)=\Sigma(r)^2,
+\]
+so Lemma~\ref{lem:bm-family}(c) gives $O\in\SpO$ and $MO=O\Sigma(r)^2$, that is, $M=O\Sigma(r)^2O^T$.\qedhere
+\end{enumerate}
+\end{proof}
+
+Read through~\eqref{eq:bm-herm}, the conditions on the $f_k$ say that the complex vectors $u_k\leftrightarrow f_k$
+form an orthonormal basis of $\C^N$, and $-\Omega f_k\leftrightarrow iu_k$; so $O=O_\cU$ for the unitary matrix $\cU$
+with the columns $u_k$, as Theorem~\ref{thm:bm-unitary} requires.
+
+\subsection{The decomposition}
+
+\begin{theorem}[Bloch--Messiah decomposition;~{\cite[(A11)]{tjoacirac}}]\label{thm:bm-decomp}
+Every $S\in\Sp$ can be written as $S=O\,\Sigma(r)\,O'$ with $O,O'\in\SpO$ and $r\in\R^N$, $r\ge0$. Moreover, if
+$S\in\Sp$, $O\in\SpO$, $r\in\R^N$ and $SS^T=O\Sigma(r)^2O^T$, then $\Sigma(-r)O^TS\in\SpO$.
+\end{theorem}
+
+\begin{proof}
+We prove the second statement first. Put $O'=\Sigma(-r)O^TS$. It is a product of symplectic matrices, $O^T=O^{-1}$
+being symplectic, and it is orthogonal: by Lemma~\ref{lem:bm-sigma},
+\[
+ O'O'^T=\Sigma(-r)O^TSS^TO\,\Sigma(-r)=\Sigma(-r)\Sigma(r)^2\Sigma(-r)=I .
+\]
+For the first statement, Lemma~\ref{lem:bm-positive} and Theorem~\ref{thm:bm-diag} give $O\in\SpO$ and $r\ge0$ with
+$SS^T=O\Sigma(r)^2O^T$; with this $O'$, $O\Sigma(r)O'=O\Sigma(r)\Sigma(-r)O^TS=S$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering\vetdcolor
+\begin{tikzpicture}[x=1cm,y=0.8cm]
+ \foreach \y/\lab in {0/1,-1/2,-3/N} {
+   \draw (0,\y) -- (9,\y);
+   \node[left] at (0,\y) {mode $\lab$};
+ }
+ \node at (4.5,-1.95) {$\vdots$};
+ \node[tens,minimum height=3.4cm,minimum width=1.4cm] at (1.8,-1.5) {$O'$};
+ \foreach \y/\lab in {0/1,-1/2,-3/N}
+   \node[tens,minimum width=1.25cm] at (4.5,\y) {$r_{\lab}$};
+ \node[tens,minimum height=3.4cm,minimum width=1.4cm] at (7.2,-1.5) {$O$};
+ \node[note,align=center] at (1.8,-4.25) {interferometer\\(applied first)};
+ \node[note,align=center] at (4.5,-4.25) {single-mode\\squeezers $\Sigma(r)$};
+ \node[note,align=center] at (7.2,-4.25) {interferometer};
+\end{tikzpicture}
+\caption{The standard optical reading of Theorem~\ref{thm:bm-decomp}. A phase-space vector $v$ is mapped to
+$Sv=O(\Sigma(r)(O'v))$: first the passive transformation $O'$, then on each mode $k$ the squeezer that scales $q_k$ by
+$e^{-r_k}$ and $p_k$ by $e^{r_k}$, then the passive transformation $O$.}\label{fig:bm-optics}
+\end{figure}
+
+The squeezing parameters are determined by $S$ up to order, through the singular values of $S$, the square roots of
+the eigenvalues of $S^TS$ counted with multiplicity.
+
+\begin{proposition}[Singular values]\label{prop:bm-singular}
+\begin{enumerate}
+\item[(a)] Let $O,O'\in\Or$, $r\in\R^N$ and $S=O\Sigma(r)O'$. Then $SS^T$ and $S^TS$ have the characteristic polynomial
+$\prod_{k=1}^N(t-e^{-2r_k})(t-e^{2r_k})$, and the singular values of $S$, with multiplicity, are
+$e^{-r_1},\ldots,e^{-r_N},e^{r_1},\ldots,e^{r_N}$. If $r\ge0$, the map $t\mapsto\frac12\lvert\log t\rvert$ sends the
+multiset of roots of this polynomial to two copies of the multiset $\{r_1,\ldots,r_N\}$.
+\item[(b)] Let $O,O',\tilde O,\tilde O'\in\Or$ and $r,\tilde r\in\R^N$ with $r,\tilde r\ge0$, and let $S=O\Sigma(r)O'=\tilde
+O\Sigma(\tilde r)\tilde O'$. Then $\{r_k\}=\{\tilde r_k\}$ as multisets, and $\tilde r_k=r_{\pi(k)}$ for a permutation $\pi$
+of $\{1,\ldots,N\}$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\begin{enumerate}
+\item[(a)] $SS^T=O\Sigma(2r)O^T$ and $S^TS=O'^T\Sigma(2r)O'$ are similar to the diagonal matrix $\Sigma(2r)$, whose
+characteristic polynomial is the product. The singular values are the square roots of its roots, and
+$\frac12\lvert\log e^{\mp2r_k}\rvert=r_k$ for $r_k\ge0$.
+\item[(b)] By (a), the two decompositions give the same polynomial, so two copies of $\{r_k\}$ equal two copies of
+$\{\tilde r_k\}$. Each value occurs in two copies of a multiset exactly twice as often as in the multiset, so
+$\{r_k\}=\{\tilde r_k\}$; two families of $N$ numbers with the same multiset of values differ by a permutation of the
+indices.\qedhere
+\end{enumerate}
+\end{proof}
+
+\begin{proposition}[Non-uniqueness of the orthogonal factors]\label{prop:bm-nonunique}
+$-I\in\SpO$, and $O\in\SpO$ implies $-O\in\SpO$. Every $O\in\Or$ satisfies $-O\ne O$. If $S=O\Sigma(r)O'$, then
+$S=(-O)\Sigma(r)(-O')$. Hence the orthogonal factors of Theorem~\ref{thm:bm-decomp} are never unique.
+\end{proposition}
+
+\begin{proof}
+$(-O)\Omega(-O)^T=O\Omega O^T$, $(-O)(-O)^T=OO^T$, $(-O)\Sigma(r)(-O')=O\Sigma(r)O'$, and $I\in\SpO$. If $-O=O$, then
+$O=0$, which is not orthogonal since $N\ge1$.
+\end{proof}
+
+The non-uniqueness is larger when squeezing parameters coincide. Let $r_j=r_k=r_0$ for two modes $j\ne k$, and let
+$\cU=X+iY$ be a unitary matrix acting on these two modes only. On the coordinates $(q_j,q_k,p_j,p_k)$,
+$\Sigma(r)=\diag(e^{-r_0}I_2,e^{r_0}I_2)$ and
+\[
+ \Sigma(r)\,O_\cU-O_\cU\,\Sigma(r)=(e^{r_0}-e^{-r_0})\begin{pmatrix}0&Y\\Y&0\end{pmatrix},
+\]
+so for $r_0>0$ the unitaries of the two modes that commute with $\Sigma(r)$ are exactly the real ones, $Y=0$, and for
+$r_0=0$ all of them commute. Each such $\cU$ gives the decomposition $S=(OO_\cU)\Sigma(r)(O_\cU^TO')$. The exchange of two
+modes, $(q_j,p_j)\leftrightarrow(q_k,p_k)$, is $O_\cU$ for a permutation matrix $\cU$ and exchanges $r_j$ and $r_k$. For
+$r=0$, that is, for $S\in\SpO$, every $O\in\SpO$ occurs, with $O'=O^TS$.
+
+\begin{corollary}[Polar decomposition;~{\cite[(A4)--(A5)]{tjoacirac}}]\label{cor:bm-polar}
+Let $O,O'\in\SpO$, $r\in\R^N$, $S=O\Sigma(r)O'$ and $P=O\Sigma(r)O^T$. Then $P$ is positive definite, $P\in\Sp$,
+$P^2=SS^T$, $P^{-1}S=OO'$, $OO'\in\SpO$ and $S=P\,(OO')$. If only $O,O'\in\Or$, still $(SS^T)^{1/2}=P$, where
+$(\cdot)^{1/2}$ is the positive semidefinite square root. For every $S\in\Sp$, $P=(SS^T)^{1/2}$ is positive definite and
+lies in $\Sp$, $Q=P^{-1}S$ lies in $\SpO$, and $S=PQ$. If a real $2N\times2N$ matrix $S$ equals $P'Q'$ with $P'$ positive
+definite and $Q'\in\Or$, then $P'=(SS^T)^{1/2}$ and $Q'=((SS^T)^{1/2})^{-1}S$.
+\end{corollary}
+
+\begin{proof}
+$P$ is conjugate to $\Sigma(r)$ by the orthogonal matrix $O$, so it is symmetric with the positive eigenvalues
+$e^{\pm r_k}$, and it is a product of symplectic matrices. Since $O'O'^T=I$,
+$P^2=O\Sigma(r)^2O^T=O\Sigma(r)O'O'^T\Sigma(r)O^T=SS^T$, which uses only the orthogonality of $O$ and $O'$; and
+$P^{-1}S=O\Sigma(-r)O^TO\Sigma(r)O'=OO'$, a product in the group $\SpO$. A positive semidefinite matrix has exactly
+one positive semidefinite square root, so $P=(SS^T)^{1/2}$. For $S\in\Sp$, Theorem~\ref{thm:bm-decomp} provides the
+factors. If $S=P'Q'$ as stated, then $SS^T=P'Q'Q'^TP'=P'^2$, so $P'=(SS^T)^{1/2}$, and $Q'=P'^{-1}S$ because $P'$ is
+invertible.
+\end{proof}
+
+\subsection*{Notes and references}
+
+Tjoa and Cirac~\cite[App.~A]{tjoacirac} define $P=(SS^T)^{1/2}$ and $O=P^{-1}S$ (A4), our $Q$, with $P$ positive and
+symplectic and $O$ orthogonal symplectic (A5). As $\Omega$ maps an eigenvector of $P$ for $\lambda$ to one for
+$\lambda^{-1}$ (A7), they arrange the reciprocal pairs into an orthonormal symplectic eigenbasis, in their notation
+$P=O_{\mathsf U}\Sigma O_{\mathsf U}^T$ with $r_j\ge0$ (A8)--(A10), and with $O_{\mathsf W}=O_{\mathsf U}^TO$ conclude
+$S=O_{\mathsf U}\Sigma O_{\mathsf W}$ (A11). Their $O_{\mathsf U}$ and $O_{\mathsf W}$ are our $O$ and $O'$, and their
+$\Sigma$ is our $\Sigma(r)$; they call the $e^{\pm r_j}$ the symplectic singular values of $S$.
+
+We apply the same pairing to $M=SS^T$ instead of $P$, so the existence proof takes no square root; the arrangement
+into an orthonormal symplectic eigenbasis is the induction of Theorem~\ref{thm:bm-diag}, which includes the
+eigenvalue $1$, where the basis must be orthonormal for~\eqref{eq:bm-herm}. Corollary~\ref{cor:bm-polar} recovers
+(A4)--(A5), with $O'=O^TQ$, and Proposition~\ref{prop:bm-singular} makes the uniqueness of $r$ precise.
+
+For one mode, $S\Omega S^T=(\det S)\,\Omega$, so $\mathrm{Sp}(2,\R)=\mathrm{SL}(2,\R)$ and
+$\mathrm{Sp}(2,\R)\cap\mathrm O(2)=\mathrm{SO}(2)$, with $O_{e^{i\theta}}$ the rotation by $\theta$. The square root of
+a positive definite $2\times2$ matrix $M$ of determinant $1$ is $(M+I)/\sqrt{\operatorname{tr}M+2}$, since
+$(M+I)^2=(\operatorname{tr}M+2)M$ by the Cayley--Hamilton theorem.
+
+The decomposition carries the names of Bloch and Messiah~\cite{bm}, whose paper concerns the canonical form of an
+antisymmetric tensor and its application to the theory of superconductivity; \vetx{it proves the canonical form of
+the fermionic Bogoliubov transformation, the fermionic analogue of the decomposition that carries their name.} Braunstein~\cite{braunstein} decomposes a linear optical circuit into an interferometer, single-mode squeezers
+and a second interferometer through the Bloch--Messiah reduction, and is the reference that~\cite{tjoacirac} gives for
+the decomposition. In their account of the real symplectic groups in quantum mechanics and optics, Arvind, Dutta, Mukunda and
+Simon~\cite[Sec.~IV]{adms} write every real symplectic matrix as $S(X_1,Y_1)\,D(\kappa)\,S(X_2,Y_2)$, with unitary outer
+factors and a diagonal positive middle factor, without the name of Bloch and Messiah. \vetx{The same section identifies the
+orthogonal symplectic matrices with the unitary group, as in Theorem~\ref{thm:bm-unitary}~\cite[Sec.~IV, Eq.~(50)]{adms}, with
+the unitary $X-iY$ of the other parametrization noted after that theorem, and gives the polar decomposition of
+Corollary~\ref{cor:bm-polar}~\cite[Sec.~IV, Eq.~(60)]{adms}; see also Simon, Mukunda and Dutta~\cite{smd}.}
+\end{vetdenv}

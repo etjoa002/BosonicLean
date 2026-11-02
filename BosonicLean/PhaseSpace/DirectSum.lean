@@ -13,12 +13,15 @@ open Matrix
 
 namespace Gaussian
 
-private def phaseSplitEquiv (n m : Nat) :
+/-- The splitting of the coordinates of `n + m` modes into those of the two subsystems, as an
+equivalence; its underlying function is `splitPhase` (`phaseSplitEquiv_coe`). -/
+def phaseSplitEquiv (n m : Nat) :
     PhaseIndex (n + m) ≃ PhaseIndex n ⊕ PhaseIndex m :=
   (Equiv.sumCongr finSumFinEquiv.symm finSumFinEquiv.symm).trans
     (Equiv.sumSumSumComm (Fin n) (Fin m) (Fin n) (Fin m))
 
-private lemma phaseSplitEquiv_coe (n m : Nat) :
+/-- The equivalence `phaseSplitEquiv` is `splitPhase`. -/
+lemma phaseSplitEquiv_coe (n m : Nat) :
     (phaseSplitEquiv n m : PhaseIndex (n + m) → PhaseIndex n ⊕ PhaseIndex m) =
       splitPhase := by
   funext i
@@ -55,7 +58,8 @@ private lemma posSemidef_blocks_iff {u v : Type*} [Fintype u] [Fintype v]
         (star (x ∘ Sum.inr) ⬝ᵥ (B *ᵥ (x ∘ Sum.inr))).im
       rw [← ha.2, ← hb.2, add_zero]
 
-private lemma symplecticForm_directSum (n m : Nat) :
+/-- The symplectic form of `n + m` modes is the direct sum of those of `n` and `m` modes. -/
+lemma symplecticForm_directSum (n m : Nat) :
     symplecticForm (n + m) = directSumCov (symplecticForm n) (symplecticForm m) := by
   ext i j
   rcases i with i | i <;> rcases j with j | j <;>

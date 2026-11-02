@@ -1,6 +1,6 @@
 # The sealed statements
 
-Generated from `verify/Challenge.lean` by `verify/make_core_page.py`: the 67 statements that `lake comparator` checks (see the section "Verification" of the front page). Each entry gives the statement in words and the name of its formal version in `Challenge.lean`.
+Generated from `verify/Challenge.lean` by `verify/make_core_page.py`: the 115 statements that `lake comparator` checks (see the section "Verification" of the front page). Each entry gives the statement in words and the name of its formal version in `Challenge.lean`.
 
 ## Covariance matrices
 
@@ -164,7 +164,7 @@ f_2(f_1(W(u))) = \exp(i\mu(u) - \nu(u, u)/4)\, W(Lu).
 
 ## The formal Fock space
 
-The modes form a type $`\iota`$, an occupation-number configuration is a finitely supported $`n : \iota \to \mathbb N`$ (finitely supported), with $`|n| = \sum_i n_i`$ and $`n! = \prod_i n_i!`$, and $`e_i`$ is the configuration with one particle in mode $`i`$. The coefficients lie in a complex vector space $`R`$, which for the Bargmann map and in entry 34 is a ring and a complex algebra. A raising operator is a complex-linear map $`T`$ of the formal Fock space that raises the degree of vanishing: if $`\psi(n) = 0`$ for all $`|n| < k`$, then $`(T\psi)(n) = 0`$ for all $`|n| < k + 1`$. Entry 25 characterizes these maps and defines their exponential.
+The modes form a type $`\iota`$, an occupation-number configuration is a finitely supported $`n : \iota \to \mathbb N`$ (finitely supported), with $`|n| = \sum_i n_i`$ and $`n! = \prod_i n_i!`$, and $`e_i`$ is the configuration with one particle in mode $`i`$. The coefficients lie in a complex vector space $`R`$, which for the Bargmann map and in entry 34 is a ring and a complex algebra. A complex-linear map $`T`$ of the formal Fock space raises the particle number if $`\psi(n) = 0`$ for all $`|n| < k`$ implies $`(T\psi)(n) = 0`$ for all $`|n| < k + 1`$. Entry 25 characterizes these maps and defines their exponential.
 
 **23.** The formal Fock space is the space of all coefficient families: $`\psi \mapsto (\psi(n))_n`$ is a complex-linear bijection from the formal Fock space onto all functions from occupation numbers to $`R`$, with no summability condition. The creation operator is 
 
@@ -182,17 +182,17 @@ if $`n_i > 0`$ and $`0`$ otherwise, and the annihilation operator is
 **24.** The canonical commutation relations on the whole formal Fock space: $`[a_i, a_j^\dagger] = \delta_{ij}`$, $`[a_i, a_j] = 0`$ and $`[a_i^\dagger, a_j^\dagger] = 0`$.  
 <sub>`Sealed.ccr_ladder`</sub>
 
-**25.** Raising operators and their exponential: a linear map $`T`$ of the formal Fock space is a raising operator if and only if, whenever $`\psi(n) = 0`$ for all $`|n| < k`$, also $`(T\psi)(n) = 0`$ for all $`|n| < k + 1`$. For a raising operator $`T`$ the exponential is 
+**25.** Operators that raise the particle number, and their exponential: a linear map $`T`$ of the formal Fock space raises the particle number if and only if, whenever $`\psi(n) = 0`$ for all $`|n| < k`$, also $`(T\psi)(n) = 0`$ for all $`|n| < k + 1`$. For such an operator $`T`$ the exponential is 
 
 ```math
 (e^T \psi)(n) = \sum_{k=0}^{|n|} (T^k \psi)(n) / k!,
 ```
 
 a finite sum.  
-<sub>`Sealed.raisingOp_and_raisingExp`</sub>
+<sub>`Sealed.numberRaisingOp_and_exp`</sub>
 
-**26.** The exponential law: for raising operators $`S`$ and $`T`$ whose underlying maps commute, the raising operator $`S + T`$ has as underlying map the sum of theirs, and $`e^{S+T} = e^S e^T`$.  
-<sub>`Sealed.raisingExp_add`</sub>
+**26.** The exponential law: for operators $`S`$ and $`T`$ that raise the particle number and whose underlying maps commute, the operator $`S + T`$ has as underlying map the sum of theirs, and $`e^{S+T} = e^S e^T`$.  
+<sub>`Sealed.numberRaisingOp_exp_add`</sub>
 
 **27.** The Bargmann map $`\mathfrak B`$ sends $`\psi`$ to the formal power series $`\sum_n \psi(n)\, z^n / \sqrt{n!}`$; it is, by its type, a complex-linear bijection onto all formal power series in variables $`z_i`$ ($`i \in \iota`$) with coefficients in $`R`$.  
 <sub>`Sealed.coeff_toBargmann`</sub>
@@ -247,8 +247,8 @@ it is admissible.
 **33.** The vacuum data satisfy the state condition: on $`V = \mathbb R^2`$ with $`\sigma(u, w) = u_1 w_2 - u_2 w_1`$, the form $`\gamma(u, w) = u_1 w_1 + u_2 w_2`$ is symmetric and $`\gamma + i\sigma \ge 0`$ on every finite family of vectors.  
 <sub>`Sealed.witness_vacuum_state_condition`</sub>
 
-**34.** The creation operator $`a_j^\dagger`$ is a raising operator.  
-<sub>`Sealed.witness_create_raising`</sub>
+**34.** The creation operator $`a_j^\dagger`$ raises the particle number.  
+<sub>`Sealed.witness_create_raisesParticleNumber`</sub>
 
 **35.** The identity channel: let $`\sigma`$ be any real bilinear form on $`V`$. The data $`L = \mathrm{id}`$, $`\nu = 0`$, $`\mu = 0`$ satisfy the hypotheses that entry 21 places on each channel: $`\nu`$ is symmetric, the channel condition holds (every Gram matrix is $`0`$), and the identity map $`f(a) = a`$ of $`\mathrm{CCR}(V, \sigma)`$ is completely positive with 
 
@@ -535,6 +535,524 @@ These examples show that the hypotheses of entries 55, 56 and 57 can be met.
 **67.** A state: let $`\sigma`$ be alternating. There is a state $`\omega`$ on $`\mathrm{CCR}(V, \sigma)`$ with characteristic function $`\omega(W(u)) = 1`$ for $`u = 0`$ and $`\omega(W(u)) = 0`$ for $`u \ne 0`$ (the vector state $`a \mapsto \langle \delta_0, a\, \delta_0 \rangle`$ of the basis vector at $`0`$).  
 <sub>`Sealed.witness_vector_state`</sub>
 
+## The formal Fock space of one mode
+
+For one mode the set of modes $`\iota`$ has one element, and $`a`$, $`a^\dagger`$ are the annihilation and creation operators of entry 23 on the formal Fock space with complex coefficients.
+
+**68.** Anti-normal ordering and the number operator: the monomials $`a^m (a^\dagger)^k`$ with $`m, k \in \mathbb N`$, in which every annihilation operator stands to the left of every creation operator, span the algebra generated by $`a`$ and $`a^\dagger`$ as a complex vector space of linear maps of the formal Fock space; and the number operator $`\hat n = a^\dagger a`$ satisfies 
+
+```math
+\hat n^2 = a^2 (a^\dagger)^2 - 3\, a a^\dagger + 1.
+```  
+<sub>`Sealed.antinormal_span_and_number_sq`</sub>
+
+## The bosonic Fock space
+
+The bosonic Fock space $`\Gamma_s(\iota)`$ of the modes $`\iota`$ is the Hilbert space $`\ell^2`$ of the occupation-number configurations $`n`$, with the inner product 
+
+```math
+\langle\varphi, \psi\rangle = \sum_n \overline{\varphi(n)}\, \psi(n);
+```
+
+the number state $`|m\rangle`$ is the basis vector at $`m`$, and the vacuum $`|0\rangle`$ is the basis vector at the configuration $`0`$. The embedding $`\jmath`$ sends $`\psi \in \Gamma_s(\iota)`$ to the formal vector with the same coefficients. A linear map $`T`$ of the formal Fock space $`\mathcal F(\iota, \mathbb C)`$ is coefficient-finite when for every $`n`$ there is a finite set $`s`$ of configurations such that $`(T\varphi)(n) = (T\varphi')(n)`$ whenever $`\varphi(m) = \varphi'(m)`$ for all $`m \in s`$.
+
+**69.** The Fock space and the embedding: (definition) $`\Gamma_s(\iota)`$ is $`\ell^2`$ of the configurations, and the embedding keeps the coefficients, $`(\jmath\psi)(n) = \psi(n)`$. The embedding is injective, and a formal vector $`\varphi`$ lies in its image if and only if $`\sum_n |\varphi(n)|^2 < \infty`$. (Definition) The squared norm of a formal vector is 
+
+```math
+\|\varphi\|^2 = \sum_n |\varphi(n)|^2 \in [0, \infty].
+```
+
+Moreover $`\|\jmath\psi\|^2`$ is the squared Hilbert norm of $`\psi`$, and the number states span a dense subspace of $`\Gamma_s(\iota)`$.  
+<sub>`Sealed.fockSpace_eq`</sub>
+
+**70.** Maximal realizations: (definition) for a linear map $`T`$ of $`\mathcal F(\iota, \mathbb C)`$, the maximal realization $`\bar T`$ is the operator of $`\Gamma_s(\iota)`$ with the domain of the $`\psi`$ for which $`T\jmath\psi`$ is square-summable, and with $`\jmath \bar T\psi = T\jmath\psi`$. If $`T`$ is coefficient-finite, then $`\bar T`$ is closed: its graph is closed in $`\Gamma_s(\iota) \times \Gamma_s(\iota)`$.  
+<sub>`Sealed.maxRealization_isClosed`</sub>
+
+**71.** Closed forms: let $`T_k`$, $`k`$ in a finite index set, be coefficient-finite linear maps of $`\mathcal F(\iota, \mathbb C)`$, and let $`\psi_r \to \psi`$ in $`\Gamma_s(\iota)`$ with every $`T_k\jmath\psi_r`$ square-summable and $`\sum_k \|T_k\jmath(\psi_r - \psi_s)\|^2 \to 0`$ as $`r, s \to \infty`$. Then every $`T_k\jmath\psi`$ is square-summable and $`\sum_k \|T_k\jmath(\psi_r - \psi)\|^2 \to 0`$: the form with the diagonal $`\sum_k \|\bar T_k\psi\|^2`$ on the intersection of the domains of the $`\bar T_k`$ is closed.  
+<sub>`Sealed.form_closed`</sub>
+
+## Second quantization
+
+The set of modes $`\iota`$ is finite, and matrices are indexed by the modes. A complex matrix $`\mathcal U`$ is unitary when $`\mathcal U^* \mathcal U = \mathcal U \mathcal U^* = 1`$, and the exponential of a matrix is 
+
+```math
+e^h = \sum_{k \ge 0} h^k / k!.
+```
+
+**72.** Second quantization (definition): for a complex matrix $`g`$, $`\Gamma(g)`$ is the linear map of $`\mathcal F(\iota, \mathbb C)`$ that becomes, under the Bargmann map of entry 27, the substitution of the linear forms 
+
+```math
+(g^T z)_j = \sum_k g_{kj} z_k
+```
+
+for the variables: $`\mathfrak B\, \Gamma(g)\psi = (\mathfrak B\psi)(g^T z)`$. Since $`\mathfrak B`$ is a bijection, this determines $`\Gamma(g)`$.  
+<sub>`Sealed.secondQuant_eq`</sub>
+
+**73.** Representation and intertwining: $`\Gamma(1) = 1`$ and $`\Gamma(g g') = \Gamma(g)\Gamma(g')`$ for all complex matrices $`g`$, $`g'`$, and on the whole formal Fock space 
+
+```math
+\Gamma(g)\, a_j^\dagger = \big(\sum_k g_{kj} a_k^\dagger\big)\Gamma(g)
+```
+
+and 
+
+```math
+a_j\, \Gamma(g) = \Gamma(g) \sum_k g_{jk} a_k.
+```  
+<sub>`Sealed.secondQuant_representation`</sub>
+
+**74.** Unitarity and strong continuity: for a unitary matrix $`\mathcal U`$, $`\|\Gamma(\mathcal U)\varphi\|^2 = \|\varphi\|^2`$ in $`[0, \infty]`$ for every formal vector $`\varphi`$, and on the whole formal Fock space 
+
+```math
+\Gamma(\mathcal U^*)\, a_j\, \Gamma(\mathcal U) = \sum_k \mathcal U_{jk} a_k.
+```
+
+(Definition) The unitary operator $`\mathsf U_{\mathcal U}`$ of $`\Gamma_s(\iota)`$ is the restriction of $`\Gamma(\mathcal U)`$: $`\jmath\, \mathsf U_{\mathcal U}\psi = \Gamma(\mathcal U)\jmath\psi`$. The map $`\mathcal U \mapsto \mathsf U_{\mathcal U}`$ is a group homomorphism from the unitary matrices to the unitary operators of $`\Gamma_s(\iota)`$, with $`\mathsf U_{\mathcal U}^* = \mathsf U_{\mathcal U^*}`$, and $`\mathcal U \mapsto \mathsf U_{\mathcal U}\psi`$ is continuous for every $`\psi \in \Gamma_s(\iota)`$.  
+<sub>`Sealed.secondQuant_unitary`</sub>
+
+**75.** The exponential form: (definition) for a complex matrix $`h`$ let 
+
+```math
+\mathrm d\Gamma(h) = \sum_{j, k} h_{jk}\, a_j^\dagger a_k.
+```
+
+For every formal vector $`\psi`$ and every $`n`$ the series 
+
+```math
+\sum_{r \ge 0} (\mathrm d\Gamma(h)^r\psi)(n)/r!
+```
+
+converges, with sum $`(\Gamma(e^h)\psi)(n)`$: $`\Gamma(e^h) = e^{\mathrm d\Gamma(h)}`$, the exponential taken coefficientwise.  
+<sub>`Sealed.secondQuant_exp`</sub>
+
+**76.** Unitary matrices are exponentials: every unitary matrix is $`e^{iM}`$ for a Hermitian matrix $`M`$, and $`e^{iM}`$ is unitary for every Hermitian $`M`$. So entry 75 applies to every $`\Gamma(\mathcal U)`$, with $`h = iM`$.  
+<sub>`Sealed.unitary_eq_exp`</sub>
+
+## Symplectic matrices: the Bloch–Messiah decomposition
+
+A real $`2n \times 2n`$ matrix $`S`$, indexed by positions and momenta as in the first section, is symplectic when $`S \Omega S^T = \Omega`$, and orthogonal when $`S^T S = 1`$. A real matrix $`P`$ is symmetric positive definite when $`P^T = P`$ and $`x^T P x > 0`$ for every nonzero real vector $`x`$. A vector $`r \in \mathbb R^n`$ satisfies $`r \ge 0`$ when $`r_k \ge 0`$ for every $`k`$.
+
+**77.** The squeezing matrix and the orthogonal symplectic matrix of a unitary (definitions): for $`r \in \mathbb R^n`$, 
+
+```math
+\Sigma(r) = \mathrm{diag}(e^{-r_1}, \dots, e^{-r_n}, e^{r_1}, \dots, e^{r_n});
+```
+
+for a unitary $`n \times n`$ matrix $`\mathcal U = X + iY`$ with $`X`$, $`Y`$ real, 
+
+```math
+O_{\mathcal U} = \begin{pmatrix} X & -Y \\ Y & X \end{pmatrix}.
+```
+
+Both are symplectic, and $`O_{\mathcal U}`$ is orthogonal.  
+<sub>`Sealed.squeezingMatrix_eq`</sub>
+
+**78.** Orthogonal symplectic matrices and unitaries: a real $`2n \times 2n`$ matrix $`O`$ is orthogonal and symplectic if and only if $`O = O_{\mathcal U}`$ for a unitary $`\mathcal U`$; and $`O_{\mathcal U \mathcal V} = O_{\mathcal U} O_{\mathcal V}`$, $`O_1 = 1`$, $`O_{\mathcal U^*} = O_{\mathcal U}^T`$.  
+<sub>`Sealed.orthogonalSymplectic_iff`</sub>
+
+**79.** The Bloch–Messiah decomposition: for every symmetric positive definite symplectic matrix $`M`$ there are a unitary $`\mathcal U`$ and $`r \ge 0`$ with $`M = O_{\mathcal U} \Sigma(r)^2 O_{\mathcal U}^T`$; for every symplectic matrix $`S`$ there are unitaries $`\mathcal U`$, $`\mathcal V`$ and $`r \ge 0`$ with $`S = O_{\mathcal U} \Sigma(r) O_{\mathcal V}`$.  
+<sub>`Sealed.blochMessiah`</sub>
+
+**80.** The squeezing parameters are unique up to order: if $`O_1 \Sigma(r) O_2 = O_3 \Sigma(r') O_4`$ with orthogonal $`O_1, \dots, O_4`$ and $`r, r' \ge 0`$, then $`r' = r \circ \pi`$ for a permutation $`\pi`$ of $`\{1, \dots, n\}`$.  
+<sub>`Sealed.blochMessiah_squeezing_unique`</sub>
+
+**81.** The polar decomposition: for symplectic $`S`$, the positive semidefinite square root $`P = (S S^T)^{1/2}`$ is symmetric positive definite and symplectic, $`P^{-1} S`$ is orthogonal and symplectic, and $`S = P\, (P^{-1} S)`$. For every real $`2n \times 2n`$ matrix $`S`$, if $`S = P' O'`$ with $`P'`$ symmetric positive definite and $`O'`$ orthogonal, then $`P' = (S S^T)^{1/2}`$ and $`O' = P'^{-1} S`$.  
+<sub>`Sealed.polar_decomposition_symplectic`</sub>
+
+## Exponential vectors, displacement and squeezing
+
+The set of modes $`\iota`$ is finite. For $`w, z \in \mathbb C^\iota`$, $`\langle w, z\rangle`$ denotes $`\sum_j \bar w_j z_j`$ and $`|z|^2`$ denotes $`\sum_j |z_j|^2`$; for a configuration $`m`$, $`z^m`$ denotes $`\prod_j z_j^{m_j}`$ and $`m!`$ denotes $`\prod_j m_j!`$. Operators are bounded operators of $`\Gamma_s(\iota)`$, with the adjoint as star; $`|0\rangle`$ is the vacuum.
+
+**82.** Exponential vectors: (definition) for $`z \in \mathbb C^\iota`$ the exponential vector $`\varepsilon(z) \in \Gamma_s(\iota)`$ has the coefficients 
+
+```math
+\varepsilon(z)(m) = z^m/\sqrt{m!};
+```
+
+and $`\langle \varepsilon(w), \varepsilon(z)\rangle = e^{\langle w, z\rangle}`$.  
+<sub>`Sealed.expVec_apply`</sub>
+
+**83.** Totality: the exponential vectors span a dense subspace of $`\Gamma_s(\iota)`$. Hence a vector $`\psi`$ is determined by the inner products $`\langle \varepsilon(w), \psi\rangle`$, $`w \in \mathbb C^\iota`$, and a continuous linear map from $`\Gamma_s(\iota)`$ to a Hausdorff topological vector space is determined by its values on the exponential vectors.  
+<sub>`Sealed.totality`</sub>
+
+**84.** Displacement operators: for $`\alpha \in \mathbb C^\iota`$, $`D(\alpha)`$ is a unitary operator of $`\Gamma_s(\iota)`$ with 
+
+```math
+D(\alpha)\varepsilon(z) = e^{-|\alpha|^2/2 - \langle\alpha, z\rangle} \varepsilon(z + \alpha)
+```
+
+for every $`z`$, which determines it by entry 83; this is the normal-ordered form of $`\exp\big(\sum_j (\alpha_j a_j^\dagger - \bar\alpha_j a_j)\big)`$ (an identification that is not part of the statement). Moreover $`D(\alpha)^* = D(-\alpha)`$, $`D(0) = 1`$, and $`D(\alpha)|0\rangle = e^{-|\alpha|^2/2} \varepsilon(\alpha)`$, the coherent state.  
+<sub>`Sealed.displacement_expVec`</sub>
+
+**85.** The Weyl relation and strong continuity: 
+
+```math
+D(\alpha) D(\beta) = \exp\big(\frac12 \sum_j (\alpha_j \bar\beta_j - \bar\alpha_j \beta_j)\big) D(\alpha + \beta);
+```
+
+along a ray the displacements form a one-parameter group, $`D(t\alpha) D(s\alpha) = D((t + s)\alpha)`$ for real $`t`$, $`s`$; and $`\alpha \mapsto D(\alpha)\psi`$ is continuous for every $`\psi`$.  
+<sub>`Sealed.displacement_mul`</sub>
+
+**86.** Displacement of the ladder operators: let $`\psi, \varphi \in \Gamma_s(\iota)`$. If $`a_j\jmath\psi = \jmath\varphi`$, then 
+
+```math
+a_j \jmath D(\alpha)\psi = \jmath D(\alpha)\varphi + \alpha_j\, \jmath D(\alpha)\psi;
+```
+
+if $`a_j^\dagger\jmath\psi = \jmath\varphi`$, then 
+
+```math
+a_j^\dagger \jmath D(\alpha)\psi = \jmath D(\alpha)\varphi + \bar\alpha_j\, \jmath D(\alpha)\psi;
+```
+
+and $`D(\alpha)\psi`$ lies in the domain of the maximal realization of $`a_j`$ if and only if $`\psi`$ does. So $`D(\alpha)^* a_j D(\alpha) = a_j + \alpha_j`$ and 
+
+```math
+D(\alpha)^* a_j^\dagger D(\alpha) = a_j^\dagger + \bar\alpha_j
+```
+
+on these vectors.  
+<sub>`Sealed.displacement_ladder`</sub>
+
+**87.** Irreducibility: a bounded operator $`T`$ of $`\Gamma_s(\iota)`$ that commutes with every $`D(\alpha)`$ is $`T = \langle 0|T|0\rangle\, 1`$, and a closed subspace that every $`D(\alpha)`$ maps into itself is $`0`$ or $`\Gamma_s(\iota)`$.  
+<sub>`Sealed.displacement_irreducible`</sub>
+
+**88.** Squeezing operators: (definition) for $`\zeta \in \mathbb C`$ let $`\tau(\zeta) = \zeta \tanh|\zeta| / |\zeta|`$, with $`\tau(0) = 0`$. For $`\zeta \in \mathbb C^\iota`$ write $`c_j = \cosh|\zeta_j|`$ and $`\tau_j = \tau(\zeta_j)`$. The squeezing operator $`\mathsf S(\zeta)`$ is a unitary operator of $`\Gamma_s(\iota)`$ with 
+
+```math
+\langle \varepsilon(w), \mathsf S(\zeta)\varepsilon(z)\rangle = (\prod_j c_j)^{-1/2} \exp\big(\sum_j \bar\tau_j z_j^2/2\big) \exp\big(\sum_j (-\tau_j \bar w_j^2/2 + z_j \bar w_j / c_j)\big)
+```
+
+for all $`w`$, $`z`$, which determines it by entry 83. This is the normal-ordered form of the product $`\prod_j \exp\big(\frac12 (\bar\zeta_j a_j^2 - \zeta_j a_j^{\dagger 2})\big)`$ of one-mode squeezers (an identification that is not part of the statement); for real $`\zeta_j = r_j > 0`$ it squeezes $`\hat q_j`$ (entries 93 and 105). Moreover $`\mathsf S(\zeta)^* = \mathsf S(-\zeta)`$ and $`\mathsf S(0) = 1`$.  
+<sub>`Sealed.squeeze_inner_expVec`</sub>
+
+**89.** Squeezing and displacements: 
+
+```math
+\mathsf S(\zeta) D(\beta) = D(L_\zeta\beta)\, \mathsf S(\zeta)
+```
+
+for every $`\beta`$, with 
+
+```math
+(L_\zeta\beta)_j = \cosh|\zeta_j|\, \beta_j - e^{i\phi_j} \sinh|\zeta_j|\, \bar\beta_j,
+```
+
+where $`e^{i\phi_j} = \zeta_j/|\zeta_j|`$ (read as $`0`$ when $`\zeta_j = 0`$). Along a ray the squeezing operators form a one-parameter group, 
+
+```math
+\mathsf S(t\zeta) \mathsf S(s\zeta) = \mathsf S((t + s)\zeta)
+```
+
+for real $`t`$, $`s`$, and $`\zeta \mapsto \mathsf S(\zeta)\psi`$ is continuous for every $`\psi`$.  
+<sub>`Sealed.squeeze_mul_displacement`</sub>
+
+## Gaussian unitaries
+
+There are $`n`$ modes, and $`\Gamma_s(n)`$ is the Fock space of the modes $`\{1, \dots, n\}`$. A phase-space vector $`u = (q, p) \in \mathbb R^{2n}`$ is indexed as in the first section, and $`\sigma(u, v) = u^T \Omega v`$. The quadratures $`\hat q_j`$ and $`\hat p_j`$ are the linear maps $`(a_j + a_j^\dagger)/\sqrt2`$ and $`i(a_j^\dagger - a_j)/\sqrt2`$ of the formal Fock space, and $`\hat R = (\hat q, \hat p)`$.
+
+**90.** Weyl operators on Fock space: (definition) for $`u = (q, p)`$, $`W(u) = D(\alpha(u))`$ with 
+
+```math
+\alpha(u)_j = (q_j + i p_j)/\sqrt2;
+```
+
+formally 
+
+```math
+W(u) = \exp(i(p \cdot \hat q - q \cdot \hat p)),
+```
+
+an identification that is not part of the statement. They satisfy the Weyl relation 
+
+```math
+W(u) W(v) = e^{-i\sigma(u, v)/2} W(u + v),
+```
+
+$`W(u)^* = W(-u)`$, and $`\langle 0|W(u)|0\rangle = e^{-|u|^2/4}`$.  
+<sub>`Sealed.weylOp_eq`</sub>
+
+**91.** Gaussian unitaries (definition): a unitary operator $`U`$ of $`\Gamma_s(n)`$ is Gaussian with symplectic matrix $`M`$ and displacement vector $`d \in \mathbb R^{2n}`$, or with data $`(M, d)`$, when $`M`$ is symplectic and 
+
+```math
+U^* W(u) U = e^{-i\sigma(u, d)} W(M^{-1}u)
+```
+
+for every $`u \in \mathbb R^{2n}`$, the exponentiated form of $`U^* \hat R U = M \hat R + d`$ (entry 95).  
+<sub>`Sealed.isGaussianUnitary_iff`</sub>
+
+**92.** Composition, adjoint and uniqueness: if $`U_1`$, $`U_2`$ are Gaussian with data $`(M_1, d_1)`$, $`(M_2, d_2)`$, then $`U_1 U_2`$ is Gaussian with data $`(M_1 M_2, d_1 + M_1 d_2)`$; if $`U`$ is Gaussian with data $`(M, d)`$, then $`U^*`$ is Gaussian with data $`(M^{-1}, -M^{-1} d)`$; the data of a Gaussian unitary are unique; and two Gaussian unitaries with the same data differ by a factor $`\lambda`$ with $`|\lambda| = 1`$.  
+<sub>`Sealed.isGaussianUnitary_mul`</sub>
+
+**93.** Examples and existence: $`D(\alpha)`$ is Gaussian with data $`(1, \delta(\alpha))`$, where 
+
+```math
+\delta(\alpha) = \sqrt2\, (\mathrm{Re}\, \alpha, \mathrm{Im}\, \alpha);
+```
+
+$`\mathsf U_{\mathcal U}`$ is Gaussian with data $`(O_{\mathcal U}, 0)`$ for every unitary $`\mathcal U`$; $`\mathsf S(r)`$ with real squeezing parameters $`r \in \mathbb R^n`$ is Gaussian with data $`(\Sigma(r), 0)`$; and for every symplectic $`M`$ and every $`d \in \mathbb R^{2n}`$ there is a Gaussian unitary with data $`(M, d)`$.  
+<sub>`Sealed.isGaussianUnitary_examples`</sub>
+
+**94.** Factorization, Proposition 5 of Tjoa and Cirac, arXiv:2607.28753: let $`U`$ be Gaussian with data $`(M, d)`$. If $`M = O_{\mathcal U} \Sigma(r) O_{\mathcal V}`$ with unitaries $`\mathcal U`$, $`\mathcal V`$ and $`r \in \mathbb R^n`$, then 
+
+```math
+U = \lambda\, \mathsf U_{\mathcal U} D(\alpha) \mathsf S(r) \mathsf U_{\mathcal V}
+```
+
+with $`|\lambda| = 1`$ and $`\alpha = \alpha(O_{\mathcal U}^T d)`$, the complex vector of $`O_{\mathcal U}^T d`$ as for the Weyl operators. Such a decomposition of $`M`$ exists with $`r \ge 0`$: there are unitaries $`\mathcal U`$, $`\mathcal V`$, $`r \ge 0`$ and $`\lambda`$ with $`|\lambda| = 1`$ such that $`M = O_{\mathcal U} \Sigma(r) O_{\mathcal V}`$ and 
+
+```math
+U = \lambda\, \mathsf U_{\mathcal U} D(\alpha(O_{\mathcal U}^T d)) \mathsf S(r) \mathsf U_{\mathcal V}.
+```  
+<sub>`Sealed.gaussianUnitary_factorization`</sub>
+
+**95.** Action on the quadratures: (definition) the quadratures $`\hat q_j`$ and $`\hat p_j`$ are $`(a_j + a_j^\dagger)/\sqrt2`$ and $`i(a_j^\dagger - a_j)/\sqrt2`$. Let $`U`$ be Gaussian with data $`(M, d)`$, and let $`\mathcal Q`$ be the set of $`\psi \in \Gamma_s(n)`$ in the domain of the maximal realization of every $`a_j`$. Then $`U\psi \in \mathcal Q`$ if and only if $`\psi \in \mathcal Q`$. For $`\psi \in \mathcal Q`$ and every phase-space index $`k`$ there is $`\xi \in \Gamma_s(n)`$ with 
+
+```math
+\jmath\xi = \sum_l M_{kl} \hat R_l \jmath\psi + d_k \jmath\psi,
+```
+
+and for every such $`\xi`$, $`\hat R_k \jmath U\psi = \jmath U\xi`$: 
+
+```math
+U^* \hat R_k U = \sum_l M_{kl} \hat R_l + d_k
+```
+
+on $`\mathcal Q`$.  
+<sub>`Sealed.gaussianUnitary_quadratures`</sub>
+
+## Pure Gaussian states
+
+The characteristic function of $`\psi \in \Gamma_s(n)`$ is $`\chi_\psi(u) = \langle \psi, W(u)\psi\rangle`$, $`u \in \mathbb R^{2n}`$. A pure Gaussian state is a vector $`U|0\rangle`$ with $`U`$ a Gaussian unitary. The covariance matrix $`\gamma`$ is normalized as twice the symmetrized covariance, 
+
+```math
+\gamma_{kl} = \langle \{\hat R_k - d_k, \hat R_l - d_l\}\rangle,
+```
+
+so that the vacuum has $`\gamma = 1`$ (entry 103); the matrix $`\Gamma`$ of Eq. (13) of Tjoa and Cirac is $`\gamma/2`$.
+
+**96.** A vector is determined up to a phase by its characteristic function: if $`\psi \ne 0`$ and $`\chi_\varphi = \chi_\psi`$, then $`\varphi = \lambda\psi`$ with $`|\lambda| = 1`$. If $`U`$ is Gaussian with data $`(M, d)`$, then 
+
+```math
+\chi_{U\psi}(u) = e^{-i\sigma(u, d)} \chi_\psi(M^{-1}u).
+```  
+<sub>`Sealed.charFun_determines`</sub>
+
+**97.** Gaussian characteristic functions (definition): $`\psi \in \Gamma_s(n)`$ has the Gaussian characteristic function with displacement vector $`d \in \mathbb R^{2n}`$ and covariance matrix $`\gamma`$ when $`\gamma^T = \gamma`$ and 
+
+```math
+\chi_\psi(u) = \exp\big(-i\sigma(u, d) - \frac14 u^T \Omega \gamma \Omega^T u\big)
+```
+
+for every $`u`$.  
+<sub>`Sealed.hasGaussianCharFun_iff`</sub>
+
+**98.** Properties of Gaussian characteristic functions: if $`\psi`$ has the Gaussian characteristic function with $`(d, \gamma)`$, then $`\|\psi\| = 1`$; the data $`(d, \gamma)`$ are unique; $`\gamma`$ is admissible; $`\gamma`$ is symplectic, $`\gamma \Omega \gamma^T = \Omega`$; and every $`\varphi`$ with the Gaussian characteristic function with the same $`(d, \gamma)`$ is $`\varphi = \lambda\psi`$ with $`|\lambda| = 1`$.  
+<sub>`Sealed.hasGaussianCharFun_props`</sub>
+
+**99.** Gaussian unitaries on the vacuum: if $`U`$ is Gaussian with data $`(M, d)`$, then $`U|0\rangle`$ has the Gaussian characteristic function with displacement vector $`d`$ and covariance matrix $`M M^T`$. Its moments, Eq. (13) of Tjoa and Cirac: there are $`\phi_k \in \Gamma_s(n)`$, one for each phase-space index $`k`$, with $`\hat R_k \jmath U|0\rangle = \jmath\phi_k`$, $`\langle U|0\rangle, \phi_k\rangle = d_k`$ and 
+
+```math
+\langle \phi_k - d_k U|0\rangle, \phi_l - d_l U|0\rangle\rangle = \frac12 ((M M^T)_{kl} + i\Omega_{kl}).
+```
+
+So twice the real part of the left side, the symmetrized covariance $`\langle\{\hat R_k - d_k, \hat R_l - d_l\}\rangle`$, is $`\gamma_{kl}`$ with $`\gamma = M M^T`$, and the $`\Gamma`$ of Tjoa and Cirac is $`\gamma/2`$.  
+<sub>`Sealed.gaussianUnitary_vacuum`</sub>
+
+**100.** The two definitions of pure Gaussian states agree: $`\psi = U|0\rangle`$ for a Gaussian unitary $`U`$ if and only if $`\psi`$ has the Gaussian characteristic function with some $`(d, \gamma)`$. If $`\psi`$ has it with $`(d, \gamma)`$ and $`M`$ is symplectic with $`\gamma = M M^T`$, then $`\psi = U|0\rangle`$ for a Gaussian unitary $`U`$ with data $`(M, d)`$.  
+<sub>`Sealed.isPureGaussian_iff`</sub>
+
+**101.** The vacuum component: every pure Gaussian state $`\psi = U|0\rangle`$ has a nonzero coefficient $`\psi(0)`$ at the vacuum configuration, its component along $`|0\rangle`$. Hence a nonzero $`\Phi`$ with $`\Phi(0) = 0`$, for example a number state $`|m\rangle`$ with $`m \ne 0`$, is not a multiple $`c\psi`$ of a pure Gaussian state $`\psi`$.  
+<sub>`Sealed.pureGaussian_vacuum_ne_zero`</sub>
+
+## Further examples: Fock space and pure Gaussian states
+
+These examples show that the hypotheses of entries 70 and 71, and the hypothesis of a Gaussian characteristic function in entries 97 to 101, can be met; Gaussian unitaries exist by entry 93.
+
+**102.** The ladder operators are coefficient-finite, so that entries 70 and 71 apply to $`a_j`$ and $`a_j^\dagger`$.  
+<sub>`Sealed.witness_ladder_coeffFinite`</sub>
+
+**103.** The vacuum: on $`n`$ modes the vacuum $`|0\rangle`$ has the Gaussian characteristic function with $`d = 0`$ and $`\gamma = 1`$.  
+<sub>`Sealed.witness_vacuum`</sub>
+
+**104.** A coherent state: for $`\alpha \in \mathbb C^n`$ the coherent state $`D(\alpha)|0\rangle`$ has the coefficients 
+
+```math
+(D(\alpha)|0\rangle)(m) = e^{-|\alpha|^2/2} \alpha^m/\sqrt{m!}
+```
+
+and the Gaussian characteristic function with the displacement vector 
+
+```math
+\delta(\alpha) = \sqrt2\, (\mathrm{Re}\, \alpha, \mathrm{Im}\, \alpha)
+```
+
+and the vacuum covariance $`\gamma = 1`$.  
+<sub>`Sealed.witness_coherent_state`</sub>
+
+**105.** A squeezed vacuum: on one mode, for real $`r`$, the squeezed vacuum $`\mathsf S(r)|0\rangle`$ has the Gaussian characteristic function with $`d = 0`$ and the covariance matrix $`\gamma = \mathrm{diag}(e^{-2r}, e^{2r})`$. For $`r > 0`$ the position quadrature is squeezed, $`\gamma_{qq} = e^{-2r} < 1`$; $`r`$ may have either sign.  
+<sub>`Sealed.witness_squeezed_vacuum`</sub>
+
+## Existence of pure Gaussian states
+
+The notation is that of the section on pure Gaussian states.
+
+**106.** Every admissible symplectic covariance matrix occurs: let $`\gamma`$ be admissible and symplectic, $`\gamma \Omega \gamma^T = \Omega`$, and let $`d \in \mathbb R^{2n}`$. There is a Gaussian unitary $`U`$, with data $`(M, d)`$ for some symplectic $`M`$, such that $`U|0\rangle`$ has the Gaussian characteristic function with displacement vector $`d`$ and covariance matrix $`\gamma`$. Hence a vector with the Gaussian characteristic function with $`(d, \gamma)`$ exists if and only if $`\gamma`$ is admissible and symplectic.  
+<sub>`Sealed.exists_hasGaussianCharFun_iff`</sub>
+
+## Quadratic Hamiltonians
+
+Here $`E`$ is a complex Hilbert space, with the inner product linear in the second argument. An operator $`A`$ on $`E`$ is a linear map defined on a subspace $`\mathrm{dom}\, A`$ of $`E`$; $`A^*`$ is its adjoint, $`\overline A`$ its closure, the operator whose graph is the closure of the graph of $`A`$, and $`A \restriction E_0`$ its restriction to a subspace $`E_0`$. An operator $`A`$ is self-adjoint when $`A^* = A`$, domains included. A one-parameter group generated by $`A`$ carries the physicist's sign, $`U_t = e^{-itA}`$. On Fock space there are $`n`$ modes, $`\hat R = (\hat q, \hat p)`$ are the quadratures of entry 95, normalized so that $`[\hat R_k, \hat R_l] = i\Omega_{kl}`$, and $`\bar T`$ is the maximal realization of a linear map $`T`$ of the formal Fock space (entry 70). For a configuration $`m`$, $`|m| = \sum_j m_j`$ is its number of particles.
+
+**107.** One-parameter unitary groups and their generators (definitions): a map $`t \mapsto U_t`$ from $`\mathbb R`$ to the unitary operators of $`E`$ is a strongly continuous one-parameter unitary group when $`U_0 = 1`$, $`U_{s+t} = U_s U_t`$ for all real $`s`$, $`t`$, and $`t \mapsto U_t\psi`$ is continuous for every $`\psi`$. An operator $`A`$ generates $`U`$, written $`U_t = e^{-itA}`$, when $`U`$ is such a group, $`\mathrm{dom}\, A`$ is the set of the $`\psi`$ at which $`t \mapsto U_t\psi`$ is differentiable at $`t = 0`$, and 
+
+```math
+\frac{d}{dt} U_t\psi\big|_{t=0} = -iA\psi
+```
+
+for these $`\psi`$.  
+<sub>`Sealed.isGenerator_iff`</sub>
+
+**108.** Generators, first properties: let $`A`$ generate $`U`$. For $`\psi \in \mathrm{dom}\, A`$ and every real $`t`$, $`U_t\psi \in \mathrm{dom}\, A`$ with $`AU_t\psi = U_tA\psi`$, and 
+
+```math
+\frac{d}{dt} U_t\psi = -iU_tA\psi.
+```
+
+The domain of $`A`$ is dense, and $`A`$ is self-adjoint. If $`A`$ also generates $`V`$, then $`U = V`$.  
+<sub>`Sealed.isGenerator_props`</sub>
+
+**109.** Generators from a core, conjugates, shifts and bounded generators. Let $`B`$ be self-adjoint and $`E_0 \subseteq \mathrm{dom}\, B`$ a subspace with $`\overline{B \restriction E_0} = B`$ (a core for $`B`$). If $`V`$ is a strongly continuous one-parameter unitary group with 
+
+```math
+\frac{d}{dt} V_t\psi\big|_{t=0} = -iB\psi
+```
+
+for every $`\psi \in E_0`$, then $`B`$ generates $`V`$. Let $`A`$ generate $`U`$. For a unitary $`Z`$, the operator $`Z^*AZ`$ with domain $`\{\psi : Z\psi \in \mathrm{dom}\, A\}`$ generates $`t \mapsto Z^*U_tZ`$; for real $`c`$, the operator $`A + c`$ with domain $`\mathrm{dom}\, A`$ generates $`t \mapsto e^{-itc}U_t`$. A bounded self-adjoint operator $`T`$ generates 
+
+```math
+t \mapsto e^{-itT} = \sum_{k \ge 0} (-itT)^k/k!.
+```  
+<sub>`Sealed.isGenerator_of_core`</sub>
+
+**110.** Analytic vectors with a common radius: let $`E_0 \subseteq E`$ be a dense subspace, $`A : E_0 \to E_0`$ linear and symmetric, $`\langle Ax, y\rangle = \langle x, Ay\rangle`$ for $`x, y \in E_0`$, and $`\rho > 0`$ with 
+
+```math
+\sum_n \rho^n \|A^n x\|/n! < \infty
+```
+
+for every $`x \in E_0`$. Regard $`A`$ as an operator on $`E`$ with domain $`E_0`$. Then its closure $`\overline A`$ is self-adjoint, $`\overline A`$ generates exactly one strongly continuous one-parameter unitary group $`U`$, and 
+
+```math
+U_t x = \sum_n (-it)^n A^n x/n!
+```
+
+for $`|t| < \rho`$ and $`x \in E_0`$.  
+<sub>`Sealed.analytic_vectors`</sub>
+
+**111.** The quadratic Hamiltonian (definitions) and its first properties: $`\mathcal D`$ is the subspace of the finitely supported vectors of $`\Gamma_s(n)`$, the $`\psi`$ with $`\psi(m) \ne 0`$ for only finitely many configurations $`m`$. For a real $`2n \times 2n`$ matrix $`K`$ and $`f \in \mathbb R^{2n}`$, the quadratic Hamiltonian is the linear map 
+
+```math
+H = \sum_{k,l} \frac12 K_{kl} \hat R_k \hat R_l + \sum_k f_k \hat R_k
+```
+
+of the formal Fock space. Let 
+
+```math
+C_H = \sum_{k,l} |K_{kl}| + \sqrt2 \sum_k |f_k|.
+```
+
+If $`\psi \in \Gamma_s(n)`$ vanishes above $`\nu`$ particles, $`\psi(m) = 0`$ whenever $`|m| > \nu`$, then $`H\jmath\psi = \jmath\varphi`$ for a $`\varphi \in \Gamma_s(n)`$ that vanishes above $`\nu + 2`$ particles, with $`\|\varphi\| \le C_H(\nu + 2)\|\psi\|`$. For $`\psi \in \mathcal D`$ and $`\rho \ge 0`$ with $`2C_H\rho < 1`$ there are $`\psi_r \in \Gamma_s(n)`$, $`r \in \mathbb N`$, with $`\jmath\psi_r = H^r\jmath\psi`$ and 
+
+```math
+\sum_r \rho^r \|\psi_r\|/r! < \infty.
+```
+
+If $`K`$ is symmetric, $`H`$ is symmetric on $`\mathcal D`$: for $`\psi, \varphi \in \mathcal D`$, $`\langle H\psi, \varphi\rangle = \langle \psi, H\varphi\rangle`$, where $`H\psi`$ is the vector $`\psi'`$ with $`\jmath\psi' = H\jmath\psi`$.  
+<sub>`Sealed.quadraticHamiltonian_eq`</sub>
+
+**112.** Commutators: on the formal Fock space $`[\hat R_k, \hat R_l] = i\Omega_{kl}`$. Let $`K`$ be symmetric. Then 
+
+```math
+[\hat R_k, H] = i\big(\sum_m (\Omega K)_{km} \hat R_m + (\Omega f)_k\big),
+```
+
+and for $`v \in \mathbb R^{2n}`$ the field 
+
+```math
+\Phi_v = \sigma(v, \hat R) = \sum_i (\Omega^T v)_i \hat R_i
+```
+
+satisfies 
+
+```math
+[\Phi_v, H] = -i(\Phi_{\Omega K v} + f^T v).
+```  
+<sub>`Sealed.quadraticHamiltonian_commutators`</sub>
+
+**113.** Essential self-adjointness and the unitary group: let $`K`$ be symmetric, let $`\bar H`$ be the maximal realization of $`H`$, and $`\bar H \restriction \mathcal D`$ its restriction to the finitely supported vectors. Then $`\bar H`$ is self-adjoint and is the closure of $`\bar H \restriction \mathcal D`$, and $`(\bar H \restriction \mathcal D)^* = \bar H`$. The operator $`\bar H`$ generates exactly one strongly continuous one-parameter unitary group, $`t \mapsto e^{-it\bar H}`$. For $`\psi \in \mathcal D`$ and $`2C_H|t| < 1`$, 
+
+```math
+e^{-it\bar H}\psi = \sum_r (-it)^r \psi_r/r!,
+```
+
+with $`C_H`$ and the vectors $`\psi_r`$, $`\jmath\psi_r = H^r\jmath\psi`$, of entry 111.  
+<sub>`Sealed.quadraticHamiltonian_isSelfAdjoint`</sub>
+
+**114.** Quadratic Hamiltonians generate Gaussian unitaries: let $`K`$ be symmetric and $`U_t = e^{-it\bar H}`$ the group generated by $`\bar H`$ (entry 113). Let $`M(t) = e^{t\Omega K}`$ and 
+
+```math
+d(t) = \int_0^t M(s)\Omega f\, ds;
+```
+
+these give the flow $`x(t) = M(t)x(0) + d(t)`$ of the classical equations of motion $`\dot x = \Omega K x + \Omega f`$ of the Hamilton function $`\frac12 x^T K x + f^T x`$ (a remark that is not part of the statement). For every real $`t`$, $`U_t`$ is a Gaussian unitary with data $`(M(t), d(t))`$: 
+
+```math
+e^{it\bar H} W(u) e^{-it\bar H} = e^{-i\sigma(u, d(t))} W(M(t)^{-1}u)
+```
+
+for every $`u \in \mathbb R^{2n}`$. In particular $`e^{-i\bar H}`$ has data $`(e^{\Omega K}, d(1))`$, and by entry 95 
+
+```math
+e^{i\bar H} \hat R e^{-i\bar H} = e^{\Omega K} \hat R + d(1)
+```
+
+on the vectors in the domain of every $`\bar a_j`$, Eq. (3) of Tjoa and Cirac.  
+<sub>`Sealed.quadraticHamiltonian_isGaussianUnitary`</sub>
+
+**115.** Eqs. (1) and (5) of Tjoa and Cirac. (Definitions) For complex $`n \times n`$ matrices $`h`$, $`\Delta`$ and $`\eta \in \mathbb C^n`$, the Hamiltonian of Eq. (1) is the linear map 
+
+```math
+H_G = \sum_{i,j} h_{ij} a_i^\dagger a_j + \frac12 \sum_{i,j} (\Delta_{ij} a_i^\dagger a_j^\dagger + \bar\Delta_{ij} a_i a_j) + \sum_j (\eta_j a_j^\dagger + \bar\eta_j a_j)
+```
+
+of the formal Fock space, and its matrix is 
+
+```math
+K = \begin{pmatrix} \mathrm{Re}\, h + \mathrm{Re}\, \Delta & \mathrm{Im}\, \Delta - \mathrm{Im}\, h \\ \mathrm{Im}\, \Delta + \mathrm{Im}\, h & \mathrm{Re}\, h - \mathrm{Re}\, \Delta \end{pmatrix}.
+```
+
+Let $`h`$ be Hermitian and $`\Delta`$ symmetric, and let $`H`$ be the quadratic Hamiltonian of $`K`$ and $`f = \delta(\eta)`$, with 
+
+```math
+\delta(\eta) = \sqrt2\, (\mathrm{Re}\, \eta, \mathrm{Im}\, \eta)
+```
+
+as in entry 93. Then $`K`$ is symmetric and 
+
+```math
+H_G = H - \frac12 \mathrm{tr}\, h.
+```
+
+The maximal realization $`\bar H_G`$ is self-adjoint and generates exactly one strongly continuous one-parameter unitary group, and for every real $`\theta`$ the operator $`e^{i\theta} e^{-i\bar H_G}`$ is a Gaussian unitary with data $`(e^{\Omega K}, d(1))`$, where 
+
+```math
+d(1) = \int_0^1 e^{s\Omega K}\Omega f\, ds.
+```
+
+For $`\alpha, \zeta \in \mathbb C^n`$, the maximal realizations $`A_\alpha`$ of $`i \sum_j (\alpha_j a_j^\dagger - \bar\alpha_j a_j)`$ and $`B_\zeta`$ of $`\frac i2 \sum_j (\bar\zeta_j a_j^2 - \zeta_j a_j^{\dagger 2})`$ generate $`s \mapsto D(s\alpha)`$ and $`s \mapsto \mathsf S(s\zeta)`$: $`D(\alpha) = e^{-iA_\alpha}`$ and $`\mathsf S(\zeta) = e^{-iB_\zeta}`$, which Eq. (5) writes as $`e^{\alpha \cdot a^\dagger - \bar\alpha \cdot a}`$ and $`e^{\frac12 \sum_j (\bar\zeta_j a_j^2 - \zeta_j a_j^{\dagger 2})}`$.  
+<sub>`Sealed.ladderHamiltonian_isGaussianUnitary`</sub>
+
 ---
 
-SHA-256 of `verify/Challenge.lean` (LF line endings): `68e93d70aa1a6ac010df82532f403d812afa7e58e7918d3328bebebcd50966c1`
+SHA-256 of `verify/Challenge.lean` (LF line endings): `e81d0bd0259599b101767bd97ec62bbc9e381a736a7257a7eac257b55d926586`

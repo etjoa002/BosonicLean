@@ -1,4 +1,4 @@
-% Formal Fock space, ladder operators, raising exponentials and the Bargmann picture.
+% Formal Fock space, ladder operators, exponentials of operators that raise the particle number and the Bargmann picture.
 % The bosonic matrix product states built on it: Tjoa and Cirac, arXiv:2607.28753.
 \providecommand{\ket}[1]{\lvert #1\rangle}
 \providecommand{\bra}[1]{\langle #1\rvert}
@@ -13,7 +13,7 @@ The number basis of a bosonic Fock space labels vectors by occupation numbers. A
 coefficient families, with no summability condition, gives a space on which the creation
 operators and the exponentials of operators that raise the particle number act exactly, one
 coefficient at a time. This section develops that formal Fock space, the canonical
-commutation relations on it, the exponential law for raising operators, and the Bargmann
+commutation relations on it, the exponential law for these operators, and the Bargmann
 picture, in which creation and annihilation become multiplication by and differentiation in
 formal variables. The exponentials of the Gaussian-augmented bosonic matrix product states of
 Tjoa and Cirac~\cite{tjoacirac} are of this kind. \reva{Those states are a
@@ -35,14 +35,14 @@ $\ket n$ & number state (Definition~\ref{def:fock-space})\\
 $\Fock(\iota,R)$ & formal Fock space with coefficients in $R$ (Definition~\ref{def:fock-space})\\
 $\mathfrak h$, $\Gamma_s(\mathfrak h)$ & for finite $\iota$, the one-particle space $\C^\iota$ and its Fock space\\
 $a_i^\dagger,\ a_i$ & creation and annihilation operators (Definition~\ref{def:fock-ladder})\\
-$T$, $T'$, $e^T$ & raising operators and their exponential (Definition~\ref{def:fock-raising})\\
+$T$, $T'$, $e^T$ & operators that raise the particle number and their exponential (Definition~\ref{def:fock-raising})\\
 $R[[z]]$, $\partial_j$ & formal power series in $(z_i)_{i\in\iota}$ over $R$; partial derivative\\
 $\coef nf$ & coefficient of $z^n=\prod_iz_i^{n_i}$ in $f\in R[[z]]$\\
 $\Barg$ & Bargmann map (Definition~\ref{def:fock-bargmann})\\
 \end{tabular}
 \end{center}
 \reva{In this section $R$ is a $\C$-algebra, $X\in R$, $n$ a multi-index, $W$ a word in the
-ladder operators, $T$ a raising operator, $p\ge1$ an exponent, $z$ the formal variables and
+ladder operators, $T$ an operator that raises the particle number, $p\ge1$ an exponent, $z$ the formal variables and
 $\Lambda$ a bound on particle numbers; letters shared with
 Sections~\ref{sec:covariance}--\ref{sec:products} do not carry their meanings from there.}
 
@@ -70,12 +70,13 @@ $\lvert n\rvert=k$, so that, sector by sector,
  \Gamma_s(\mathfrak h)=\overline{\bigoplus_{k}}\,\otimes_s^k\mathfrak h\ \subset\
  \prod_{k}\otimes_s^k\mathfrak h=\Fock(\iota,\C):
 \]
-the finite-particle space, the bosonic Fock space of~\cite{dg,br} (the Hilbert direct sum,
-that is, the square-summable families) and the full product. \reva{$\Gamma_s(\mathfrak h)$
-is recalled from~\cite{dg,br}; it is not constructed in these notes}\revs{, nor are second
-quantization, the Fock representation of the CCR algebra, or the identification of
-$\Gamma_s(\mathfrak h)$ with $L^2(\R^\iota)$ through the Hermite functions that would join this
-section to Sections~\ref{sec:covariance}--\ref{sec:products}}. For a single mode, the vector with
+the finite-particle space, the bosonic Fock space of~\vetx{\cite[Ch.~3]{dg}, \cite[Sec.~5.2.1]{br}} (the Hilbert direct sum,
+that is, the square-summable families) and the full product. \vetc{The symmetric-tensor construction of
+$\Gamma_s(\mathfrak h)$ is recalled from~\cite{dg,br}; Section~\ref{sec:fockspace} works with it as $\ell^2$ of the
+multi-indices (Definition~\ref{def:fock-hilbert}).} \vetd{Section~\ref{sec:secondquant} treats the second
+quantization of one-particle matrices.} \vetc{The Fock representation of the CCR algebra
+and the identification of $\Gamma_s(\mathfrak h)$ with $L^2(\R^\iota)$ through the Hermite functions that would join
+this section to Sections~\ref{sec:covariance}--\ref{sec:products} are not treated in these notes}. For a single mode, the vector with
 coefficients $\sqrt{(2k)!}/k!$ at $\ket{2k}$ and $0$ at odd occupations lies in
 $\Fock(\{1\},\C)$ but not in $\Gamma_s$, since $(2k)!/(k!)^2\ge1$. After
 Definition~\ref{def:fock-raising} it is $e^{(a^\dagger)^2}\ket0$.
@@ -94,7 +95,7 @@ multiplies it on the left, and complex scalars are central in $R$.
 
 On number states these are the formulas $a_i^\dagger\ket n=\sqrt{n_i+1}\ket{n+e_i}$ and
 $a_i\ket n=\sqrt{n_i}\ket{n-e_i}$. On $\Gamma_s(\mathfrak h)$ the creation and annihilation
-operators of~\cite{dg} are $a^*(h)=\sum_ih_ia_i^\dagger$ and $a(h)=\sum_i\overline{h_i}\,a_i$
+operators of~\vetx{\cite{dg}} are $a^*(h)=\sum_ih_ia_i^\dagger$ and $a(h)=\sum_i\overline{h_i}\,a_i$
 for $h\in\mathfrak h$. Each coefficient of $a_i^\dagger\psi$ or $a_i\psi$ involves a single
 coefficient of $\psi$, so both operators are defined on the whole formal Fock space.
 
@@ -123,31 +124,78 @@ commute, $\prod_i(a_i^\dagger)^{n_i}(c\ket0)=\sqrt{n!}\,c\ket n$, the product ru
 finitely many $i$ with $n_i\ne0$. So $\ket n=\prod_i(a_i^\dagger)^{n_i}\ket0/\sqrt{n!}$, as
 usual.}
 
-\subsection{Raising operators and their exponentials}
+\begin{vetyenv}
+For a single mode we write $a$ and $a^\dagger$ for the ladder operators on $\Fock(\{1\},\C)$ and $\hat n=a^\dagger a$
+for the number operator. By Theorem~\ref{thm:fock-ccr}, $aa^\dagger=a^\dagger a+1$, and this relation moves every
+annihilation operator in a product of ladder operators to the left of every creation operator at the cost of shorter
+products. The result is the \emph{anti-normal order}, the order in which Tjoa and Cirac compute the generalized transfer
+matrices of their bosonic matrix product states~\cite[Prop.~2]{tjoacirac}. The polynomials in $a$ and $a^\dagger$ form the algebra generated by $a$ and $a^\dagger$: the
+smallest subalgebra of the linear maps on $\Fock(\{1\},\C)$ that contains $1$, $a$ and $a^\dagger$.
+
+\begin{theorem}[Anti-normal ordering]\label{thm:fock-antinormal}
+For a single mode, the monomials $a^m(a^\dagger)^n$, $m,n\in\N$, span the algebra generated by $a$ and $a^\dagger$.
+\end{theorem}
+
+\begin{proof}
+Let $\mathcal M$ be the span of the monomials. Each monomial lies in the algebra, so $\mathcal M$ does. Conversely, we
+show that $a\mathcal M\subseteq\mathcal M$ and $a^\dagger\mathcal M\subseteq\mathcal M$. Then the operators $Y$ with
+$Y\mathcal M\subseteq\mathcal M$ form a subalgebra containing $a$ and $a^\dagger$, hence the whole algebra, and every $Y$ of
+the algebra is $Y\cdot1\in\mathcal M$, since $1=a^0(a^\dagger)^0\in\mathcal M$. Left multiplication by $a$ sends
+$a^m(a^\dagger)^n$ to $a^{m+1}(a^\dagger)^n$. For $a^\dagger$, induction on $m$ from $aa^\dagger=a^\dagger a+1$ gives
+\[
+ a^{m+1}a^\dagger=a^\dagger a^{m+1}+(m+1)\,a^m,
+\]
+the step being $a^{m+2}a^\dagger=a(a^\dagger a^{m+1}+(m+1)a^m)=(a^\dagger a+1)a^{m+1}+(m+1)a^{m+1}$. Hence
+$a^\dagger a^{m+1}(a^\dagger)^n=a^{m+1}(a^\dagger)^{n+1}-(m+1)\,a^m(a^\dagger)^n$ lies in $\mathcal M$, and so does
+$a^\dagger(a^\dagger)^n=(a^\dagger)^{n+1}$.
+\end{proof}
+
+For the square of the number operator the reordering takes two steps.
+
+\begin{proposition}[The square of the number operator]\label{prop:fock-number-sq}
+For a single mode, $\hat n^2=a^2(a^\dagger)^2-3\,aa^\dagger+1$.
+\end{proposition}
+
+\begin{proof}
+By Theorem~\ref{thm:fock-ccr}, $\hat n=a^\dagger a=aa^\dagger-1$, so $\hat n^2=aa^\dagger aa^\dagger-2\,aa^\dagger+1$. Inside
+the first term, $a^\dagger a=aa^\dagger-1$ again gives $aa^\dagger aa^\dagger=a^2(a^\dagger)^2-aa^\dagger$.
+\end{proof}
+
+Both sides give $j^2\ket j$ on a number state $\ket j$, since $(j+1)(j+2)-3(j+1)+1=j^2$.
+\end{vetyenv}
+
+\subsection{Operators that raise the particle number}
 
 Operators that raise the particle number have exponential series that are finite at each
 coefficient.
 
-\begin{definition}[Raising operator and its exponential]\label{def:fock-raising}
-A $\C$-linear map $T$ on $\Fock(\iota,R)$ is \emph{raising} (short for order-raising) if, for
+\begin{definition}[Raising the particle number; the exponential]\label{def:fock-raising}
+A $\C$-linear map $T$ on $\Fock(\iota,R)$ \emph{raises the particle number} if, for
 every $k$, $T\psi$
-vanishes below $k+1$ whenever $\psi$ vanishes below $k$. For raising $T$,
+vanishes below $k+1$ whenever $\psi$ vanishes below $k$. For such $T$,
 \[
  (e^T\psi)(n)=\sum_{r=0}^{\lvert n\rvert}\frac{(T^r\psi)(n)}{r!}.
 \]
 \end{definition}
 
+The basic examples are the polynomials in the creation operators with zero constant term
+(Lemma~\ref{lem:fock-raising}(c)), such as $\kappa(a^\dagger)^2+\ell a^\dagger$, \vetb{whose exponential applied to
+the vacuum is, for $\lvert\kappa\rvert<\tfrac12$, a squeezed coherent state up to normalization}\vetx{~\cite[(8)--(9)]{tjoacirac}}, and
+$K\otimes(a^\dagger)^2+L\otimes a^\dagger$ with matrix coefficients.
+
 \begin{lemma}\label{lem:fock-raising}
-Let $T$ and $T'$ be raising.
+Let $T$ and $T'$ raise the particle number.
 \begin{enumerate}
-\item[(a)] If $T_1,\ldots,T_r$ are raising and $\psi$ vanishes below $k$, then
+\item[(a)] If $T_1,\ldots,T_r$ raise the particle number and $\psi$ vanishes below $k$, then
 $T_1\cdots T_r\psi$ vanishes below $k+r$. In particular $(T^r\psi)(n)=0$ for
 $r>\lvert n\rvert$, and $(e^T\psi)(n)=\sum_{r=0}^{\Lambda}(T^r\psi)(n)/r!$ for every
 $\Lambda\ge\lvert n\rvert$.
 \item[(b)] $(T\psi)(n)$ depends only on the coefficients $\psi(n')$ with
 $\lvert n'\rvert<\lvert n\rvert$.
-\item[(c)] $T+T'$, $TT'$ and $cT$ ($c\in\C$) are raising; so are $a_i^\dagger$ and, for
-$X\in R$ and $p\ge1$, $X(a_i^\dagger)^p$.
+\item[(c)] $T+T'$, $TT'$ and $cT$ ($c\in\C$) raise the particle number; so do $a_i^\dagger$ and, for
+$X\in R$ and $p\ge1$, $X(a_i^\dagger)^p$. More generally, every word $Xa_{i_1}^\dagger\cdots a_{i_r}^\dagger$ with
+$r\ge1$ raises the particle number, hence so does every polynomial in the creation operators with
+zero constant term and coefficients in $R$ on the left.
 \end{enumerate}
 \end{lemma}
 
@@ -159,9 +207,11 @@ bound by one. Every $\psi$ vanishes below $0$.
 vanishes below $\lvert n\rvert$, so $T(\psi-\psi')$ vanishes below $\lvert n\rvert+1$, in
 particular at $n$.
 \item[(c)] The first three claims follow from the definition. $(a_i^\dagger\psi)(n)$ is a
-multiple of $\psi(n-e_i)$ and $\lvert n-e_i\rvert=\lvert n\rvert-1$, so $a_i^\dagger$ is
-raising; hence so is $(a_i^\dagger)^p$ for $p\ge1$, and left multiplication by $X$
-preserves vanishing below $k$.\qedhere
+multiple of $\psi(n-e_i)$ and $\lvert n-e_i\rvert=\lvert n\rvert-1$, so $a_i^\dagger$
+raises the particle number; hence so does $(a_i^\dagger)^p$ for $p\ge1$, and left multiplication by $X$
+preserves vanishing below $k$. \vetb{By (a), a word $Xa_{i_1}^\dagger\cdots a_{i_r}^\dagger$ maps a vector that
+vanishes below $k$ to one that vanishes below $k+r$, so it raises the particle number since $r\ge1$,} and sums of
+such maps raise it by the first claim.\qedhere
 \end{enumerate}
 \end{proof}
 
@@ -172,43 +222,43 @@ $r=\lvert n\rvert$ on. When the series converges in $\Gamma_s(\mathfrak h)$, its
 these coefficients, since convergence there implies convergence of each coefficient.
 
 \begin{figure}[ht]
-\centering
-\revb{\begin{tikzpicture}[x=1.5cm]
+\centering\vetbcolor
+\begin{tikzpicture}[x=1.5cm]
  \draw[->] (-0.4,0) -- (5.4,0) node[right] {$\lvert n\rvert$};
- \foreach \k in {0,...,4} \fill (\k,0) circle (2pt) node[below=3pt] {$\k$};
- \draw[->,thick] (0,0.15) to[bend left=50] node[above] {$a_i^\dagger$} (1,0.15);
- \draw[->,thick] (1,0.15) to[bend left=40] node[above] {$X(a_i^\dagger)^2$} (2.92,0.15);
- \draw[->,thick,dashed] (4,0.15) to[bend right=50] node[above] {$a_i$} (3.08,0.15);
+ \foreach \k in {0,...,4} {\node[dot] at (\k,0) {}; \node[below=2pt] at (\k,0) {$\k$};}
+ \draw[map] (0,0.15) to[bend left=50] node[above] {$a_i^\dagger$} (1,0.15);
+ \draw[map] (1,0.15) to[bend left=40] node[above] {$X(a_i^\dagger)^2$} (3,0.15);
+ \draw[map,dashed] (4,-0.62) to[bend left=50] node[below] {$a_i$} (3,-0.62);
 \end{tikzpicture}
-\caption{Raising maps (solid) move every coefficient to strictly higher particle number; the
-annihilation operator (dashed) moves it down. Hence the coefficient of $e^T\psi$ at particle
+\caption{Maps that raise the particle number (solid, above the axis) move every coefficient to strictly higher particle
+number; the annihilation operator (dashed, below the axis) moves it down. Hence the coefficient of $e^T\psi$ at particle
 number $k$ receives only the terms $T^r\psi$ with $r\le k$: the finite sum of
-Definition~\ref{def:fock-raising}.}\label{fig:fock-grading}}
+Definition~\ref{def:fock-raising}.}\label{fig:fock-grading}
 \end{figure}
 
 \begin{theorem}[Exponential law]\label{thm:fock-explaw}
-If $T$ and $T'$ are raising and $TT'=T'T$, then $e^{T+T'}=e^Te^{T'}$.
+If $T$ and $T'$ raise the particle number and $TT'=T'T$, then $e^{T+T'}=e^Te^{T'}$.
 \end{theorem}
 
 \begin{proof}
-\reva{By Lemma~\ref{lem:fock-raising}(c), $T+T'$ is raising, so both sides are
-defined; likewise $T^r$ is raising for $r\ge1$, which is used below.} The coefficient of $e^Te^{T'}\psi$ at
+\reva{By Lemma~\ref{lem:fock-raising}(c), $T+T'$ raises the particle number, so both sides are
+defined; likewise so does $T^r$ for $r\ge1$, which is used below.} The coefficient of $e^Te^{T'}\psi$ at
 $n$ reduces to a finite double sum, which the binomial theorem collapses. Fix $n$ and $\psi$,
 and put $\Lambda=\lvert n\rvert$. By Lemma~\ref{lem:fock-raising}(a), $e^{T'}\psi$ agrees in all
 degrees $\le\Lambda$ with $\sum_{t=0}^\Lambda T'^t\psi/t!$. By Lemma~\ref{lem:fock-raising}(b),
-applied to the raising map $T^r$ for $r\ge1$ (and trivially for $r=0$),
+applied to the map $T^r$ for $r\ge1$ (and trivially for $r=0$),
 \[
  (e^Te^{T'}\psi)(n)=\sum_{r=0}^\Lambda\sum_{t=0}^\Lambda\frac{(T^rT'^t\psi)(n)}{r!\,t!}
  =\sum_{k=0}^\Lambda\frac1{k!}\sum_{r+t=k}\binom kr(T^rT'^t\psi)(n)
  =\sum_{k=0}^\Lambda\frac{((T+T')^k\psi)(n)}{k!}.
 \]
-We dropped the terms with $r+t>\Lambda$ because $T^rT'^t$ is a product of $r+t$ raising maps and
+We dropped the terms with $r+t>\Lambda$ because $T^rT'^t$ is a product of $r+t$ maps that raise the particle number and
 therefore, by Lemma~\ref{lem:fock-raising}(a), vanishes at $n$; the last step is the
 binomial theorem for commuting $T$ and $T'$. The right side is $(e^{T+T'}\psi)(n)$.
 \end{proof}
 
 For matrices the same identity rests on absolute convergence of the double series. Here the
-grading by particle number replaces it. \reva{Without the raising hypothesis the finite sum of
+grading by particle number replaces it. \reva{Without the hypothesis that $T$ raises the particle number the finite sum of
 Definition~\ref{def:fock-raising} need not agree with the series $\sum_r(T^r\psi)(n)/r!$, and
 the series need not converge. For the annihilation operator $a$ of a single mode and
 $\psi=\ket1$, the finite sum at $n=0$ is $\psi(0)=0$, while the series gives
@@ -229,13 +279,13 @@ It is a $\C$-linear bijection, with inverse $\psi(n)=\sqrt{n!}\,\coef nf$.
 \end{definition}
 
 Thus $\Barg\ket n=z^n/\sqrt{n!}$, which for finite $\iota$ is the orthonormal basis of
-Bargmann's space of entire functions~\cite{bargmann}. So $\Barg$ maps $\Gamma_s(\mathfrak h)$
+Bargmann's space of entire functions~\vetx{\cite[Sec.~1]{bargmann}}. So $\Barg$ maps $\Gamma_s(\mathfrak h)$
 onto the Taylor series of the Bargmann space, and the formal Fock space onto all of $R[[z]]$,
 including, \reva{for a single mode and $R=\C$,} series such as $\sum_mm!\,z^m=\Barg\psi$,
 $\psi(m)=m!\sqrt{m!}$, with radius of convergence $0$. A vector $\psi$ vanishes below $k$
 exactly when $\Barg\psi$ has order at least $k$ (no monomial of total degree below $k$), so a
-raising map raises the order of power
-series by at least one; hence the name.
+map that raises the particle number raises the order of power
+series by at least one.
 
 \begin{lemma}\label{lem:fock-factorial}
 If $n_j\ge1$, then $n!=n_j\,(n-e_j)!$.
@@ -309,4 +359,19 @@ $\coef n{(e^{Xz_j^p}f)}$ is the same finite sum.
 
 The truncation in Definition~\ref{def:fock-raising} therefore cuts only terms whose
 coefficient at $n$ vanishes.
+
+\begin{vetxenv}
+\subsection*{Notes and references}
+The formal Fock space and the exponential summed coefficient by coefficient are the route of these notes, chosen so that no
+topology is needed. In algebraic terms, an operator that raises the particle number is topologically nilpotent for the
+filtration by particle number, under which $\Fock(\iota,R)$ is complete, and $e^T$ is its exponential, as $e^f$ is for a formal
+power series $f$ without constant term. The construction is modelled on the completion $\prod_k\otimes_s^k\mathfrak h$ of the
+finite-particle space and on $R[[z]]$ as a module over the Weyl algebra, on which $a_j^\dagger$ and $a_j$ act as $z_j$ and
+$\partial_j$. This realization of the creation and annihilation operators goes back to Fock~\cite{fock}; Bargmann~\cite{bargmann}
+introduced the Hilbert space of entire functions on which multiplication by $z_j$ and $\partial_j$ are adjoint to each other.
+\vety{Normal and anti-normal ordering of products of $a$ and $a^\dagger$ are standard; for ordered expansions of operators see
+Cahill and Glauber~\cite{cahillglauber}. Proposition~\ref{prop:fock-number-sq} is the identity used in Example~1 of Tjoa and
+Cirac~\cite{tjoacirac}, and Theorem~\ref{thm:fock-antinormal} is the reduction behind their remark after Proposition~2 that the
+proposition extends to all polynomials in $a$ and $a^\dagger$.}
+\end{vetxenv}
 

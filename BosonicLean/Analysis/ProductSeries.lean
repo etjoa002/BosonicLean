@@ -5,6 +5,7 @@ Authors: BosonicLean contributors
 -/
 import Mathlib.Analysis.Normed.Ring.InfiniteSum
 import Mathlib.Data.Fin.Tuple.Basic
+import Mathlib.Algebra.BigOperators.Fin
 
 /-!
 # Ordered products of absolutely convergent series
@@ -54,5 +55,30 @@ theorem hasSum_list_ofFn_prod :
       simpa only [Function.comp_def, key] using hnorm
     · rw [← (Fin.consEquiv fun _ => ℕ).hasSum_iff, List.ofFn_succ, List.prod_cons, ← hh.tsum_eq]
       simpa only [Function.comp_def, key] using hsum
+
+/-- **Product of absolutely convergent series over a finite index type.** In a complete normed
+commutative ring, if each `gᵢ` is summable in norm, then `f ↦ ∏ᵢ gᵢ(fᵢ)` over `f : ι → ℕ` is
+summable in norm and sums to `∏ᵢ Σₖ gᵢ(k)`. -/
+theorem hasSum_prod_apply_of_summable_norm {R : Type*} [NormedCommRing R] [CompleteSpace R]
+    {ι : Type*} [Fintype ι] {g : ι → ℕ → R} (hg : ∀ i, Summable fun k => ‖g i k‖) :
+    (Summable fun f : ι → ℕ => ‖∏ i, g i (f i)‖) ∧
+      HasSum (fun f : ι → ℕ => ∏ i, g i (f i)) (∏ i, ∑' k, g i k) := by
+  classical
+  set e := Fintype.equivFin ι
+  obtain ⟨h1, h2⟩ := hasSum_list_ofFn_prod (fun j => g (e.symm j)) fun j => hg _
+  have key : ∀ f : ι → ℕ,
+      (List.ofFn fun j => g (e.symm j) ((e.arrowCongr (Equiv.refl ℕ) f) j)).prod =
+        ∏ i, g i (f i) := by
+    intro f
+    rw [Fin.prod_ofFn]
+    exact Equiv.prod_comp e.symm fun i => g i (f i)
+  have hval : (List.ofFn fun j => ∑' k, g (e.symm j) k).prod = ∏ i, ∑' k, g i k := by
+    rw [Fin.prod_ofFn]
+    exact Equiv.prod_comp e.symm fun i => ∑' k, g i k
+  refine ⟨?_, ?_⟩
+  · rw [← (e.arrowCongr (Equiv.refl ℕ)).summable_iff] at h1
+    simpa only [Function.comp_def, key] using h1
+  · rw [← (e.arrowCongr (Equiv.refl ℕ)).hasSum_iff, hval] at h2
+    simpa only [Function.comp_def, key] using h2
 
 end BosonicLean

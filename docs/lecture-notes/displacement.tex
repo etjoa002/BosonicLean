@@ -1,0 +1,787 @@
+% Section 10: exponential vectors, totality, lowering exponentials, the displacement operators, the Weyl relation,
+% irreducibility, the squeezing and rotation operators. GA-BMPS milestone B5.3a, Sections 2-6 of its proposal
+% (chapter written 30 Oct 2026). New text for vetting (veteenv).
+\providecommand{\cU}{\mathcal U}
+\providecommand{\cV}{\mathcal V}
+\providecommand{\sU}{\mathsf U}
+\providecommand{\sS}{\mathsf S}
+\providecommand{\dom}{\operatorname{dom}}
+\providecommand{\Dord}{D^{\mathrm{ord}}}
+\providecommand{\Sord}{\mathsf S^{\mathrm{ord}}}
+\providecommand{\Cb}{\mathcal S}
+\providecommand{\Gs}{\Gamma_s(\iota)}
+\begin{veteenv}
+\setlength{\emergencystretch}{3em}
+\section{Exponential vectors, displacements and squeezing}\label{sec:displacement}
+
+On the bosonic Fock space the displacement operator $D(\alpha)=e^{\alpha a^\dagger-\bar\alpha a}$ and the squeezing
+operator $\sS(\zeta)=e^{(\bar\zeta a^2-\zeta a^{\dagger2})/2}$ are exponentials of unbounded operators. Their normal-ordered
+forms, a lowering exponential followed by a raising one, act coefficient by coefficient on the formal Fock space of
+Section~\ref{sec:fock}, and on the exponential vectors $\varepsilon(z)$ they reduce to identities between exponentials of
+numbers. Since the exponential vectors span a dense subspace of $\Gamma_s(\iota)$, these identities determine unitary
+operators, and the same density proves that the displacements act irreducibly.
+
+\medskip
+\noindent\textbf{Notation for this section.}
+\begin{center}
+\begin{tabular}{@{}L{0.3\textwidth}L{0.64\textwidth}@{}}
+$\iota$, $N$ & a finite set of $N\ge1$ modes; $\Fock=\Fock(\iota,\C)$, $\jmath:\Gs\to\Fock$ (Definition~\ref{def:fock-hilbert})\\
+$\langle w,z\rangle$, $\lvert z\rvert$ & $\sum_j\bar w_jz_j$ and $\langle z,z\rangle^{1/2}$ for $w,z\in\C^\iota$\\
+$z^n$, $n!$, $\lvert n\rvert$ & $\prod_jz_j^{n_j}$, $\prod_jn_j!$, $\sum_jn_j$ for a multi-index $n$\\
+$\varepsilon(z)$ & exponential vector (Definition~\ref{def:dsq-expvec})\\
+$\Lambda(\kappa,\ell)$, $\ket{\kappa,\ell}$ & $\sum_j(\kappa_ja_j^{\dagger2}+\ell_ja_j^\dagger)$; the one-mode vector
+$e^{\kappa a^{\dagger2}+\ell a^\dagger}\ket0=\ket{0,\kappa,\ell}$ (Definition~\ref{def:dsq-gaussraise})\\
+$e^T\psi$ & the exponential, coefficientwise (Definitions~\ref{def:fock-raising} and~\ref{def:sq-dgamma})\\
+$\Dord(\alpha)$, $D(\alpha)$ & normal-ordered and unitary displacement (Definition~\ref{def:dsq-disp},
+Theorem~\ref{thm:dsq-disp})\\
+$\zeta=re^{i\phi}$; $c$, $s$, $\tau$ & squeezing parameter; $\cosh r$, $\sinh r$, $e^{i\phi}\tanh r$ (Definition~\ref{def:dsq-squeeze})\\
+$\Sord(\zeta)$, $\sS(\zeta)$, $R(\theta)$ & squeezing and rotation operators (Definition~\ref{def:dsq-squeeze},
+Theorem~\ref{thm:dsq-squeeze})\\
+$L_\zeta$ & $(L_\zeta\beta)_j=c_j\beta_j-e^{i\phi_j}s_j\bar\beta_j$ (Theorem~\ref{thm:dsq-squeeze})\\
+$\Cb(y)$ & $\sum_k\binom{2k}ky^k$, the binomial series of $(1-4y)^{-1/2}$ (Lemma~\ref{lem:dsq-binomial})\\
+$\sU_\cU$, $\bar T$, $\psi_{j,n}$ & passive unitary (Theorem~\ref{thm:sq-unitary}); maximal realization
+(Definition~\ref{def:fock-maxreal}); mode-$j$ fiber (Definition~\ref{def:fock-modes})\\
+\end{tabular}
+\end{center}
+In this section $z,w\in\C^\iota$ are the arguments of exponential vectors, not the variables of the Bargmann picture,
+which appears only in the proof of Lemma~\ref{lem:dsq-mehler}, in the variable $x$. The letter $\varphi$ denotes a finitely supported vector and $\phi$ a squeezing phase; $k$ is a
+summation index.
+
+\subsection{Exponential vectors and totality}\label{sec:dsq-expvec}
+
+\begin{definition}[Exponential vector]\label{def:dsq-expvec}
+For $z\in\C^\iota$, the \emph{exponential vector} $\varepsilon(z)\in\Fock$ has the coefficients
+$\varepsilon(z)(n)=z^n/\sqrt{n!}$. When it is square-summable (Lemma~\ref{lem:dsq-expvec}), $\varepsilon(z)$ also
+denotes the vector of $\Gs$ with these coefficients, and $\ket0\in\Gs$ is the vacuum.
+\end{definition}
+
+The vector $e^{-\lvert z\rvert^2/2}\varepsilon(z)$ is the coherent state with amplitudes $z_j$\vetx{~\cite{glauber}}. Inner products of
+exponential vectors are sums over multi-indices of products over the modes, and we use the following form of the
+product of absolutely convergent series.
+
+\begin{lemma}[Products of absolutely convergent series]\label{lem:dsq-prodseries}
+Let $A$ be a complete normed commutative ring, $\iota$ a finite set, and $g_i:\N\to A$, $i\in\iota$, with
+$\sum_k\lVert g_i(k)\rVert<\infty$ for every $i$. Then the family $f\mapsto\prod_ig_i(f(i))$, indexed by the maps
+$f:\iota\to\N$, is summable in norm, and its sum is $\prod_i\sum_kg_i(k)$.
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{lem:fock-tensornorm}(a) and $\lVert xy\rVert\le\lVert x\rVert\lVert y\rVert$,
+$\sum_f\lVert\prod_ig_i(f(i))\rVert\le\prod_i\sum_k\lVert g_i(k)\rVert<\infty$. For the sum we argue by induction on the
+number of elements of $\iota$; for $\iota=\emptyset$ both sides are $1$. Adding an element $i_0$, the maps on
+$\iota\cup\{i_0\}$ are the pairs $(k,f)$ of a value at $i_0$ and a map on $\iota$. An absolutely summable family over
+$\N\times\N^\iota$ may be summed first over $f$ and then over $k$, and its sum is
+$\sum_kg_{i_0}(k)\sum_f\prod_{i\in\iota}g_i(f(i))$, the product of the two sums.
+\end{proof}
+
+\begin{lemma}[Exponential vectors]\label{lem:dsq-expvec}
+Let $w,z\in\C^\iota$.
+\begin{enumerate}
+\item[(a)] $\varepsilon(z)=e^{z\cdot a^\dagger}\ket0$, the exponential of $z\cdot a^\dagger=\sum_jz_ja_j^\dagger$ of
+Definition~\ref{def:fock-raising}. The series $\sum_n\overline{\varepsilon(w)(n)}\,\varepsilon(z)(n)$ converges absolutely to
+$e^{\langle w,z\rangle}$. Hence $\varepsilon(z)$ is square-summable, $\langle\varepsilon(w),\varepsilon(z)\rangle=e^{\langle
+w,z\rangle}$, $\lVert\varepsilon(z)\rVert^2=e^{\lvert z\rvert^2}$, and $z\mapsto\varepsilon(z)$ is continuous from $\C^\iota$ to
+$\Gs$.
+\item[(b)] On $\Fock$, $a_j\varepsilon(z)=z_j\varepsilon(z)$ for every mode $j$, and $\Gamma(g)\varepsilon(z)=\varepsilon(gz)$
+for every $g\in M_\iota(\C)$.
+\item[(c)] $\varepsilon(z)=\bigotimes_j\varepsilon(z_j)$ with one-mode exponential vectors $\varepsilon(z_j)$, and
+$\varepsilon(0)=\ket0$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+\begin{enumerate}
+\item[(a)] The operators $z_ja_j^\dagger$ commute, and $(a^\dagger)^n\ket0=\sqrt{n!}\,\ket n$ by
+Definition~\ref{def:fock-ladder}, so the multinomial theorem gives $(z\cdot a^\dagger)^k\ket0=\sum_{\lvert
+n\rvert=k}(k!/n!)\,z^n\sqrt{n!}\,\ket n$. At the coefficient $n$ only the term $k=\lvert n\rvert$ contributes, and it is
+$z^n/\sqrt{n!}$. The terms of the series are $\prod_j(\bar w_jz_j)^{n_j}/n_j!$, so Lemma~\ref{lem:dsq-prodseries} with
+$g_j(k)=(\bar w_jz_j)^k/k!$ gives absolute convergence to $\prod_je^{\bar w_jz_j}=e^{\langle w,z\rangle}$. With $w=z$ the
+squared norm is $e^{\lvert z\rvert^2}<\infty$, so $\varepsilon(z)\in\jmath(\Gs)$ (Lemma~\ref{lem:fock-hilbert}(b)), and the
+inner product is the sum of the series. Finally
+$\lVert\varepsilon(z)-\varepsilon(w)\rVert^2=e^{\lvert z\rvert^2}+e^{\lvert w\rvert^2}-2\Rea e^{\langle w,z\rangle}$ tends to
+$0$ as $w\to z$.
+\item[(b)] $(a_j\varepsilon(z))(n)=\sqrt{n_j+1}\,z^{n+e_j}/\sqrt{(n+e_j)!}=z_j\varepsilon(z)(n)$. By
+Theorem~\ref{thm:sq-intertwine} and Lemma~\ref{lem:sq-sectors}(b), $\Gamma(g)(z\cdot a^\dagger)^k\ket0=((gz)\cdot
+a^\dagger)^k\ket0$, since $\sum_jz_j\sum_kg_{kj}a_k^\dagger=(gz)\cdot a^\dagger$. Both sides lie in the sector of $k$
+particles, and $\Gamma(g)$ acts sector by sector (Lemma~\ref{lem:sq-sectors}(a)), so summing the sector components gives
+$\Gamma(g)\varepsilon(z)=\varepsilon(gz)$.
+\item[(c)] $z^n=\prod_jz_j^{n_j}$ and $\sqrt{n!}=\prod_j\sqrt{n_j!}$, since $n!=\prod_jn_j!$ and square roots of non-negative
+numbers are multiplicative; Definition~\ref{def:fock-modes}(a) then gives the product. At $z=0$ only $n=0$
+contributes.\qedhere
+\end{enumerate}
+\end{proof}
+
+The density of the exponential vectors rests on an identity theorem for their inner products, which are power series
+in $\bar z$; the device of~(iii) below, rotating the argument by a phase, separates the two variables $z$ and $\bar z$.
+
+\begin{lemma}[Identity theorem for exponential vectors]\label{lem:dsq-identity}
+Let $\psi,\psi'\in\Gs$.
+\begin{enumerate}
+\item[(i)] If $x_k\in\C$ and $\sum_kx_kt^k$ converges to $0$ for every real $t$, then $x_k=0$ for every $k$.
+\item[(ii)] For every $w\in\C^\iota$ and real $t$, $\sum_kt^k\sum_{\lvert n\rvert=k}\bar w^n\psi(n)/\sqrt{n!}$ converges to
+$\langle\varepsilon(tw),\psi\rangle$.
+\item[(iii)] If $\langle\varepsilon(z),\psi\rangle=\langle\psi',\varepsilon(z)\rangle$ for every $z\in\C^\iota$, then
+$\psi(n)=\psi'(n)=0$ for every $n\ne0$, and $\psi(0)=\overline{\psi'(0)}$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+\begin{enumerate}
+\item[(i)] A power series that converges at every real $t$ has infinite radius of convergence, so its sum is a real-analytic
+function of $t$ whose $k$th derivative at $0$ is $k!\,x_k$; the sum vanishes identically, hence so do its derivatives.
+\item[(ii)] $\langle\varepsilon(tw),\psi\rangle=\sum_nt^{\lvert n\rvert}\bar w^n\psi(n)/\sqrt{n!}$ converges absolutely, by the
+Cauchy--Schwarz inequality for the square-summable families $\varepsilon(tw)$ and $\psi$, so its terms may be grouped into the
+finite sums over $\lvert n\rvert=k$.
+\item[(iii)] Fix $w$ and write $P_k(w)=\sum_{\lvert n\rvert=k}\bar w^n\psi(n)/\sqrt{n!}$ and
+$Q_k(w)=\sum_{\lvert n\rvert=k}w^n\overline{\psi'(n)}/\sqrt{n!}$. By (ii) and its complex conjugate,
+$\sum_kt^k(P_k(w)-Q_k(w))$ converges to $0$ for every real $t$, so $P_k(w)=Q_k(w)$ by (i), for every $w$. Replacing $w$ by
+$e^{i\theta}w$ multiplies $P_k(w)$ by $e^{-ik\theta}$ and $Q_k(w)$ by $e^{ik\theta}$; for $k\ge1$ and $\theta=\pi/(2k)$
+this gives $-iP_k(w)=iQ_k(w)$. Together with $P_k(w)=Q_k(w)$, both vanish for every $w$. A polynomial in $\bar w$, or in
+$w$, that vanishes on $\C^\iota$ has zero coefficients, so $\psi(n)=\psi'(n)=0$ for $\lvert n\rvert=k\ge1$. At $k=0$,
+$P_0=Q_0$ reads $\psi(0)=\overline{\psi'(0)}$.\qedhere
+\end{enumerate}
+\end{proof}
+
+\begin{theorem}[Totality]\label{thm:dsq-total}
+The exponential vectors $\varepsilon(z)$, $z\in\C^\iota$, span a dense subspace of $\Gs$. Hence two continuous linear maps
+from $\Gs$ to a Hausdorff topological vector space over $\C$ that agree on every $\varepsilon(z)$ are equal, and
+$\psi=\psi'$ in $\Gs$ if $\langle\varepsilon(w),\psi\rangle=\langle\varepsilon(w),\psi'\rangle$ for every $w\in\C^\iota$.
+\end{theorem}
+
+\begin{proof}
+If $\psi$ is orthogonal to every $\varepsilon(z)$, Lemma~\ref{lem:dsq-identity}(iii) with $\psi'=0$ gives $\psi=0$; so the
+orthogonal complement of the span is $0$, and the span is dense. Two continuous linear maps that agree on the span agree on
+its closure, since the set where two continuous maps into a Hausdorff space agree is closed. The last statement is the case
+of the maps $\psi\mapsto\langle\varepsilon(w),\psi\rangle$, applied to $\psi-\psi'$, which is orthogonal to every
+$\varepsilon(w)$.
+\end{proof}
+
+\subsection{Lowering exponentials and extension}\label{sec:dsq-lower}
+
+The normal-ordered forms of $D(\alpha)$ and $\sS(\zeta)$ end with an exponential of creation operators, which raises the
+particle number. We name the exponents that occur.
+
+\begin{definition}[Quadratic raising operators; vectors with at most $\nu$ particles]\label{def:dsq-gaussraise}
+\begin{enumerate}
+\item[(a)] For $\kappa,\ell\in\C^\iota$, $\Lambda(\kappa,\ell)=\sum_j\bigl(\kappa_ja_j^{\dagger2}+\ell_ja_j^\dagger\bigr)$ on
+$\Fock$. For one mode and $\kappa,\ell\in\C$, $\ket{\kappa,\ell}=e^{\kappa a^{\dagger2}+\ell a^\dagger}\ket0$, the vector
+$\ket{0,\kappa,\ell}$ of Definition~\ref{def:fock-photon}.
+\item[(b)] For $\nu\in\N$, a vector $\psi\in\Fock$ \emph{vanishes above $\nu$} if $\psi(n)=0$ for every $n$ with
+$\lvert n\rvert>\nu$.
+\end{enumerate}
+\end{definition}
+
+By Lemma~\ref{lem:fock-raising}(c), $\Lambda(\kappa,\ell)$ raises the particle number, so $e^{\Lambda(\kappa,\ell)}$ is a finite sum
+at each coefficient; $\Lambda(0,0)=0$, with exponential the identity. The vector $\ket{\kappa,\ell}$ is the paper's
+$\ket{\kappa,\ell}$ of~\cite[(8)]{tjoacirac}, and $\Lambda(0,z)=z\cdot a^\dagger$, so $\varepsilon(z)=e^{\Lambda(0,z)}\ket0$. A
+vector vanishes above $\nu$ when it lies in the sum of the sectors of $0,\ldots,\nu$ particles; $\ket m$ vanishes above
+$\lvert m\rvert$, and for $\nu=0$ the vector is a multiple of $\ket0$.
+
+\begin{lemma}[Quadratic raising operators]\label{lem:dsq-above}
+Let $\kappa,\ell\in\C^\iota$ and $\nu,\nu'\in\N$.
+\begin{enumerate}
+\item[(a)] If $\psi$ vanishes above $\nu$, it vanishes above every $\nu'\ge\nu$. Sums, finite sums and scalar multiples of
+vectors that vanish above $\nu$ vanish above $\nu$, and so does $\Gamma(g)\psi$ for every $g\in M_\iota(\C)$; $a_j^\dagger\psi$
+vanishes above $\nu+1$ and $\Lambda(\kappa,\ell)\psi$ above $\nu+2$.
+\item[(b)] A vector that vanishes above some $\nu$ is finitely supported and lies in $\jmath(\Gs)$; for every finitely
+supported $\psi\in\Gs$, $\jmath\psi$ vanishes above some $\nu$.
+\item[(c)] For one-mode vectors $\chi_j\in\Fock(\{1\},\C)$, $e^{\Lambda(\kappa,\ell)}\bigotimes_j\chi_j=\bigotimes_je^{\kappa_ja^{\dagger2}+\ell_j
+a^\dagger}\chi_j$; in particular $e^{\Lambda(\kappa,\ell)}\ket0=\bigotimes_j\ket{\kappa_j,\ell_j}$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+\begin{enumerate}
+\item[(a)] The first three claims hold coefficientwise; $\Gamma(g)$ preserves each sector (Lemma~\ref{lem:sq-sectors}(a)),
+and the coefficient $(a_j^\dagger\psi)(n)$ involves only $\psi(n-e_j)$.
+\item[(b)] On finitely many modes there are finitely many multi-indices with $\lvert n\rvert\le\nu$, and a finitely supported
+vector is square-summable. Conversely take $\nu$ the largest $\lvert n\rvert$ over the support.
+\item[(c)] The summands $\kappa_ja_j^{\dagger2}+\ell_ja_j^\dagger$ commute and raise the particle number, so by
+Theorem~\ref{thm:fock-explaw} $e^{\Lambda(\kappa,\ell)}$ is the product of their exponentials. The exponential of the
+summand of mode $j$ is the one-mode Gaussian operator acting on mode $j$ (Definition~\ref{def:fock-modes}(c)), which on a
+product vector changes only the factor at $j$. The vacuum is $\bigotimes_j\ket0$.\qedhere
+\end{enumerate}
+\end{proof}
+
+The lowering exponentials are series at every coefficient. On $\Gs$ each coefficient is an inner product with a vector
+of $\Gs$, the exponential of the adjoint raising operator applied to a number state; this is where the condition
+$\lvert\tau_j\rvert<1$ on the squeezing enters.
+
+\begin{lemma}[Lowering exponentials]\label{lem:dsq-lower}
+Let $n$ be a multi-index.
+\begin{enumerate}
+\item[(a)] Let $\alpha\in\C^\iota$. For every $\psi\in\Gs$, $\sum_k\lvert((-\bar\alpha\cdot a)^k\jmath\psi)(n)\rvert/k!<\infty$,
+where $\bar\alpha\cdot a=\sum_j\bar\alpha_ja_j$; and there is $f_n\in\Gs$ with $\jmath f_n=e^{\Lambda(0,-\alpha)}\ket n$ and
+$(e^{-\bar\alpha\cdot a}\jmath\psi)(n)=\langle f_n,\psi\rangle$ for every $\psi\in\Gs$.
+\item[(b)] Let $\tau\in\C^\iota$ with $\lvert\tau_j\rvert<1$ for every $j$. The same holds for the lowering operator
+$\frac12\sum_j\bar\tau_ja_j^2$, with $\jmath f_n=e^{\Lambda(\tau/2,0)}\ket n$. If $\lvert\tau_j\rvert\ge1$ for some $j$, then
+$e^{\Lambda(\tau/2,0)}\ket0$ is not square-summable; for one mode, $\lVert\ket{\kappa,0}\rVert^2=\infty$ when
+$\lvert\kappa\rvert\ge\frac12$.
+\item[(c)] $\psi\mapsto(e^{-\bar\alpha\cdot a}\jmath\psi)(n)$ is continuous on $\Gs$, and so is
+$\psi\mapsto(e^{\frac12\sum_j\bar\tau_ja_j^2}\jmath\psi)(n)$ when $\lvert\tau_j\rvert<1$ for every $j$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Write $B$ for the lowering operator, $-\bar\alpha\cdot a$ or $\frac12\sum_j\bar\tau_ja_j^2$, and $B^\dagger$ for
+$\Lambda(0,-\alpha)$ or $\Lambda(\tau/2,0)$. For a finitely supported $\varphi$, $\langle a_j^\dagger\varphi,\psi\rangle=
+\langle\varphi,a_j\psi\rangle$ by Definition~\ref{def:fock-ladder}, so $(B^k\jmath\psi)(n)=\langle(B^\dagger)^k\ket n,\psi\rangle$.
+The vector $x_k=(B^\dagger)^k\ket n/k!$ lies in the sector of $\lvert n\rvert+k$, respectively $\lvert n\rvert+2k$, particles;
+these sectors are distinct for distinct $k$. Let $P_k\psi$ be the component of $\psi$ in that sector. By the Cauchy--Schwarz
+inequality in each sector and then over $k$,
+\[
+ \sum_k\frac{\lvert(B^k\jmath\psi)(n)\rvert}{k!}\le\sum_k\lVert x_k\rVert\,\lVert P_k\psi\rVert
+ \le\Bigl(\sum_k\lVert x_k\rVert^2\Bigr)^{1/2}\lVert\psi\rVert .
+\]
+The orthogonal sum $\sum_kx_k=e^{B^\dagger}\ket n$ is a product vector by Lemma~\ref{lem:dsq-above}(c), since
+$\ket n=\bigotimes_j\ket{n_j}$, and by Definition~\ref{def:fock-ladder} its one-mode factors are
+\[
+ e^{\beta a^\dagger}\ket m=\sum_k\frac{\beta^k}{k!}\sqrt{\tfrac{(m+k)!}{m!}}\,\ket{m+k},\qquad
+ e^{\kappa a^{\dagger2}}\ket m=\sum_k\frac{\kappa^k}{k!}\sqrt{\tfrac{(m+2k)!}{m!}}\,\ket{m+2k},
+\]
+with $\beta=-\alpha_j$, respectively $\kappa=\tau_j/2$. Their squared norms $\sum_k\lvert\beta\rvert^{2k}(m+k)!/(k!^2m!)$ and
+$\sum_k\lvert\kappa\rvert^{2k}(m+2k)!/(k!^2m!)$ have term ratios tending to $0$ and to $4\lvert\kappa\rvert^2$, so they are finite
+when $\lvert\kappa\rvert<\frac12$. By Lemma~\ref{lem:fock-tensornorm}(b), $\sum_k\lVert x_k\rVert^2=\lVert e^{B^\dagger}\ket n\rVert^2<\infty$,
+so $e^{B^\dagger}\ket n=\jmath f_n$ for some $f_n\in\Gs$, the series converges absolutely, and its sum is
+$\sum_k\langle x_k,\psi\rangle=\langle f_n,\psi\rangle$. This proves (a) and the first part of (b), and (c) follows, since
+$\psi\mapsto\langle f_n,\psi\rangle$ is a continuous linear functional.
+
+For $m=0$ and $\lvert\kappa\rvert\ge\frac12$ the terms of the second squared norm are $\lvert2\kappa\rvert^{2k}\binom{2k}k4^{-k}\ge
+\binom{2k}k4^{-k}\ge1/(2\sqrt k)$ for $k\ge1$, so the series diverges. If $\lvert\tau_j\rvert\ge1$, the factor of
+$e^{\Lambda(\tau/2,0)}\ket0=\bigotimes_j\ket{\tau_j/2,0}$ at $j$ has infinite squared norm and every factor has coefficient
+$1$ at $0$, so the product has infinite squared norm by Lemma~\ref{lem:fock-tensornorm}(b).
+\end{proof}
+
+An operator on $\Gs$ is fixed by its values on the exponential vectors, and an isometry can be constructed from them. The
+next lemma is the general form of this construction, for any family with a dense span.
+
+\begin{lemma}[Extension of a map that preserves inner products]\label{lem:dsq-gram}
+Let $\mathcal H_1$, $\mathcal H_2$ be complex inner product spaces, $\mathcal H_2$ complete, and $(x_a)_{a\in A}$,
+$(x'_a)_{a\in A}$ families in $\mathcal H_1$ and $\mathcal H_2$ with $\langle x_a,x_b\rangle=\langle x'_a,x'_b\rangle$ for all
+$a,b\in A$, such that the span of the $x_a$ is dense. Then there is exactly one linear isometry $T:\mathcal H_1\to\mathcal
+H_2$ with $Tx_a=x'_a$ for every $a$.
+\end{lemma}
+
+\begin{proof}
+For a finitely supported family of coefficients $c$, $\lVert\sum_ac_ax'_a\rVert^2=\sum_{a,b}\bar c_ac_b\langle
+x'_a,x'_b\rangle=\lVert\sum_ac_ax_a\rVert^2$. Applied to the difference of two families, this shows that
+$\sum_ac_ax'_a$ depends only on $\sum_ac_ax_a$, so $T_0(\sum_ac_ax_a)=\sum_ac_ax'_a$ is a well-defined linear isometry on the
+span. A uniformly continuous map from a dense subspace into a complete space has exactly one continuous extension to the
+whole space, and the extension of $T_0$ is linear and isometric by continuity. Two continuous maps that agree on the
+dense span agree everywhere, which gives uniqueness.
+\end{proof}
+
+\begin{lemma}[Extension from exponential vectors]\label{lem:dsq-extension}
+Let $T:\Gs\to\Fock$ be linear, with every coefficient $\psi\mapsto(T\psi)(n)$ continuous.
+\begin{enumerate}
+\item[(a)] If $V:\C^\iota\to\Gs$ satisfies $T\varepsilon(z)=\jmath V(z)$ and $\langle V(w),V(z)\rangle=\langle\varepsilon(w),
+\varepsilon(z)\rangle$ for all $w,z$, there is a linear isometry $L$ of $\Gs$ with $\jmath L\psi=T\psi$ for every $\psi$.
+\item[(b)] If $T'$ is another such map and $T\varepsilon(z)=T'\varepsilon(z)$ for every $z$, then $T=T'$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+\begin{enumerate}
+\item[(a)] Lemma~\ref{lem:dsq-gram}, with $x_z=\varepsilon(z)$, $x'_z=V(z)$ and the dense span of Theorem~\ref{thm:dsq-total}, gives
+a linear isometry $L$ with $L\varepsilon(z)=V(z)$. The maps $\jmath\circ L$ and $T$ are linear with continuous coefficients,
+since each coefficient of $\jmath$ is continuous on $\Gs$, and they agree on every $\varepsilon(z)$; by (b) they are equal.
+\item[(b)] For each $n$, the continuous linear functionals $\psi\mapsto(T\psi)(n)$ and $\psi\mapsto(T'\psi)(n)$ agree on every
+$\varepsilon(z)$, hence everywhere by Theorem~\ref{thm:dsq-total}.\qedhere
+\end{enumerate}
+\end{proof}
+
+\subsection{Displacement operators}\label{sec:dsq-disp}
+
+\begin{definition}[Normal-ordered displacement]\label{def:dsq-disp}
+For $\alpha\in\C^\iota$ and $\psi\in\Gs$,
+\[
+ \Dord(\alpha)\jmath\psi=e^{-\lvert\alpha\rvert^2/2}\,e^{\Lambda(0,\alpha)}\bigl(e^{-\bar\alpha\cdot a}\jmath\psi\bigr):
+\]
+the lowering exponential, summed coefficientwise (Lemma~\ref{lem:dsq-lower}(a)), then the raising exponential, a finite
+sum at each coefficient, then the factor $e^{-\lvert\alpha\rvert^2/2}$.
+\end{definition}
+
+For commuting $A=\alpha\cdot a^\dagger$ and $B=-\bar\alpha\cdot a$ with central commutator $[A,B]=\lvert\alpha\rvert^2$, the
+Baker--Campbell--Hausdorff formula gives the formal identity $e^{A+B}=e^{-\lvert\alpha\rvert^2/2}e^Ae^B$; the definition takes its
+right side, which is the standard normal-ordered displacement.
+
+\begin{theorem}[Displacement operators]\label{thm:dsq-disp}
+Let $\alpha,\beta,z\in\C^\iota$.
+\begin{enumerate}
+\item[(a)] $\psi\mapsto\Dord(\alpha)\jmath\psi$ is a linear map $\Gs\to\Fock$ with continuous coefficients, and
+$\Dord(\alpha)\varepsilon(z)=e^{-\lvert\alpha\rvert^2/2-\langle\alpha,z\rangle}\varepsilon(z+\alpha)$.
+\item[(b)] There is a unitary operator $D(\alpha)$ on $\Gs$, the \emph{displacement operator}, with
+$\jmath D(\alpha)\psi=\Dord(\alpha)\jmath\psi$ for every $\psi\in\Gs$. It satisfies
+$D(\alpha)\varepsilon(z)=e^{-\lvert\alpha\rvert^2/2-\langle\alpha,z\rangle}\varepsilon(z+\alpha)$, $D(\alpha)D(-\alpha)=1$,
+$D(\alpha)^*=D(-\alpha)$ and $D(0)=1$.
+\item[(c)] (Weyl relation) $D(\alpha)D(\beta)=\exp\bigl(\tfrac12\sum_j(\alpha_j\bar\beta_j-\bar\alpha_j\beta_j)\bigr)
+D(\alpha+\beta)=e^{(\langle\beta,\alpha\rangle-\langle\alpha,\beta\rangle)/2}D(\alpha+\beta)$; if
+$\sum_j(\alpha_j\bar\beta_j-\bar\alpha_j\beta_j)=0$, then $D(\alpha)D(\beta)=D(\alpha+\beta)$.
+\item[(d)] $D(\alpha)\ket0=e^{-\lvert\alpha\rvert^2/2}\varepsilon(\alpha)$, the coherent state of~\cite[(5)]{tjoacirac}.
+For an enumeration $j_1,\ldots,j_N$ of the modes, $D(\alpha)=D(\alpha_{j_1}e_{j_1})\cdots D(\alpha_{j_N}e_{j_N})$. For
+$\eta\in\C$, $\psi\in\Gs$ and a multi-index $n$, $(D(\eta e_j)\psi)(n)=(D(\eta)\psi_{j,n})(n_j)$, with $D(\eta)$ the
+one-mode displacement and $\psi_{j,n}$ the mode-$j$ fiber.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\begin{enumerate}
+\item[(a)] Each coefficient of $\Dord(\alpha)\jmath\psi$ is a finite linear combination of coefficients of
+$e^{-\bar\alpha\cdot a}\jmath\psi$, and these are the continuous linear functionals $\langle f_n,\psi\rangle$ of
+Lemma~\ref{lem:dsq-lower}(a). By Lemma~\ref{lem:dsq-expvec}(b), $(-\bar\alpha\cdot a)^k\varepsilon(z)=(-\langle\alpha,z\rangle)^k
+\varepsilon(z)$, so the lowering exponential multiplies $\varepsilon(z)$ by $e^{-\langle\alpha,z\rangle}$. The raising
+operators $\Lambda(0,\alpha)$ and $\Lambda(0,z)$ commute, so by Theorem~\ref{thm:fock-explaw}
+$e^{\Lambda(0,\alpha)}\varepsilon(z)=e^{\Lambda(0,\alpha)}e^{\Lambda(0,z)}\ket0=\varepsilon(z+\alpha)$.
+\item[(b)] With $V(z)=e^{-\lvert\alpha\rvert^2/2-\langle\alpha,z\rangle}\varepsilon(z+\alpha)$,
+\[
+ \langle V(w),V(z)\rangle=e^{-\lvert\alpha\rvert^2-\langle w,\alpha\rangle-\langle\alpha,z\rangle+\langle w+\alpha,z+\alpha\rangle}
+ =e^{\langle w,z\rangle},
+\]
+so Lemma~\ref{lem:dsq-extension}(a) gives a linear isometry $D(\alpha)$ with $\jmath D(\alpha)\psi=\Dord(\alpha)\jmath\psi$; this
+relation determines it, because $\jmath$ is injective. Applying the formula twice, $D(\alpha)D(-\alpha)\varepsilon(z)=\varepsilon(z)$, so
+$D(\alpha)D(-\alpha)=1$ by Theorem~\ref{thm:dsq-total}. Hence $D(\alpha)$ is onto, a surjective isometry is unitary, and
+$D(\alpha)^*=D(\alpha)^{-1}=D(-\alpha)$. $\Dord(0)$ is the identity.
+\item[(c)] On $\varepsilon(z)$ the left side gives $e^{-\lvert\beta\rvert^2/2-\langle\beta,z\rangle-\lvert\alpha\rvert^2/2-\langle\alpha,
+z+\beta\rangle}\varepsilon(z+\alpha+\beta)$ and $D(\alpha+\beta)$ gives $e^{-\lvert\alpha+\beta\rvert^2/2-\langle\alpha+\beta,z
+\rangle}\varepsilon(z+\alpha+\beta)$. Since $\lvert\alpha+\beta\rvert^2=\lvert\alpha\rvert^2+\lvert\beta\rvert^2+\langle\alpha,\beta\rangle
++\langle\beta,\alpha\rangle$, the ratio is $e^{(\langle\beta,\alpha\rangle-\langle\alpha,\beta\rangle)/2}$, and
+$\langle\beta,\alpha\rangle-\langle\alpha,\beta\rangle=\sum_j(\alpha_j\bar\beta_j-\bar\alpha_j\beta_j)$. The two bounded
+operators agree on every $\varepsilon(z)$, hence are equal by Theorem~\ref{thm:dsq-total}.
+\item[(d)] The first statement is (b) at $z=0$. For vectors with disjoint supports the phase in (c) vanishes, so
+$D(\alpha)$ is the product of the $D(\alpha_je_j)$ by induction along the enumeration. For the fiber, both sides are
+continuous linear functionals of $\psi$: the map $\psi\mapsto\psi_{j,n}$ from $\Gs$ to the one-mode Fock space has norm at
+most $1$. On $\varepsilon(z)=\bigotimes_k\varepsilon(z_k)$, $D(\eta e_j)$ multiplies by $e^{-\lvert\eta\rvert^2/2-\bar\eta z_j}$ and
+replaces the factor $\varepsilon(z_j)$ by $\varepsilon(z_j+\eta)$, while the fiber of $\varepsilon(z)$ along $j$ is
+$\prod_{k\ne j}\varepsilon(z_k)(n_k)$ times $\varepsilon(z_j)$, on which the one-mode $D(\eta)$ acts in the same way.
+Theorem~\ref{thm:dsq-total} concludes.\qedhere
+\end{enumerate}
+\end{proof}
+
+On the operators $a_j$, $a_j^\dagger$, which are unbounded on $\Gs$, the displacement acts through their maximal
+realizations of Definition~\ref{def:fock-maxreal}, which need no choice of domain.
+
+\begin{theorem}[Displacement of the ladder operators]\label{thm:dsq-disp-intertwine}
+Let $\alpha\in\C^\iota$, $j$ a mode and $\psi,\xi\in\Gs$. If $a_j\jmath\psi=\jmath\xi$, then $a_j\jmath D(\alpha)\psi=\jmath D(\alpha)\xi
++\alpha_j\jmath D(\alpha)\psi$; if $a_j^\dagger\jmath\psi=\jmath\xi$, then $a_j^\dagger\jmath D(\alpha)\psi=\jmath D(\alpha)\xi+\bar\alpha_j\jmath
+D(\alpha)\psi$. Moreover $D(\alpha)\psi\in\dom\bar a_j$ if and only if $\psi\in\dom\bar a_j$. Thus $D(\alpha)$ maps $\dom\bar a_j$
+onto itself, and on it $D(\alpha)^*\bar a_jD(\alpha)=\bar a_j+\alpha_j$ and $D(\alpha)^*\overline{a_j^\dagger}D(\alpha)=
+\overline{a_j^\dagger}+\bar\alpha_j$: the relation $D^\dagger aD=a+\alpha$ and~\cite[(A31)]{tjoacirac}.
+\end{theorem}
+
+\begin{proof}
+Write $B=-\bar\alpha\cdot a$ and $A=\Lambda(0,\alpha)$. Since $a_j$ commutes with $B$, and the series of $e^B\jmath\psi$ and of
+$e^Ba_j\jmath\psi$ converge absolutely at every coefficient (Lemma~\ref{lem:dsq-lower}(a)), $a_je^B\jmath\psi=e^Ba_j\jmath\psi$
+coefficientwise: $(a_jx)(n)$ is a multiple of the single coefficient $x(n+e_j)$. Next, $[a_j,A]=\alpha_j$ commutes with $A$, so
+$a_jA^k=A^ka_j+k\alpha_jA^{k-1}$, and summing the finitely many terms at each coefficient gives $a_je^Ax=e^A(a_j+\alpha_j)x$ for
+every $x\in\Fock$. Together, $a_j\Dord(\alpha)\jmath\psi=\Dord(\alpha)a_j\jmath\psi+\alpha_j\Dord(\alpha)\jmath\psi$, which is the
+first identity. For $a_j^\dagger$: it commutes with $A$, and $[B,a_j^\dagger]=-\bar\alpha_j$ gives $a_j^\dagger B^k=B^ka_j^\dagger+
+k\bar\alpha_jB^{k-1}$; when $a_j^\dagger\jmath\psi\in\jmath(\Gs)$ both series converge absolutely and $a_j^\dagger e^B\jmath\psi=
+e^Ba_j^\dagger\jmath\psi+\bar\alpha_je^B\jmath\psi$.
+
+If $\psi\in\dom\bar a_j$, the first identity shows $a_j\jmath D(\alpha)\psi\in\jmath(\Gs)$, so $D(\alpha)\psi\in\dom\bar a_j$; the
+converse is the same statement for $D(-\alpha)=D(\alpha)^{-1}$. Applying $D(\alpha)^*=D(-\alpha)$ to the two identities gives the
+operator forms.
+\end{proof}
+
+The derivative of the one-parameter group $t\mapsto D(t\alpha)$ on finitely supported vectors needs a norm estimate of
+the raising exponential, uniform for small parameters. The same estimate serves the squeezing operators below.
+
+\begin{lemma}[Derivative of a quadratic raising exponential]\label{lem:dsq-deriv}
+Let $\kappa,\ell:\R\to\C^\iota$ vanish at $0$ and be differentiable at $0$, with derivatives $\kappa',\ell'$. Let $m$ be a
+multi-index, $W:\R\to\Gs$ with $\jmath W(t)=e^{\Lambda(\kappa(t),\ell(t))}\ket m$ for every $t$, and $G\in\Gs$ with
+$\jmath G=\Lambda(\kappa',\ell')\ket m$. Then $W$ is differentiable at $0$ with $W'(0)=G$.
+\end{lemma}
+
+\begin{proof}
+Write $T_t=\Lambda(\kappa(t),\ell(t))$ and $\lVert x\rVert_1=\sum_n\lvert x(n)\rvert$; for finitely supported $x$,
+$\lVert x\rVert\le\lVert x\rVert_1$. If $x$ vanishes above $\nu$, the factor $\sqrt{n_j}$ in $(a_j^\dagger x)(n)$ is at most
+$\sqrt{\nu+1}$ on the support, so $\lVert a_j^\dagger x\rVert_1\le\sqrt{\nu+1}\lVert x\rVert_1$, and
+$\lVert T_tx\rVert_1\le\mu(t)(\nu+2)\lVert x\rVert_1$ with $\mu(t)=\sum_j(\lvert\kappa_j(t)\rvert+\lvert\ell_j(t)\rvert)$. Since
+$T_t^k\ket m$ vanishes above $\lvert m\rvert+2k$ (Lemma~\ref{lem:dsq-above}(a)), induction gives
+\[
+ \frac{\lVert T_t^k\ket m\rVert_1}{k!}\le\frac{\mu(t)^k}{k!}\prod_{i=1}^{k}(\lvert m\rvert+2i)\le(2\mu(t))^k\binom{M+k}k,
+ \qquad M=\lvert m\rvert .
+\]
+For $2\mu(t)\le\frac12$, $(2\mu(t))^k\le(2\mu(t))^2\,2^{2-k}$ for $k\ge2$, and the series
+$\sum_k\binom{M+k}kx^k=(1-x)^{-M-1}$ at $x=\frac12$ gives
+$\sum_{k\ge2}\lVert T_t^k\ket m\rVert/k!\le(2\mu(t))^2\,2^{M+3}$. At each coefficient $e^{T_t}\ket m$ is the finite sum of the
+terms $T_t^k\ket m/k!$, and these converge absolutely in $\Gs$, so
+$\lVert W(t)-\ket m-T_t\ket m\rVert\le(2\mu(t))^22^{M+3}$, which is $o(t)$ because $\mu(t)=O(t)$. The vector $T_t\ket m$ is
+linear in $(\kappa(t),\ell(t))$ with values in the finite-dimensional span of finitely many number states, so
+$(T_t\ket m-t\,\Lambda(\kappa',\ell')\ket m)/t\to0$. Since $W(0)=\ket m$, $(W(t)-W(0)-tG)/t\to0$.
+\end{proof}
+
+\begin{theorem}[One-parameter groups of displacements]\label{thm:dsq-disp-group}
+Fix $\alpha\in\C^\iota$.
+\begin{enumerate}
+\item[(a)] $D(t\alpha)D(t'\alpha)=D((t+t')\alpha)$ for all real $t,t'$.
+\item[(b)] For every $\psi\in\Gs$, $\alpha\mapsto D(\alpha)\psi$ is continuous from $\C^\iota$ to $\Gs$.
+\item[(c)] Let $\varphi\in\Gs$ be finitely supported, and $G\in\Gs$ with $\jmath G=\sum_j(\alpha_ja_j^\dagger-\bar\alpha_ja_j)\jmath\varphi$.
+Then $t\mapsto D(t\alpha)\varphi$ is differentiable at $t=0$ with derivative $G$.
+\end{enumerate}
+\end{theorem}
+
+The vector $G$ exists and is unique: the generator maps the finitely supported $\jmath\varphi$ to a finitely supported vector
+(Lemma~\ref{lem:dsq-above}), and $\jmath$ is injective.
+
+\begin{proof}
+\begin{enumerate}
+\item[(a)] The phase of the Weyl relation is $\exp(tt'\sum_j(\alpha_j\bar\alpha_j-\bar\alpha_j\alpha_j)/2)=1$.
+\item[(b)] For $\psi=\varepsilon(z)$ the formula of Theorem~\ref{thm:dsq-disp}(b) is continuous in $\alpha$, by
+Lemma~\ref{lem:dsq-expvec}(a), and so is $D(\alpha)f$ for $f$ in the span of the exponential vectors. For general $\psi$ and
+$\epsilon>0$ choose such $f$ with $\lVert\psi-f\rVert<\epsilon/3$ (Theorem~\ref{thm:dsq-total}); since every $D(\beta)$ is an
+isometry, $\lVert D(\alpha)\psi-D(\beta)\psi\rVert<\frac23\epsilon+\lVert D(\alpha)f-D(\beta)f\rVert$, which is below
+$\epsilon$ for $\beta$ near $\alpha$.
+\item[(c)] By linearity it suffices to take $\varphi=\ket m$. The lowering exponential is the finite sum
+$e^{-t\bar\alpha\cdot a}\ket m=\sum_{k\le\lvert m\rvert}(-t)^k(\bar\alpha\cdot a)^k\ket m/k!$, so
+\[
+ \jmath D(t\alpha)\ket m=e^{-t^2\lvert\alpha\rvert^2/2}\Bigl(e^{\Lambda(0,t\alpha)}\ket m-t\,e^{\Lambda(0,t\alpha)}(\bar\alpha\cdot a)\ket m
+ +\sum_{k\ge2}\frac{(-t)^k}{k!}e^{\Lambda(0,t\alpha)}(\bar\alpha\cdot a)^k\ket m\Bigr),
+\]
+each $(\bar\alpha\cdot a)^k\ket m$ being a finite combination of number states. Each $e^{\Lambda(0,t\alpha)}\ket{m'}$ is
+square-summable, its one-mode factors $e^{t\alpha_ja^\dagger}\ket{m'_j}$ having the finite squared norms computed in the proof of
+Lemma~\ref{lem:dsq-lower}. By Lemma~\ref{lem:dsq-deriv} with $\kappa=0$ and $\ell(t)=t\alpha$, $t\mapsto
+e^{\Lambda(0,t\alpha)}\ket{m'}$ is differentiable at $0$ with derivative $\Lambda(0,\alpha)\ket{m'}=(\alpha\cdot a^\dagger)\ket{m'}$,
+and in particular continuous there. The scalar factor has derivative $0$ at $0$. By the product rule the derivative at $0$
+is $(\alpha\cdot a^\dagger)\ket m-(\bar\alpha\cdot a)\ket m$.\qedhere
+\end{enumerate}
+\end{proof}
+
+\subsection{Irreducibility}\label{sec:dsq-irr}
+
+\begin{theorem}[Irreducibility]\label{thm:dsq-irreducible}
+Let $T$ be a bounded operator on $\Gs$ with $TD(\alpha)=D(\alpha)T$ for every $\alpha\in\C^\iota$. Then
+$\langle\varepsilon(\alpha),T\ket0\rangle=\langle T^*\ket0,\varepsilon(-\alpha)\rangle$ for every $\alpha$,
+$T\ket0=\langle0\rvert T\ket0\,\ket0$, and $T=\langle0\rvert T\ket0\,1$.
+\end{theorem}
+
+\begin{proof}
+$T$ commutes with $D(-\alpha)=D(\alpha)^*$ as well. By Theorem~\ref{thm:dsq-disp}(b),(d),
+\[
+ e^{-\lvert\alpha\rvert^2/2}\langle\varepsilon(\alpha),T\ket0\rangle=\langle D(\alpha)\ket0,T\ket0\rangle=\langle\ket0,TD(-\alpha)\ket0\rangle
+ =e^{-\lvert\alpha\rvert^2/2}\langle T^*\ket0,\varepsilon(-\alpha)\rangle .
+\]
+The passive unitary $\sU_{-I}$ is self-adjoint (Theorem~\ref{thm:sq-unitary}(b)) and maps $\varepsilon(\alpha)$ to
+$\varepsilon(-\alpha)$ (Lemma~\ref{lem:dsq-expvec}(b)), so $\langle\varepsilon(\alpha),T\ket0\rangle=\langle\sU_{-I}T^*\ket0,
+\varepsilon(\alpha)\rangle$ for every $\alpha$. Lemma~\ref{lem:dsq-identity}(iii) with $\psi=T\ket0$ and $\psi'=\sU_{-I}T^*\ket0$
+gives $(T\ket0)(n)=0$ for $n\ne0$, that is, $T\ket0=\lambda\ket0$ with $\lambda=\langle0\rvert T\ket0$. Then
+$T\varepsilon(\alpha)=e^{\lvert\alpha\rvert^2/2}TD(\alpha)\ket0=e^{\lvert\alpha\rvert^2/2}D(\alpha)T\ket0=\lambda\varepsilon(\alpha)$, and
+$T=\lambda1$ by Theorem~\ref{thm:dsq-total}.
+\end{proof}
+
+\begin{corollary}[Consequences of irreducibility]\label{cor:dsq-irreducible}
+\begin{enumerate}
+\item[(a)] If $V,V'$ are unitary operators on $\Gs$ with $V^*D(\alpha)V=V'^*D(\alpha)V'$ for every $\alpha$, then $V=\lambda V'$
+with $\lvert\lambda\rvert=1$; and $V=V'$ if moreover $\langle0\rvert V\ket0=\langle0\rvert V'\ket0\ne0$.
+\item[(b)] A closed subspace $K$ of $\Gs$ with $D(\alpha)K\subseteq K$ for every $\alpha$ is $0$ or $\Gs$.
+\item[(c)] The coherent states $D(\alpha)\ket0$ span a dense subspace of $\Gs$.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+\begin{enumerate}
+\item[(a)] $T=VV'^*$ is unitary and $T^*D(\alpha)T=V'V^*D(\alpha)VV'^*=D(\alpha)$, so $T$ commutes with every $D(\alpha)$, and
+$T=\lambda1$ by Theorem~\ref{thm:dsq-irreducible}; $\lvert\lambda\rvert=1$ since $T$ is unitary. Then $V=\lambda V'$, and
+$\langle0\rvert V\ket0=\lambda\langle0\rvert V'\ket0$ forces $\lambda=1$ under the extra hypothesis.
+\item[(b)] The family of the $D(\alpha)$ is closed under adjoints, so the orthogonal projection $P$ onto $K$ commutes with
+every $D(\alpha)$: $D(\alpha)P=PD(\alpha)P$ and its adjoint $PD(-\alpha)=PD(-\alpha)P$ for all $\alpha$ give $D(\alpha)P=PD(\alpha)$.
+By Theorem~\ref{thm:dsq-irreducible}, $P=\lambda1$, and $P^2=P$ gives $\lambda\in\{0,1\}$.
+\item[(c)] $D(\alpha)\ket0$ is a nonzero multiple of $\varepsilon(\alpha)$ (Theorem~\ref{thm:dsq-disp}(d)); apply
+Theorem~\ref{thm:dsq-total}.\qedhere
+\end{enumerate}
+\end{proof}
+
+\subsection{Squeezing and rotation operators}\label{sec:dsq-squeeze}
+
+The inner products of squeezed vectors are the sums of the binomial series of $(1-4y)^{-1/2}$, for complex $y$ in
+Lemma~\ref{lem:dsq-mehler} and for real $y$ of either sign in Theorem~\ref{thm:dsq-squeeze-group}(a).
+
+\begin{lemma}[The binomial series]\label{lem:dsq-binomial}
+Let $\Cb(y)=\sum_k\binom{2k}ky^k$. For every real $y$ with $4\lvert y\rvert<1$, $\Cb(y)=(1-4y)^{-1/2}$.
+\end{lemma}
+
+\begin{proof}
+$\binom{2k}k\le4^k$, so the series converges absolutely for $4\lvert y\rvert<1$. Newton's binomial series
+$(1+x)^{-1/2}=\sum_k\binom{-1/2}kx^k$ holds for real $\lvert x\rvert<1$, and
+$\binom{-1/2}k=(-1)^k\frac{1\cdot3\cdots(2k-1)}{2^kk!}=(-\tfrac14)^k\binom{2k}k$; take $x=-4y$.
+\end{proof}
+
+Newton's series holds also for complex $\lvert x\rvert<1$ with the principal branch, so $\Cb(y)$ is the principal value of
+$(1-4y)^{-1/2}$ for complex $y$ with $4\lvert y\rvert<1$; we use this in the next proof.
+
+The overlaps of one-mode Gaussian vectors are given by Mehler's formula\vetx{~\cite{mehler}}, which we prove in the scalar form needed here.
+
+\begin{lemma}[Overlaps of one-mode Gaussian vectors]\label{lem:dsq-mehler}
+Let $\kappa,\kappa',\ell,\ell'\in\C$ with $\lvert\kappa\rvert+\lvert\kappa'\rvert<1$. Then $1-4\bar\kappa\kappa'\ne0$, and the series
+$\sum_m\overline{\ket{\kappa,\ell}(m)}\,\ket{\kappa',\ell'}(m)$ converges absolutely to
+\[
+ \Cb(\bar\kappa\kappa')\exp\frac{\kappa'\bar\ell^2+\ell'\bar\ell+\bar\kappa\ell'^2}{1-4\bar\kappa\kappa'} .
+\]
+\end{lemma}
+
+\begin{proof}
+By Definition~\ref{def:fock-bargmann} and the Bargmann series $e^{\kappa x^2+\ell x}$ of $\ket{\kappa,\ell}$ (the remark before
+Lemma~\ref{lem:fock-photon}, written in the variable $x$), $\ket{\kappa,\ell}(m)=\sqrt{m!}\sum_p\kappa^p\ell^{m-2p}/(p!\,(m-2p)!)$. Hence
+$\lambda^m\ket{\kappa,\ell}(m)=\ket{\lambda^2\kappa,\lambda\ell}(m)$ for real $\lambda>0$, and the terms of the series are unchanged when
+$(\kappa,\ell,\kappa',\ell')$ is replaced by $(\lambda^2\kappa,\lambda\ell,\kappa'/\lambda^2,\ell'/\lambda)$, as is the claimed sum. Since
+$4\lvert\kappa\kappa'\rvert\le(\lvert\kappa\rvert+\lvert\kappa'\rvert)^2<1$, there is $\lambda$ with $2\lvert\kappa'\rvert<\lambda^2$ and
+$2\lambda^2\lvert\kappa\rvert<1$; so we may assume $\lvert\kappa\rvert,\lvert\kappa'\rvert<\frac12$. Then both vectors are square-summable
+(proof of Lemma~\ref{lem:dsq-lower}, with the factor $e^{\ell a^\dagger}$ handled in the same way), the series converges
+absolutely by the Cauchy--Schwarz inequality, and its sum is their inner product.
+
+Their Bargmann functions $f(x)=e^{\kappa x^2+\ell x}$ and $f'(x)=e^{\kappa'x^2+\ell'x}$ are entire and square-integrable
+for the measure $e^{-\lvert x\rvert^2}d^2x$, and by Bargmann's theorem~\cite{bargmann} the inner product equals
+\[
+ \frac1\pi\int_\C\overline{f(x)}\,f'(x)\,e^{-\lvert x\rvert^2}d^2x .
+\]
+With $x=x_1+ix_2$ the exponent of the integrand is $-X^TQX+J^TX$, $X=(x_1,x_2)$, where
+\[
+ Q=\begin{pmatrix}1-A-B&-i(A-B)\\-i(A-B)&1+A+B\end{pmatrix},\quad J=\begin{pmatrix}C+D\\i(C-D)\end{pmatrix},\quad
+ (A,B,C,D)=(\kappa',\bar\kappa,\ell',\bar\ell).
+\]
+$Q$ is complex symmetric with positive definite real part, since $\Rea(Ax^2+B\bar x^2)\le(\lvert A\rvert+\lvert B\rvert)\lvert x\rvert^2$.
+For such $Q$ the Gaussian integral is $\int e^{-X^TQX+J^TX}d^2X=\pi(\det Q)^{-1/2}e^{J^TQ^{-1}J/4}$, with the branch of the square
+root that is continuous on these matrices and positive on real ones. Here $\det Q=1-4AB=1-4\bar\kappa\kappa'$, and multiplying
+out, $J^TQ^{-1}J/4=(CD+AD^2+BC^2)/(1-4AB)$, which is the claimed exponent. Along $t\mapsto(t\kappa,t\kappa')$, $0\le t\le1$, the
+determinant $1-4t^2\bar\kappa\kappa'$ stays in the disc of radius $1$ about $1$, where the principal branch is continuous and
+positive at $t=0$; so the root is the principal one, and $(1-4\bar\kappa\kappa')^{-1/2}=\Cb(\bar\kappa\kappa')$ by the remark after
+Lemma~\ref{lem:dsq-binomial}.
+\end{proof}
+
+At $\kappa=0$ the lemma reads $\langle\varepsilon(w),\ket{\kappa',\ell'}\rangle=e^{\kappa'\bar w^2+\ell'\bar w}$ for one mode, the value of the
+Bargmann function at $\bar w$; by Lemma~\ref{lem:dsq-prodseries} the inner product of $\varepsilon(w)$ with a product vector
+$\bigotimes_j\ket{\kappa_j,\ell_j}$ is $\prod_je^{\kappa_j\bar w_j^2+\ell_j\bar w_j}$.
+
+\begin{definition}[Squeezing and rotation operators]\label{def:dsq-squeeze}
+For $\zeta\in\C$ write $\zeta=re^{i\phi}$ with $r=\lvert\zeta\rvert$, and put $c=\cosh r$, $s=\sinh r$ and
+$\tau=\tau(\zeta)=\zeta\tanh\lvert\zeta\rvert/\lvert\zeta\rvert$ for $\zeta\ne0$, $\tau(0)=0$; so $\tau=e^{i\phi}\tanh r$
+(the paper's~(C16)) and $\lvert\tau\rvert=\tanh r<1$. For $\zeta\in\C^\iota$ these are taken mode by mode, and for $\psi\in\Gs$
+\[
+ \Sord(\zeta)\jmath\psi=\Bigl(\prod_jc_j\Bigr)^{-1/2}e^{\Lambda(-\tau/2,0)}\,\Gamma\bigl(\diag(c_j^{-1})\bigr)\,
+ e^{\frac12\sum_j\bar\tau_ja_j^2}\jmath\psi,
+\]
+with the lowering exponential of Lemma~\ref{lem:dsq-lower}(b), coefficientwise. For $\theta\in\R^\iota$ the \emph{rotation operator}
+is $R(\theta)=\sU_{\diag(e^{-i\theta_j})}$ (Theorem~\ref{thm:sq-unitary}).
+\end{definition}
+
+$\Gamma(\diag(c_j^{-1}))$ multiplies the coefficient at $n$ by $\prod_jc_j^{-n_j}$, and $e^{\Lambda(-\tau/2,0)}=
+e^{-\frac12\sum_j\tau_ja_j^{\dagger2}}$. This is the standard normal-ordered form of
+$e^{\frac12\sum_j(\bar\zeta_ja_j^2-\zeta_ja_j^{\dagger2})}$~\cite{perelomov}, with $(\cosh r)^{-(n+1/2)}=c^{-1/2}c^{-n}$ on
+$\ket n$. Its lowering exponential converges because $\lvert\tau_j\rvert<1$ for every $\zeta$. By Theorem~\ref{thm:sq-exp},
+$R(\theta)$ is $e^{-i\sum_j\theta_j\hat n_j}$ summed coefficientwise, with $\hat n_j=a_j^\dagger a_j$.
+
+\begin{theorem}[Squeezing operators]\label{thm:dsq-squeeze}
+Let $\zeta,\zeta'\in\C^\iota$ and $w,z\in\C^\iota$.
+\begin{enumerate}
+\item[(a)] In $\Fock$,
+\begin{gather*}
+ \Sord(\zeta)\varepsilon(z)=\Bigl(\prod_jc_j\Bigr)^{-1/2}e^{\frac12\sum_j\bar\tau_jz_j^2}\bigotimes_j\ket{-\tau_j/2,\,z_j/c_j},\\
+ \Sord(\zeta)\ket0=\Bigl(\prod_jc_j\Bigr)^{-1/2}\bigotimes_j\ket{-\tau_j/2,0},\\
+ \langle\varepsilon(w),\Sord(\zeta)\varepsilon(z)\rangle=\Bigl(\prod_jc_j\Bigr)^{-1/2}e^{\frac12\sum_j\bar\tau_jz_j^2}
+ \exp\sum_j\Bigl(-\tfrac12\tau_j\bar w_j^2+\frac{z_j\bar w_j}{c_j}\Bigr);
+\end{gather*}
+the vector in the second line is the squeezed vacuum of~\cite[(5)]{tjoacirac}.
+\item[(b)] $\psi\mapsto\Sord(\zeta)\jmath\psi$ is linear with continuous coefficients, and there is a unitary
+operator $\sS(\zeta)$ on $\Gs$, the \emph{squeezing operator}, with $\jmath\sS(\zeta)\psi=\Sord(\zeta)\jmath\psi$ for every $\psi\in\Gs$.
+\item[(c)] (Covariance) $\sS(\zeta)D(\beta)=D(L_\zeta\beta)\sS(\zeta)$ for every $\beta\in\C^\iota$, where
+$(L_\zeta\beta)_j=c_j\beta_j-e^{i\phi_j}s_j\bar\beta_j$; $\sS(\zeta)^*D(\alpha)\sS(\zeta)=D(L_{-\zeta}\alpha)$, and $L_\zeta L_{-\zeta}=1$.
+\item[(d)] $\sS(\zeta)\sS(-\zeta)=1$, $\sS(\zeta)^*=\sS(-\zeta)$, $\sS(0)=1$.
+\item[(e)] For an enumeration $j_1,\ldots,j_N$ of the modes, $\sS(\zeta)=\sS(\zeta_{j_1}e_{j_1})\cdots\sS(\zeta_{j_N}e_{j_N})$;
+$\sS(\zeta+\zeta')=\sS(\zeta)\sS(\zeta')$ if $\zeta_j=0$ or $\zeta'_j=0$ for every $j$, so these factors commute; and
+$(\sS(\eta e_j)\psi)(n)=(\sS(\eta)\psi_{j,n})(n_j)$ for $\eta\in\C$, with $\sS(\eta)$ the one-mode squeezing operator.
+\end{enumerate}
+Moreover, $\langle\sS(\zeta)\ket0,\sS(\zeta')\ket0\rangle=(\prod_jc_j)^{-1/2}(\prod_jc'_j)^{-1/2}\prod_j\Cb(\bar\tau_j\tau'_j/4)$, with $c'$,
+$\tau'$ the parameters of $\zeta'$.
+\end{theorem}
+
+\begin{proof}
+\begin{enumerate}
+\item[(a)] By Lemma~\ref{lem:dsq-expvec}(b) the lowering exponential multiplies $\varepsilon(z)$ by
+$e^{\frac12\sum_j\bar\tau_jz_j^2}$, and $\Gamma(\diag(c_j^{-1}))\varepsilon(z)=\varepsilon(z/c)$. By Theorem~\ref{thm:fock-explaw} and
+Lemma~\ref{lem:dsq-above}(c), $e^{\Lambda(-\tau/2,0)}e^{\Lambda(0,z/c)}\ket0=e^{\Lambda(-\tau/2,z/c)}\ket0=\bigotimes_j\ket{-\tau_j/2,z_j/c_j}$. At
+$z=0$ this is the second formula, and the third follows from the remark after Lemma~\ref{lem:dsq-mehler}.
+\item[(b)] Linearity and continuity of the coefficients follow from Lemma~\ref{lem:dsq-lower}(b),(c) as in
+Theorem~\ref{thm:dsq-disp}(a). Inner products of product vectors are products of one-mode inner products
+(Lemma~\ref{lem:dsq-prodseries}). For one mode, Lemma~\ref{lem:dsq-mehler} with $\kappa=\kappa'=-\tau/2$, $\ell=w/c$,
+$\ell'=z/c$, where $\lvert\kappa\rvert+\lvert\kappa'\rvert=\lvert\tau\rvert<1$ and $1-\lvert\tau\rvert^2=c^{-2}$, gives
+\[
+ c^{-1}e^{(\tau\bar w^2+\bar\tau z^2)/2}\,\langle\ket{-\tfrac\tau2,\tfrac wc},\ket{-\tfrac\tau2,\tfrac zc}\rangle
+ =c^{-1}e^{(\tau\bar w^2+\bar\tau z^2)/2}\cdot c\,e^{-\tau\bar w^2/2+\bar wz-\bar\tau z^2/2}=e^{\bar wz}.
+\]
+So the vectors of (a) have the inner products of the exponential vectors, and Lemma~\ref{lem:dsq-extension}(a) gives a
+linear isometry $\sS(\zeta)$ with $\jmath\sS(\zeta)\psi=\Sord(\zeta)\jmath\psi$, unique since $\jmath$ is injective. It is unitary by (d).
+\item[(c)] Both sides are bounded. We compare $\langle\varepsilon(w),\cdot\,\varepsilon(z)\rangle$, writing $\gamma=L_\zeta\beta$ and
+computing one mode at a time. By Theorem~\ref{thm:dsq-disp}(b) and (a), the left side gives the exponent
+\[
+ -\tfrac12\lvert\beta\rvert^2-\bar\beta z+\tfrac12\bar\tau(z+\beta)^2-\tfrac12\tau\bar w^2+(z+\beta)\bar w/c,
+\]
+and the right side, as $\langle D(-\gamma)\varepsilon(w),\sS(\zeta)\varepsilon(z)\rangle$, gives
+\[
+ -\tfrac12\lvert\gamma\rvert^2+\gamma\bar w+\tfrac12\bar\tau z^2-\tfrac12\tau(\bar w-\bar\gamma)^2+z(\bar w-\bar\gamma)/c ,
+\]
+with the same factor $(\prod_jc_j)^{-1/2}$. The terms in $z^2$, $\bar w^2$ and $z\bar w$ agree. The terms linear in $z$ agree
+because $\bar\gamma=c(\bar\beta-\bar\tau\beta)$, that is $\gamma=c\beta-c\tau\bar\beta=c\beta-e^{i\phi}s\bar\beta$; the terms
+linear in $\bar w$ because $\gamma+\tau\bar\gamma=c(1-\lvert\tau\rvert^2)\beta=\beta/c$; and the constant terms because
+$-\frac12\lvert\gamma\rvert^2-\frac12\tau\bar\gamma^2=-\frac12c^2(1-\lvert\tau\rvert^2)(\lvert\beta\rvert^2-\bar\tau\beta^2)=
+-\frac12\lvert\beta\rvert^2+\frac12\bar\tau\beta^2$. By Theorem~\ref{thm:dsq-total} the vectors $\sS(\zeta)D(\beta)\varepsilon(z)$ and
+$D(\gamma)\sS(\zeta)\varepsilon(z)$ agree, and then so do the operators. Since $\tau(-\zeta)=-\tau$, $(L_{-\zeta}\beta)_j=c_j\beta_j+
+e^{i\phi_j}s_j\bar\beta_j$, and $L_\zeta L_{-\zeta}\beta=(c^2-s^2)\beta=\beta$ mode by mode. With $\beta=L_{-\zeta}\alpha$ and the
+isometry property $\sS(\zeta)^*\sS(\zeta)=1$, the covariance gives $\sS(\zeta)^*D(\alpha)\sS(\zeta)=D(L_{-\zeta}\alpha)$.
+\item[(d)] By (c), $\sS(\zeta)\sS(-\zeta)D(\beta)=D(L_\zeta L_{-\zeta}\beta)\sS(\zeta)\sS(-\zeta)=D(\beta)\sS(\zeta)\sS(-\zeta)$, so by
+Theorem~\ref{thm:dsq-irreducible} $\sS(\zeta)\sS(-\zeta)=\lambda1$ with $\lambda$ its vacuum coefficient. The raising exponential and
+$\Gamma(\diag(c_j^{-1}))$ do not change the coefficient at $0$, so by Lemma~\ref{lem:dsq-lower}(b) and (a),
+\[
+ \lambda=\Bigl(\prod_jc_j\Bigr)^{-1/2}\bigl\langle e^{\Lambda(\tau/2,0)}\ket0,\sS(-\zeta)\ket0\bigr\rangle
+ =\Bigl(\prod_jc_j\Bigr)^{-1}\prod_j\lVert\ket{\tau_j/2,0}\rVert^2=\prod_jc_j^{-1}\Cb(\lvert\tau_j\rvert^2/4),
+\]
+using $\tau(-\zeta)=-\tau$ and the coefficients $\ket{\kappa,0}(2k)=\kappa^k\sqrt{(2k)!}/k!$. By Lemma~\ref{lem:dsq-binomial},
+$\Cb(\lvert\tau\rvert^2/4)=(1-\lvert\tau\rvert^2)^{-1/2}=c$, so $\lambda=1$. Exchanging $\zeta$ and $-\zeta$, $\sS(-\zeta)\sS(\zeta)=1$; so
+$\sS(\zeta)$ is onto, hence unitary, with $\sS(\zeta)^*=\sS(\zeta)^{-1}=\sS(-\zeta)$. $\Sord(0)$ is the identity.
+\item[(e)] The inner product of squeezed vacua is $\prod_j(c_jc'_j)^{-1/2}\langle\ket{-\tau_j/2,0},\ket{-\tau'_j/2,0}\rangle$ by (a)
+and Lemma~\ref{lem:dsq-prodseries}, and the one-mode inner product is $\sum_k(\bar\tau_j\tau'_j/4)^k(2k)!/k!^2=\Cb(\bar\tau_j\tau'_j/4)$.
+If $\zeta$ and $\zeta'$ have disjoint supports, then in each mode one of $L_\zeta$, $L_{\zeta'}$ is the identity, so
+$L_{-\zeta'}L_{-\zeta}=L_{-(\zeta+\zeta')}$ and, by (c), $\sS(\zeta)\sS(\zeta')$ and $\sS(\zeta+\zeta')$ have the same conjugation
+action on every $D(\alpha)$. Their vacuum expectations agree: $\langle0\rvert\sS(\zeta)\sS(\zeta')\ket0=\langle\sS(-\zeta)\ket0,
+\sS(\zeta')\ket0\rangle=\prod_j(c_jc'_j)^{-1/2}$, since every $\bar\tau(-\zeta_j)\tau'_j$ vanishes, and this is
+$\prod_jc(\zeta_j+\zeta'_j)^{-1/2}=\langle0\rvert\sS(\zeta+\zeta')\ket0\ne0$. Corollary~\ref{cor:dsq-irreducible}(a) gives
+$\sS(\zeta+\zeta')=\sS(\zeta)\sS(\zeta')$, and the product over an enumeration follows by induction. The fiber formula is proved as in
+Theorem~\ref{thm:dsq-disp}(d): on $\varepsilon(z)$ both sides are $\prod_{k\ne j}\varepsilon(z_k)(n_k)$ times the coefficient at $n_j$
+of the one-mode vector $\sS(\eta)\varepsilon(z_j)$, by (a), since the modes $k\ne j$ have $\tau_k=0$ and $c_k=1$.\qedhere
+\end{enumerate}
+\end{proof}
+
+By (c) and (d), $\sS(\zeta)a\sS(\zeta)^*=c\,a+e^{i\phi}s\,a^\dagger$ is the form of the covariance with $\zeta$ replaced by $-\zeta$.
+The matrix elements in the number basis are finite sums, because on a number state every lowering exponential terminates.
+
+\begin{lemma}[Matrix elements]\label{lem:dsq-matrix}
+For one mode, with $\langle k\rvert X\ket n=(X\ket n)(k)$, $\alpha,\zeta\in\C$ and $\theta\in\R$:
+\begin{gather*}
+ \langle m\rvert D(\alpha)\ket n=e^{-\lvert\alpha\rvert^2/2}\sum_{i=0}^{\min(m,n)}\frac{\alpha^{m-i}(-\bar\alpha)^{n-i}\sqrt{m!\,n!}}
+ {(m-i)!\,(n-i)!\,i!},\\
+ \langle k\rvert\sS(\zeta)\ket n=c^{-1/2}\sum_{\substack{0\le i\le n/2,\ \mu=n-2i\le k,\\ k-\mu=2h\ \text{even}}}\frac{(-\tau/2)^h}{h!}
+ \sqrt{\tfrac{k!}{\mu!}}\;c^{-\mu}\;\frac{(\bar\tau/2)^i}{i!}\sqrt{\tfrac{n!}{\mu!}},
+\end{gather*}
+and $\langle k\rvert R(\theta)\ket n=\delta_{kn}e^{-i\theta n}$. In particular $R(0)=1$, and $R(\theta)=1$ when $\theta_j=2\pi$ for
+every $j$, on any number of modes.
+\end{lemma}
+
+\begin{proof}
+$e^{-\bar\alpha a}\ket n=\sum_{i'}(-\bar\alpha)^{i'}\sqrt{n!/(n-i')!}\,\ket{n-i'}/i'!$, and the coefficient of $e^{\alpha a^\dagger}\ket{n-i'}$ at
+$m$ is $\alpha^{m-n+i'}\sqrt{m!/(n-i')!}/(m-n+i')!$; with $i=n-i'$ this is the first formula. For $\sS$: the lowering exponential
+gives $\sum_i(\bar\tau/2)^i\sqrt{n!/\mu!}\,\ket\mu/i!$ with $\mu=n-2i$, then $\Gamma(c^{-1})$ multiplies by $c^{-\mu}$, and the
+coefficient of $e^{-\tau a^{\dagger2}/2}\ket\mu$ at $k=\mu+2h$ is $(-\tau/2)^h\sqrt{k!/\mu!}/h!$. For $R(\theta)$,
+Lemma~\ref{lem:sq-sectors}(b) gives $\Gamma(e^{-i\theta})\ket n=e^{-i\theta n}\ket n$; on several modes the diagonal matrix
+multiplies $\ket n$ by $\prod_je^{-i\theta_jn_j}$, which is $1$ for $\theta=0$ and for $\theta_j=2\pi$.
+\end{proof}
+
+On several modes the matrix elements of $D(\alpha)$ and $\sS(\zeta)$ are the products of the one-mode ones, by the product
+and fiber formulas of Theorems~\ref{thm:dsq-disp}(d) and~\ref{thm:dsq-squeeze}(e). \vetx{The matrix elements of $D(\alpha)$ are
+those of Cahill and Glauber~\cite{cahillglauber}, who write them with associated Laguerre polynomials; we read off those of
+$\sS(\zeta)$ from the normal-ordered form of Definition~\ref{def:dsq-squeeze}.}
+
+\begin{theorem}[Squeezing of the ladder operators]\label{thm:dsq-squeeze-intertwine}
+Let $\zeta\in\C^\iota$ and $j$ a mode. Then $\dom\overline{a_j^\dagger}=\dom\bar a_j$. Let $\psi,\xi,\xi'\in\Gs$ with $a_j\jmath\psi=\jmath\xi$
+and $a_j^\dagger\jmath\psi=\jmath\xi'$. Then
+\[
+ a_j\jmath\sS(\zeta)\psi=\jmath\sS(\zeta)(c_j\xi-e^{i\phi_j}s_j\xi'),\qquad a_j^\dagger\jmath\sS(\zeta)\psi=\jmath\sS(\zeta)(c_j\xi'-e^{-i\phi_j}s_j\xi),
+\]
+and $\sS(\zeta)\psi\in\dom\bar a_j$ if and only if $\psi\in\dom\bar a_j$. That is, $\sS(\zeta)$ maps $\dom\bar a_j$ onto itself, and on
+it $\sS(\zeta)^*\bar a_j\sS(\zeta)=c_j\bar a_j-e^{i\phi_j}s_j\overline{a_j^\dagger}$.
+\end{theorem}
+
+\begin{proof}
+For every $\psi\in\Fock$, $\lVert a_j^\dagger\psi\rVert^2=\sum_n(n_j+1)\lvert\psi(n)\rvert^2=\lVert a_j\psi\rVert^2+\lVert\psi\rVert^2$ in
+$[0,\infty]$, which gives the equality of the domains.
+
+Write $E_-=e^{\frac12\sum_k\bar\tau_ka_k^2}$, $C=\Gamma(\diag(c_k^{-1}))$, $E_+=e^{\Lambda(-\tau/2,0)}$ and $T=\Lambda(-\tau/2,0)$. Since
+$[a_j,T]=-\tau_ja_j^\dagger$ commutes with $T$, $a_jT^k=T^ka_j-k\tau_jT^{k-1}a_j^\dagger$, and at each coefficient
+$a_jE_+=E_+(a_j-\tau_ja_j^\dagger)$; and $a_j^\dagger$ commutes with $E_+$. On coefficients, $a_jC=c_j^{-1}Ca_j$ and $a_j^\dagger C=c_jCa_j^\dagger$.
+The lowering operator $B=\frac12\sum_k\bar\tau_ka_k^2$ commutes with $a_j$, and $a_j^\dagger B^k=B^ka_j^\dagger-k\bar\tau_jB^{k-1}a_j$; since
+$\psi$, $a_j\psi$ and $a_j^\dagger\psi$ lie in $\jmath(\Gs)$, all the series below converge absolutely (Lemma~\ref{lem:dsq-lower}(b)) and may be
+split termwise:
+\[
+ a_jE_-\jmath\psi=E_-\jmath\xi,\qquad a_j^\dagger E_-\jmath\psi=E_-\jmath\xi'-\bar\tau_jE_-\jmath\xi .
+\]
+Therefore, with $(\prod_kc_k)^{-1/2}$ omitted on both sides,
+\[
+ a_jE_+CE_-\jmath\psi=E_+C\bigl(c_j^{-1}a_j-\tau_jc_ja_j^\dagger\bigr)E_-\jmath\psi
+ =E_+CE_-\jmath\bigl((c_j^{-1}+\lvert\tau_j\rvert^2c_j)\xi-\tau_jc_j\xi'\bigr),
+\]
+and $c^{-1}+\lvert\tau\rvert^2c=c^{-1}(1+s^2)=c$, $\tau c=e^{i\phi}s$. Likewise $a_j^\dagger E_+CE_-\jmath\psi=E_+Cc_ja_j^\dagger E_-\jmath\psi=
+E_+CE_-\jmath(c_j\xi'-c_j\bar\tau_j\xi)$, and $c\bar\tau=e^{-i\phi}s$.
+
+If $\psi\in\dom\bar a_j$, then also $a_j^\dagger\jmath\psi\in\jmath(\Gs)$, and the first identity shows $\sS(\zeta)\psi\in\dom\bar a_j$; the converse
+is the same statement for $\sS(-\zeta)=\sS(\zeta)^{-1}$, and applying $\sS(\zeta)^*$ gives the operator form.
+\end{proof}
+
+\begin{theorem}[One-parameter groups of squeezers]\label{thm:dsq-squeeze-group}
+Fix $\zeta_0\in\C^\iota$.
+\begin{enumerate}
+\item[(a)] $\sS(t\zeta_0)\sS(t'\zeta_0)=\sS((t+t')\zeta_0)$ for all real $t,t'$.
+\item[(b)] For every $\psi\in\Gs$, $\zeta\mapsto\sS(\zeta)\psi$ is continuous from $\C^\iota$ to $\Gs$.
+\item[(c)] Let $\varphi\in\Gs$ be finitely supported, and $G\in\Gs$ with
+$\jmath G=\sum_j\bigl(\tfrac12\bar\zeta_{0j}a_j^2-\tfrac12\zeta_{0j}a_j^{\dagger2}\bigr)\jmath\varphi$. Then $t\mapsto\sS(t\zeta_0)\varphi$ is
+differentiable at $t=0$ with derivative $G$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Write $\rho_j=\lvert\zeta_{0j}\rvert$ and $\zeta_{0j}=\rho_je^{i\phi_j}$. For real $t$, $\tau(t\zeta_{0j})=e^{i\phi_j}\tanh(t\rho_j)$ and
+$\cosh\lvert t\zeta_{0j}\rvert=\cosh(t\rho_j)$, since $\tanh$ is odd.
+\begin{enumerate}
+\item[(a)] Write $C_t=\cosh(t\rho_j)$ and $S_t=\sinh(t\rho_j)$. In mode $j$, $L_{t\zeta_0}L_{t'\zeta_0}\beta=(C_tC_{t'}+S_tS_{t'})\beta-
+e^{i\phi_j}(C_tS_{t'}+S_tC_{t'})\bar\beta=L_{(t+t')\zeta_0}\beta$ by the addition formulas, so by Theorem~\ref{thm:dsq-squeeze}(c) the
+unitaries $\sS(t\zeta_0)\sS(t'\zeta_0)$ and $\sS((t+t')\zeta_0)$ conjugate every $D(\alpha)$ in the same way. Their vacuum expectations
+are, by the last formula of Theorem~\ref{thm:dsq-squeeze} with $\bar\tau(-t\zeta_{0j})\tau(t'\zeta_{0j})/4=-\tanh(t\rho_j)\tanh(t'\rho_j)/4$, a
+real number of modulus below $\frac14$, and by Lemma~\ref{lem:dsq-binomial},
+\[
+ \prod_j\bigl(C_tC_{t'}(1+\tanh(t\rho_j)\tanh(t'\rho_j))\bigr)^{-1/2}=\prod_j\cosh((t+t')\rho_j)^{-1/2}\ne0,
+\]
+which is $\langle0\rvert\sS((t+t')\zeta_0)\ket0$. Corollary~\ref{cor:dsq-irreducible}(a) concludes.
+\item[(b)] By Theorem~\ref{thm:dsq-squeeze}(a), $\langle\varepsilon(w),\sS(\zeta)\varepsilon(z)\rangle$ is continuous in $\zeta$, since $\tau$ and
+$c$ are; $\tau$ is continuous at $0$ because $\lvert\tau(\zeta)\rvert\le\lvert\zeta\rvert$. The operators $\sS(\zeta)$ have norm $1$, so by
+Theorem~\ref{thm:dsq-total} $\zeta\mapsto\langle x,\sS(\zeta)y\rangle$ is continuous for all $x,y\in\Gs$. Then
+$\lVert\sS(\zeta)\psi-\sS(\zeta')\psi\rVert^2=2\lVert\psi\rVert^2-2\Rea\langle\sS(\zeta)\psi,\sS(\zeta')\psi\rangle$ tends to $0$ as $\zeta'\to\zeta$.
+\item[(c)] By linearity take $\varphi=\ket m$. With $\tau_j(t)=\tau(t\zeta_{0j})$ and $c_j(t)=\cosh(t\rho_j)$,
+\[
+ \jmath\sS(t\zeta_0)\ket m=\Bigl(\prod_jc_j(t)\Bigr)^{-1/2}\sum_{m'}p_{m'}(t)\,e^{\Lambda(-\tau(t)/2,0)}\ket{m'},
+\]
+a finite sum over the $m'$ in the support of $e^{\frac12\sum_j\bar\tau_j(t)a_j^2}\ket m$, where $p_{m'}(t)$ is the coefficient at $m'$ of
+$\Gamma(\diag(c_j(t)^{-1}))e^{\frac12\sum_j\bar\tau_j(t)a_j^2}\ket m$, a polynomial in the $\bar\tau_j(t)$ times $\prod_jc_j(t)^{-m'_j}$. Since
+$\tau_j(0)=0$, $\tau_j'(0)=\zeta_{0j}$ and $c_j'(0)=0$, $p_{m'}(0)=\delta_{mm'}$ and $p'_{m'}(0)$ is the coefficient at $m'$ of
+$\frac12\sum_j\bar\zeta_{0j}a_j^2\ket m$, and the scalar prefactor has derivative $0$. Each $e^{\Lambda(-\tau(t)/2,0)}\ket{m'}$ is square-summable,
+since $\lvert\tau_j(t)/2\rvert<\frac12$ (proof of Lemma~\ref{lem:dsq-lower}), and by Lemma~\ref{lem:dsq-deriv} with $\kappa(t)=-\tau(t)/2$,
+$\ell=0$ it is differentiable at $0$ with derivative $\Lambda(-\zeta_0/2,0)\ket{m'}=-\frac12\sum_j\zeta_{0j}a_j^{\dagger2}\ket{m'}$. By the
+product rule the derivative at $0$ is $-\frac12\sum_j\zeta_{0j}a_j^{\dagger2}\ket m+\frac12\sum_j\bar\zeta_{0j}a_j^2\ket m$.\qedhere
+\end{enumerate}
+\end{proof}
+
+\subsection*{Notes and references}
+
+The exponential vectors and their totality are standard in the Fock-space calculus~\cite{parth}; the proof of
+Lemma~\ref{lem:dsq-identity} avoids the Bargmann integral by rotating the argument. \vetx{The construction of the displacement
+operators from their action on exponential vectors, by isometric extension, is Parthasarathy's definition of the Weyl
+operators~\cite[Ch.~II, Secs.~19--20]{parth}; see also Guichardet~\cite{guichardet}. The irreducibility of the Fock
+representation is classical; see~\cite[Sec.~5.2]{br}.} The normal-ordered forms of
+Definitions~\ref{def:dsq-disp} and~\ref{def:dsq-squeeze} are the standard disentangling of the exponentials
+in~\cite[(5)]{tjoacirac}~\cite{perelomov}\vetx{; for the squeezing operator see Truax~\cite{truax}. Squeezed states
+go back to Stoler~\cite{stoler} and Yuen~\cite{yuen}; for the covariance of Theorem~\ref{thm:dsq-squeeze}(c)
+see~\cite{yuen}. Fisher, Nieto and Sandberg~\cite{fns} show that the construction does not extend naively beyond
+quadratic exponents}. Tjoa and Cirac write the anti-normal-ordered forms in their (C17),
+$D(\alpha)=e^{\lvert\alpha\rvert^2/2}e^{-\bar\alpha a}e^{\alpha a^\dagger}$ and
+$\sS(\zeta)=\sqrt c\,e^{\bar\tau a^2/2}c^{\hat n}e^{-\tau a^{\dagger2}/2}$. On $\Gs$ the first holds on the exponential vectors, but the
+vacuum coefficient of the second, $\sqrt c\sum_k\binom{2k}k(-s^2/4)^k$, converges absolutely when $s<1$, to
+$c^{-1/2}=\langle0\rvert\sS(\zeta)\ket0$, and diverges for $s>1$, while
+the normal-ordered forms need only $\lvert\tau\rvert<1$, which holds for every $\zeta$.
+
+\vetr{That $D(\alpha)=e^{-iA_\alpha}$ and $\sS(\zeta)=e^{-iB_\zeta}$, where $A_\alpha$ and $B_\zeta$ are the self-adjoint closures of
+$i(\alpha\cdot a^\dagger-\bar\alpha\cdot a)$ and $\frac i2\sum_j(\bar\zeta_ja_j^2-\zeta_ja_j^{\dagger2})$ on the finitely supported vectors, is
+Corollary~\ref{cor:qh-paper}(b), which uses Theorems~\ref{thm:dsq-disp-group} and~\ref{thm:dsq-squeeze-group} and needs neither Stone's nor
+Nelson's theorem.} The
+formal proof of Lemma~\ref{lem:dsq-mehler} specializes Mehler's formula for commuting matrix arguments, proved by an ordinary
+differential equation in the companion notes on Gaussian-augmented matrix product states; we give the classical route through
+Bargmann's integral~\cite{bargmann} and the complex Gaussian integral\vetx{~\cite{folland}}. Likewise the formal proof of
+Lemma~\ref{lem:dsq-binomial} for real $y$ pairs the terms of the alternating series, where we cite Newton's binomial series, and
+the formal proofs of Theorem~\ref{thm:dsq-squeeze}(e) and Theorem~\ref{thm:dsq-squeeze-intertwine} are those given here: the
+product of squeezers by Corollary~\ref{cor:dsq-irreducible}(a), and the ladder operators by a computation in all modes at once.
+\end{veteenv}

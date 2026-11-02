@@ -62,17 +62,17 @@ $\|\psi_s\|_2=1$. It determines a unique normalized state representative
 with the pointwise values in~\eqref{eq:gaussian}.
 \end{theorem}
 \begin{proof}
-Put $\phi(x)=e^{-x^2/2}$. We define the \emph{Hermite polynomials} by
+Put $\phi(x)=e^{-x^2/2}$. We define the \emph{Hermite polynomials}\vety{, in the probabilists' normalization,} by
 \[
- H_0(x)=1,\qquad H_{k+1}(x)=xH_k(x)-H_k'(x)\quad(k\geq0).
+ \vety{\mathrm{He}_0(x)=1,\qquad \mathrm{He}_{k+1}(x)=x\,\mathrm{He}_k(x)-\mathrm{He}_k'(x)}\quad(k\geq0).
 \]
 The \emph{Hermite derivative identity} is
 \[
- \phi^{(k)}(x)=(-1)^k H_k(x)\phi(x).
+ \phi^{(k)}(x)=(-1)^k \vety{\mathrm{He}_k}(x)\phi(x).
 \]
 It follows by induction from $\phi'=-x\phi$ and the product rule.
 For every $r\geq0$, $|x|^r\phi(x)\to0$ as $|x|\to\infty$.
-Continuity bounds this function globally. Expanding $H_k$ into monomials
+Continuity bounds this function globally. Expanding \vety{$\mathrm{He}_k$} into monomials
 then bounds $|x|^r|\phi^{(k)}(x)|$ for each $r,k$.
 Dilation by $x\mapsto x/s$, inclusion of real values into $\C$, and
 multiplication by a constant preserve Schwartz space, so $\psi_s\in\mathcal D$.
@@ -163,3 +163,10 @@ Let $m,\omega,\hbar>0$ and set $s=\sqrt{\hbar/(m\omega)}$. Then
 Positivity gives $s>0$ and $s^2=\hbar/(m\omega)$. Substitution into
 Theorem~\ref{thm:covariance} gives the formula.
 \end{proof}
+
+\begin{vetxenv}
+\subsection*{Notes and references}
+We use the Schwartz space as in Reed and Simon~\cite[Sec.~V.3]{rs1}. \vety{The polynomials $\mathrm{He}_k$ in the proof of
+Theorem~\ref{thm:normalized} are the probabilists' Hermite polynomials of the NIST Digital Library of
+Mathematical Functions~\cite[Sec.~18.3]{dlmf}; the physicists' $H_k$, orthogonal for the weight $e^{-x^2}$, are $H_k(x)=2^{k/2}\,\mathrm{He}_k(\sqrt2\,x)$.}
+\end{vetxenv}

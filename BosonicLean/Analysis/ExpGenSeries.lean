@@ -65,6 +65,8 @@ theorem summable_shift {c : ℕ → E}
     _ ≤ ‖c (n + 1)‖ * (R + 1) ^ (n + 1) * (n.factorial : ℝ) := by gcongr
 
 omit [NormedSpace ℂ E] in
+/-- If `Σₙ ‖cₙ‖ Rⁿ/n!` converges for every `R ≥ 0`, so does the shifted series
+`Σₙ ‖c_{n+k}‖ Rⁿ/n!`, for every `k`. -/
 theorem summable_shift_iterate {c : ℕ → E}
     (hc : ∀ R : ℝ, 0 ≤ R → Summable fun n => ‖c n‖ * R ^ n / (n.factorial : ℝ)) (k : ℕ) :
     ∀ R : ℝ, 0 ≤ R → Summable fun n => ‖c (n + k)‖ * R ^ n / (n.factorial : ℝ) := by

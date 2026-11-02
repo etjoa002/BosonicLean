@@ -39,7 +39,8 @@ retained in position-then-momentum order. When $E$ is invertible, define
 \]
 This is the \emph{Schur complement} of $E$ in $V$. For $k=0$, it reduces to $G$.
 \end{definition}
-The eliminated coordinates need not form a canonical subsystem. The next
+\vetx{Schuch, Wolf and Cirac~\cite[Sec.~3]{schuch} give the covariance of the physical modes after the EPR measurements by this
+formula.} The eliminated coordinates need not form a canonical subsystem. The next
 condition makes their symplectic pairings vanish, both among themselves and
 with the retained coordinates.
 
@@ -85,7 +86,8 @@ Two pairs of canonical quadratures admit the commuting combinations
  X_-=q_A-q_B,\qquad P_+=p_A+p_B,\qquad
  [X_-,P_+]=[q_A,p_A]-[q_B,p_B]=0.
 \]
-An \emph{EPR measurement} is the joint measurement of these two observables.
+An \emph{EPR measurement} is the joint measurement of these two observables\vetx{, the pair of
+Einstein, Podolsky and Rosen~\cite{epr}}.
 Their exact joint eigenvectors are generalized eigenvectors: they do not belong
 to the two-mode Hilbert space. In particular, the ideal EPR vector is not a
 normalizable state. Finite squeezing gives normalizable approximations, but we
@@ -131,7 +133,7 @@ The quadratic expression in the exponent is
 Since $E$ is positive definite, the Gaussian integral is finite. Dividing by
 its value at $z=0$ leaves the characteristic function with covariance
 $G-F^TE^{-1}F$. More generally, for means $d_Y,d_C$ and outcome $a$, the usual
-Gaussian conditioning formula is
+Gaussian conditioning formula\vetx{~\cite[Sec.~2.5]{anderson}} is
 \begin{equation}\label{eq:conditional-mean}
  d_{C\mid a}=d_C+F^TE^{-1}(a-d_Y),\qquad
  \gamma_{C\mid a}=G-F^TE^{-1}F.
@@ -141,8 +143,9 @@ conditioning here through the outcome density, not as an event of positive
 probability at one exact value. These formulas give the measurement interpretation;
 Theorem~\ref{thm:contraction} establishes the covariance inequality directly.
 
-In the Choi--Jamio{\l}kowski construction, the resource associated with a map
-is obtained formally by applying the map to one half of an ideal EPR pair.
+In the Choi--Jamio{\l}kowski construction\vetx{~\cite{jamiolkowski,choi}}, the resource associated with a map
+is obtained formally by applying the map to one half of an ideal EPR pair\vetx{; for Gaussian maps
+see~\cite{giedke}}.
 EPR contraction with the other half represents feeding an input to the map.
 This turns the \revs{construction of Gaussian matrix product states} into contractions of local resources, but
 still involves ideal EPR measurements. Moreover, a channel representative obtained
@@ -219,7 +222,7 @@ form $\Omega_N$. Apply Theorem~\ref{thm:contraction}.
 \end{proof}
 
 \subsection{Three correlated sites}
-\begin{proposition}\label{prop:three-site}
+\begin{example}\label{prop:three-site}
 Take $N=3$, $M=1$, and at each site let
 \[
  K=\begin{pmatrix}0&0&1\\0&0&1\\1&1&0\end{pmatrix},\qquad
@@ -233,7 +236,7 @@ Then $S$ is symplectic, $\Gamma_i$ is admissible, and the periodic covariance is
 \]
 It is admissible. In particular, distinct sites have position--position covariance
 entry $1/5$ and momentum--momentum covariance entry $-1/2$.
-\end{proposition}
+\end{example}
 \begin{proof}
 Since $K=K^T$, direct multiplication gives $S\Omega_3S^T=\Omega_3$.
 The covariance $I_6$ is an independent sum of three one-mode vacua, so
@@ -263,5 +266,13 @@ For this example, $QP=I_3$, so the associated Gaussian state is pure. Its
 single-site covariance is $\diag(3/5,2)$, with determinant $6/5>1$; the
 single-site reduced state is therefore mixed. Thus the state is entangled
 across every partition of one site from the other two. These deductions use
-the Gaussian purity criterion~\cite[Secs.~II.C--D]{weedbrook}\revs{, which is cited, not
-proved here; Proposition~\ref{prop:three-site} establishes the displayed covariance and its admissibility}.
+the Gaussian purity criterion~\cite{weedbrook}\revs{, which is cited, not
+proved here; \vety{Example}~\ref{prop:three-site} establishes the displayed covariance and its admissibility}.
+
+\begin{vetxenv}
+\subsection*{Notes and references}
+Theorem~\ref{thm:admissible-positive} is a standard consequence of the uncertainty principle; see~\cite[Sec.~IX]{adms}. The
+proof of Theorem~\ref{thm:contraction} applies to the complex uncertainty matrix the positive semidefiniteness of a Schur
+complement in a positive semidefinite block matrix~\cite[Sec.~7.7]{hj}. \vety{Example}~\ref{prop:three-site} is worked out
+for these notes; we have not found it in the literature we checked.
+\end{vetxenv}

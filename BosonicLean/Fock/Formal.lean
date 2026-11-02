@@ -129,6 +129,11 @@ theorem factorial_eq_prod {ι : Type*} [Fintype ι] (n : ι →₀ ℕ) :
     factorial n = ∏ i, (n i).factorial :=
   Finsupp.prod_fintype _ _ fun _ => Nat.factorial_zero
 
+/-- The factorial of `m` particles in the single mode `i` is `m!`. -/
+theorem factorial_single {ι : Type*} (i : ι) (m : ℕ) :
+    factorial (Finsupp.single i m) = m.factorial :=
+  Finsupp.prod_single_index Nat.factorial_zero
+
 section Single
 
 variable {ι : Type*} [DecidableEq ι]

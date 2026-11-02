@@ -3,7 +3,7 @@ Copyright (c) 2026 BosonicLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: BosonicLean contributors
 -/
-import BosonicLean.Fock.RaisingExp
+import BosonicLean.Fock.NumberRaisingExp
 import Mathlib.RingTheory.MvPowerSeries.Derivative
 
 /-!
@@ -28,7 +28,7 @@ invisible, because `zⱼ^m f` has no coefficient at `n` when `m > nⱼ`.
 ## Main results
 
 * `toBargmann_create`, `toBargmann_annihilate`, `toBargmann_lmul`, `toBargmann_vacuum`.
-* `toBargmann_raisingExp_gen`: `𝔅(e^{X ⊗ (aⱼ†)^p} ψ) = E_X^{(p)}(zⱼ) · 𝔅ψ`.
+* `toBargmann_exp_gen`: `𝔅(e^{X ⊗ (aⱼ†)^p} ψ) = E_X^{(p)}(zⱼ) · 𝔅ψ`.
 
 ## References
 
@@ -61,6 +61,11 @@ theorem sqrtFactorial_eq_mul {n : ι →₀ ℕ} {j : ι} (h : 0 < n j) :
   congr 2
   simp only [Finsupp.coe_tsub, Pi.sub_apply, Finsupp.single_eq_same]
   omega
+
+/-- On finitely many modes, `√(n!) = ∏ⱼ √(nⱼ!)`. -/
+theorem sqrtFactorial_eq_prod [Fintype ι] (n : ι →₀ ℕ) :
+    sqrtFactorial n = ∏ j, sqrtC (n j).factorial := by
+  rw [sqrtFactorial, factorial_eq_prod, sqrtC_prod]
 
 /-- The Bargmann map `𝔅ψ = Σₙ ψ(n) zⁿ/√(n!)`, a linear equivalence onto formal power series. -/
 noncomputable def toBargmann : FormalFock ι R ≃ₗ[ℂ] MvPowerSeries ι R where
@@ -207,9 +212,9 @@ theorem coeff_mul_congr_left {E E' : MvPowerSeries ι R} (f : MvPowerSeries ι R
 
 /-- Under the Bargmann map, `e^{X ⊗ (aⱼ†)^p}` (`p ≥ 1`) becomes multiplication by
 `E_X^{(p)}(zⱼ)`. -/
-theorem toBargmann_raisingExp_gen [DecidableEq ι] (X : R) (j : ι) {p : ℕ} (hp : 1 ≤ p)
+theorem toBargmann_exp_gen [DecidableEq ι] (X : R) (j : ι) {p : ℕ} (hp : 1 ≤ p)
     (ψ : FormalFock ι R) :
-    toBargmann (raisingExp (gen X j p hp) ψ) = expSeries X j p * toBargmann ψ := by
+    toBargmann ((gen X j p hp).exp ψ) = expSeries X j p * toBargmann ψ := by
   ext n
   set c : ℕ → ℂ := fun k => ((k.factorial : ℂ)⁻¹)
   set E' : MvPowerSeries ι R := ∑ k ∈ range (n.degree + 1),
@@ -229,11 +234,20 @@ theorem toBargmann_raisingExp_gen [DecidableEq ι] (X : R) (j : ι) {p : ℕ} (h
     rintro rfl
     simp only [mem_range, Finsupp.single_eq_same, not_lt] at hk
     nlinarith
-  rw [coeff_mul_congr_left _ n hE, coeff_toBargmann, coeff_raisingExp]
+  rw [coeff_mul_congr_left _ n hE, coeff_toBargmann, NumberRaisingOp.coeff_exp]
   simp only [E', sum_mul, map_sum, smul_sum]
   refine sum_congr rfl fun k _ => ?_
   rw [smul_comm, ← coeff_toBargmann, toBargmann_gen_pow, coeff_monomial_mul,
     coeff_monomial_mul]
   split_ifs <;> simp [c]
+
+end BosonicLean.Fock.FormalFock
+
+/-! Deprecated names (B4.5, decision 5: standard terminology). -/
+
+namespace BosonicLean.Fock.FormalFock
+
+@[deprecated toBargmann_exp_gen (since := "2026-10-19")]
+alias toBargmann_raisingExp_gen := toBargmann_exp_gen
 
 end BosonicLean.Fock.FormalFock

@@ -1,3 +1,8 @@
+/-
+Copyright (c) 2026 BosonicLean contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: BosonicLean contributors
+-/
 import BosonicLean.PhaseSpace.Defs
 import BosonicLean.PhaseSpace.Covariance
 import BosonicLean.PhaseSpace.Contraction
@@ -27,8 +32,21 @@ import BosonicLean.GaussianTNLean.MPS.ClusterDefs
 import BosonicLean.GaussianTNLean.MPS.Cluster
 import BosonicLean.Fock.Formal
 import BosonicLean.Fock.Ladder
-import BosonicLean.Fock.RaisingExp
+import BosonicLean.Fock.NumberState
+import BosonicLean.Fock.NumberRaisingExp
+import BosonicLean.Fock.LoweringExp
+import BosonicLean.Fock.SqNorm
 import BosonicLean.Fock.Bargmann
+import BosonicLean.Fock.OneMode
+import BosonicLean.Fock.TensorProduct
+import BosonicLean.Fock.TensorNorm
+import BosonicLean.Fock.FockSpace
+import BosonicLean.Fock.SecondQuantization
+import BosonicLean.Fock.ExpVec
+import BosonicLean.Fock.Displacement
+import BosonicLean.Fock.Squeeze
+import BosonicLean.PhaseSpace.BlochMessiah
+import BosonicLean.Weyl.GaussianUnitary
 import BosonicLean.CStar.StarOrdered
 import BosonicLean.CStar.CompletelyPositive
 import BosonicLean.Weyl.Channel
@@ -38,4 +56,17 @@ import BosonicLean.Analysis.Majorant
 import BosonicLean.Analysis.BinomialSqrt
 import BosonicLean.Analysis.Kronecker
 import BosonicLean.Analysis.ProductSeries
+import BosonicLean.Analysis.Hermite
+import BosonicLean.Analysis.Mehler
 import BosonicLean.Analysis.ExpGenSeries
+import BosonicLean.Analysis.TsumPiProd
+import BosonicLean.LinearAlgebra.IdempotentPoly
+import BosonicLean.LinearAlgebra.PowerSeriesODE
+import BosonicLean.LinearAlgebra.SpectralIdempotent
+import BosonicLean.LinearAlgebra.ZeroSet
+import BosonicLean.LinearAlgebra.UnitaryExp
+import BosonicLean.Analysis.GramIsometry
+import BosonicLean.Weyl.PureGaussian
+import BosonicLean.Analysis.UnitaryGroup
+import BosonicLean.Weyl.Quadratic
+import BosonicLean.Weyl.QuadraticHamiltonian

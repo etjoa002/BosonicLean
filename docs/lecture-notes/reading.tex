@@ -5,42 +5,42 @@
 table names the object used here, the one used in the literature, and where the two are related.}
 
 \medskip
-\noindent\revb{\begin{tabular}{@{}L{0.27\textwidth}L{0.31\textwidth}L{0.36\textwidth}@{}}
-\textbf{Here} & \textbf{In the literature} & \textbf{Relation}\\[2pt]\hline\\[-8pt]
+\begin{longtable}[l]{@{}L{0.27\textwidth}L{0.31\textwidth}L{0.36\textwidth}@{}}
+\textbf{Here} & \textbf{In the literature} & \textbf{Relation}\\[2pt]\hline\noalign{\vskip 4pt}\endhead
 Covariance $\gamma$, twice the symmetrized covariance; vacuum $I_2$ &
-Varies: vacuum $I_2$ as here (Weedbrook et al.~\cite{weedbrook}, quadratures $a+a^\dagger$);
-$\sigma=\gamma/2$ with vacuum $\tfrac12I_2$ when $\sigma$ is the symmetrized covariance itself; or
-$\hbar$-dependent units &
+\vete{Vacuum $I_2$ as here~\cite{weedbrook}; or $\sigma=\gamma/2$, vacuum $\tfrac12I_2$; or $\hbar$-dependent units} &
 Definition~\ref{def:covariance}; units in Section~\ref{sec:states}\\[6pt]
 Coordinates $(q_1,\ldots,q_n,p_1,\ldots,p_n)$, form $\Omega_n$ &
-Mode by mode, $(q_1,p_1,\ldots,q_n,p_n)$ (e.g.~\cite{weedbrook}) &
-A permutation of coordinates carries one symplectic form to the other; covariances transform by
-the same permutation, by congruence, and admissibility is unchanged (proof of
-Theorem~\ref{thm:sum})\\[6pt]
+Mode by mode, $(q_1,p_1,\ldots,q_n,p_n)$ &
+\vete{A permutation of coordinates; admissibility is unchanged (proof of Theorem~\ref{thm:sum})}\\[6pt]
 Admissibility $\gamma-i\Omega_n\succeq0$ &
-Uncertainty relation for the covariance, e.g.\ $V+i\Omega\succeq0$ &
-Definition~\ref{def:admissible}; equivalent to $\gamma+i\Omega_n\succeq0$ by complex conjugation,
-and for $\sigma=\gamma/2$ to $\sigma-\tfrac i2\Omega_n\succeq0$\\[6pt]
-Schwartz functions inside $L^2(\R)$ &
-Wave functions &
-Section~\ref{sec:states}\\[6pt]
-Contraction: a Schur complement of covariance matrices &
-Projection of virtual modes onto EPR pairs &
-Section~\ref{sec:contraction}: the ideal EPR vector is not normalizable; the Schur complement is
-proved, the EPR projection is its motivation\\[6pt]
-Finite periodic chains, $N\ge3$ (translation-invariant in Section~\ref{sec:fourier}) &
-Often infinite chains &
-Sections~\ref{sec:contraction}--\ref{sec:products}\\[6pt]
-Formal Fock space: all coefficient families &
-The Hilbert space $\Gamma_s(\mathfrak h)$ &
-$\Gamma_s(\mathfrak h)$ is the square-summable part (Section~\ref{sec:fock})\\[6pt]
-$e^T$ as a finite sum at each coefficient, for $T$ raising the \revs{particle} number &
-Operator exponential &
-Equal coefficientwise wherever the series converges (after Lemma~\ref{lem:fock-raising})\\[6pt]
-Bargmann map into formal power series &
-Bargmann's space of entire functions &
-On $\Gamma_s(\mathfrak h)$, the Taylor coefficients (after Definition~\ref{def:fock-bargmann})\\
-\end{tabular}}
+Uncertainty relation for the covariance, e.g.\ $V+i\Omega\succeq0$\vetx{~\cite[Sec.~IX]{adms}} &
+\vete{Equivalent to $\gamma+i\Omega_n\succeq0$ (Definition~\ref{def:admissible})}\\[6pt]
+\vete{Formal Fock space of all coefficient families; $e^T$ summed coefficientwise; Bargmann map into formal power series} &
+\vete{$\Gamma_s(\mathfrak h)$; operator exponential; Bargmann's space of entire functions} &
+\vete{$\Gamma_s(\mathfrak h)$ is the square-summable part; there the coefficientwise objects are the usual ones wherever these are defined (Section~\ref{sec:fock})}\\[6pt]
+\vetd{$\Omega_N=\left(\begin{smallmatrix}0&I\\-I&0\end{smallmatrix}\right)$} &
+\vetd{Also $J=\left(\begin{smallmatrix}0&-I\\I&0\end{smallmatrix}\right)=-\Omega_N$} &
+\vetd{The same symplectic group (Lemma~\ref{lem:bm-symplectic})}\\[6pt]
+\vetd{$\Sigma(r)=\diag(e^{-r_1},\ldots,e^{r_N})$, positions first} &
+\vetd{Momenta first} &
+\vetd{The same squeezers have the matrix $\Sigma(-r)$ (after Definition~\ref{def:bm-sigma})}\\[6pt]
+\vetd{$O_{\mathcal U}=\left(\begin{smallmatrix}X&-Y\\Y&X\end{smallmatrix}\right)$ for $\mathcal U=X+iY$, positions
+first} &
+\vetd{Also $\left(\begin{smallmatrix}X&Y\\-Y&X\end{smallmatrix}\right)$ for $X+iY$} &
+\vetd{The latter is $O_{\bar{\mathcal U}}$; ours gives $a\mapsto\mathcal Ua$, the convention of~\cite{tjoacirac}
+(after Theorem~\ref{thm:bm-unitary})}\\[6pt]
+\vete{Weyl operator $W(u)=D(\alpha(u))$, $\alpha(u)=(q+ip)/\sqrt2$} &
+\vete{$e^{i\xi^T\Omega\hat R}$ or $D(\xi)$, with varying signs and scalings} &
+\vete{Formally $W(u)=e^{-i\sigma(u,\hat R)}$, and $W(u)W(v)=e^{-i\sigma(u,v)/2}W(u+v)$ (Proposition~\ref{prop:gu-weyl})}\\[6pt]
+\vete{Gaussian unitary: $U^*W(u)U=e^{-i\sigma(u,d)}W(M^{-1}u)$} &
+\vete{$U^\dagger\hat RU=M\hat R+d$; or $e^{i\chi}e^{-iH}$, $H$ quadratic} &
+\vete{Ours implies $U^\dagger\hat RU=M\hat R+d$ (Corollary~\ref{cor:gu-vacuum}(c)) and includes products that are not
+single exponentials}\\[6pt]
+\vetr{Generator: $U_t=e^{-itA}$, $A$ self-adjoint} &
+\vetr{Also $U_t=e^{itA}$} &
+\vetr{$A$ changes sign; with ours, $e^{-itH}$ is the Schr\"odinger evolution of the Hamiltonian $H$ (Definition~\ref{def:qh-group})}\\
+\end{longtable}
 
 % Roadmap (lecture-form pass, 15 Oct 2026).
 \section*{Roadmap}
@@ -61,29 +61,66 @@ $2\times2$ block per frequency, and products.}
 From algebra and formal power series alone it builds the formal Fock space of all coefficient
 families over the number basis, its ladder operators, the exponentials of operators that raise the
 particle number, and the Bargmann picture; it is the foundation of the Gaussian-augmented bosonic
-matrix product states of~\cite{tjoacirac}. Figure~\ref{fig:roadmap} shows which sections use
-which.}
+matrix product states of~\cite{tjoacirac}.} \vetb{Section~\ref{sec:fockspace} places the bosonic
+Fock space inside the formal one, realizes coefficient-finite maps as closed operators and their sums
+of squared norms as closed forms, and proves the invariance of the photon-added class.}
+\vetd{Section~\ref{sec:secondquant} defines the second quantization $\Gamma(g)$ of every complex matrix on the formal
+Fock space, shows that the unitary matrices give a strongly continuous unitary representation on the bosonic Fock
+space, and identifies $\Gamma(e^h)$ with the coefficientwise exponential of $d\Gamma(h)$. Section~\ref{sec:blochmessiah}
+uses only the symplectic matrices of Section~\ref{sec:covariance}: it identifies the orthogonal symplectic matrices
+with the unitary matrices and proves the Bloch--Messiah and polar decompositions.}
+\vete{Section~\ref{sec:displacement} constructs the displacement and squeezing operators on the bosonic Fock space from
+their normal-ordered forms, through the exponential vectors, and proves the irreducibility of the displacements.
+Section~\ref{sec:gaussunitary} defines Gaussian unitaries by their action on the Weyl operators and factors each into
+passive, displacement and squeezing unitaries, using the Bloch--Messiah decomposition. Section~\ref{sec:puregaussian}
+proves that the pure Gaussian states, the vacuum vectors of the Gaussian unitaries, are exactly the vectors with a
+Gaussian characteristic function.}
+\vetr{Section~\ref{sec:quadratic} proves that $e^{-itH}$ is a Gaussian unitary for every quadratic Hamiltonian $H=\frac12\hat R^TK\hat R+f^T\hat R$, with symplectic matrix $e^{t\Omega K}$; it first develops the one-parameter unitary groups and their generators that the statement needs.}
+\revs{Figure~\ref{fig:roadmap} shows which sections use which.}
 
 \begin{figure}[ht]
 \centering
-\revs{\begin{tikzpicture}[font=\small,
-  sec/.style={draw, rounded corners=2pt, text width=4.2cm, align=center, minimum height=0.95cm,
-    inner sep=3pt, execute at begin node={\hyphenpenalty=10000}},
-  dep/.style={->, >=stealth, thick}]
+\revs{\begin{tikzpicture}
   \node[sec] (s1) at (0,0) {\ref*{sec:covariance}\quad Covariance matrices};
   \node[sec] (s2) at (-4.8,-1.8) {\ref*{sec:states}\quad Normalized Gaussian wave functions};
   \node[sec] (s3) at (0,-1.8) {\ref*{sec:contraction}\quad Contraction of covariance matrices};
-  \node[sec] (s4) at (-2.4,-3.6) {\ref*{sec:fourier}\quad Homogeneous periodic covariances};
-  \node[sec] (s5) at (2.4,-3.6) {\ref*{sec:products}\quad Product covariances};
+  \node[sec] (s4) at (-4.8,-3.6) {\ref*{sec:fourier}\quad Homogeneous periodic covariances};
+  \node[sec] (s5) at (0,-3.6) {\ref*{sec:products}\quad Product covariances};
   \node[sec] (s6) at (4.8,0) {\ref*{sec:fock}\quad The formal Fock space and the Bargmann picture};
-  \draw[dep] (s1) -- (s2);
-  \draw[dep] (s1) -- (s3);
-  \draw[dep] (s3) -- (s4);
-  \draw[dep] (s3) -- (s5);
+  \draw[map] (s1) -- (s2);
+  \draw[map] (s1) -- (s3);
+  \draw[map] (s3) -- (s4);
+  \draw[map] (s3) -- (s5);
+  \begin{scope}[vetbblue]
+  \node[sec] (s7) at (4.8,-1.8) {\ref*{sec:fockspace}\quad The bosonic Fock space and closed forms};
+  \draw[map] (s6) -- (s7);
+  \end{scope}
+  \begin{scope}[vetdblue]
+  \node[sec] (s8) at (4.8,-3.6) {\ref*{sec:secondquant}\quad Second quantization of a matrix};
+  \node[sec] (s9) at (-4.8,0) {\ref*{sec:blochmessiah}\quad The \mbox{Bloch--Messiah} decomposition};
+  \draw[map] (s7) -- (s8);
+  \draw[map] (s1) -- (s9);
+  \end{scope}
+  \begin{scope}[veteblue]
+  \node[sec] (s10) at (4.8,-5.4) {\ref*{sec:displacement}\quad Exponential vectors, displacements and squeezing};
+  \node[sec] (s11) at (-4.8,-5.4) {\ref*{sec:gaussunitary}\quad Gaussian unitaries};
+  \node[sec] (s12) at (0,-5.4) {\ref*{sec:puregaussian}\quad Characteristic functions and pure Gaussian states};
+  \draw[map] (s8) -- (s10);
+  \draw[map] (s9.west) -- ++(-0.35,0) |- (s11.west);
+  \draw[map] (s10.south) -- ++(0,-0.45) -| (s11.south);
+  \draw[map] (s11) -- (s12);
+  \draw[map] (s3.east) -- ++(0.2,0) |- (s12.east);
+  \end{scope}
+  \begin{scope}[vetrblue]
+  \node[sec] (s13) at (-4.8,-7.2) {\ref*{sec:quadratic}\quad Quadratic Hamiltonians};
+  \draw[map] ([xshift=-1.2cm]s11.south) -- ([xshift=-1.2cm]s11.south |- s13.north);
+  \end{scope}
 \end{tikzpicture}}
 \caption{\revs{Dependence of the sections. An arrow means that the later section uses the earlier
 one; arrows implied by a chain of arrows are omitted. Section~\ref{sec:states} enters
 Sections~\ref{sec:contraction} and~\ref{sec:products} only in remarks, and Section~\ref{sec:fock}
-uses no other section.}}
+uses no other section}\vetb{; Section~\ref{sec:fockspace} uses only Section~\ref{sec:fock}}\vetd{, and
+Section~\ref{sec:blochmessiah} refers to Section~\ref{sec:secondquant} only in remarks}\vete{; Section~\ref{sec:puregaussian}
+uses Section~\ref{sec:contraction} only for the positivity of admissible matrices}\revs{.}}
 \label{fig:roadmap}
 \end{figure}

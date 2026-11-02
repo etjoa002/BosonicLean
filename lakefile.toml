@@ -18,6 +18,10 @@ rev = "v4.35.0-rc3"
 name = "BosonicLean"
 moreLeanArgs = ["-j1"]
 
+# The companion library GABMPS (Tjoa-Cirac, arXiv:2607.28753) is its own Lake package in
+# GA-BMPS/, which requires BosonicLean and TNLean; BosonicLean does not depend on it or on TNLean
+# (user, 6 Oct 2026).
+
 # The sealed statements and their proofs (verify/); `lake comparator` reads both modules.
 [[lean_lib]]
 name = "Verify"

@@ -13,7 +13,7 @@
   mode-by-mode ordering `(q₁, p₁, …, qₙ, pₙ)` of much of the literature differs by a permutation of
   coordinates, which leaves admissibility unchanged.
 - Admissibility is a statement about matrices. A Gaussian state is constructed only where stated:
-  the one-mode Gaussian wave functions, and the Gaussian states of the CCR algebra.
+  the one-mode Gaussian wave functions, and the pure Gaussian states `U|0⟩` of the Fock space.
 - One-mode wave functions are Schwartz functions inside `L²(ℝ)`; position acts by `x`, momentum by
   `−iħ d/dx`.
 

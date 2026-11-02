@@ -1,0 +1,378 @@
+% Section 7: the bosonic Fock space inside the formal Fock space, coefficient-finite maps and their
+% maximal realizations, closed forms (Kato VI 1.3), product vectors and the photon-added class.
+% GA-BMPS milestone B4.5, general part (20 Oct 2026). New text for vetting (vetbenv).
+\providecommand{\dom}{\operatorname{dom}}
+\providecommand{\form}{\mathfrak q}
+\begin{vetbenv}
+\section{The bosonic Fock space and closed forms}\label{sec:fockspace}
+
+The bosonic Fock space is the space of square-summable vectors of the formal Fock space of
+Section~\ref{sec:fock}. A linear map whose coefficients are finite linear combinations of
+coefficients acts on every formal vector, and its restriction to the vectors of the Fock space
+that it maps back into the Fock space is a closed operator. Finite sums of squared norms of such
+maps are therefore closed quadratic forms in the sense of Kato~\cite[VI\,\S1.3]{kato}, the setting
+of the representation theorem for self-adjoint operators~\cite[VI\,\S2]{kato}; \vetc{the parent
+forms of the bosonic matrix product states of~\cite{tjoacirac} are of this kind, and, where they are densely defined, their operators are the parent
+Hamiltonians}.
+
+\medskip
+\noindent\textbf{Notation for this section.}
+\begin{center}
+\begin{tabular}{@{}L{0.3\textwidth}L{0.64\textwidth}@{}}
+$\N^{(\iota)}$ & the multi-indices $n=(n_i)_{i\in\iota}$, finitely many nonzero (Section~\ref{sec:fock})\\
+$\lVert\psi\rVert^2$ & squared norm of a formal vector, in $[0,\infty]$ (Definition~\ref{def:fock-hilbert})\\
+$\Gamma_s(\iota)$, $\langle\varphi,\psi\rangle$, $\jmath$ & bosonic Fock space, its inner product, its
+embedding into $\Fock(\iota,\C)$ (Definition~\ref{def:fock-hilbert})\\
+$\mathcal S_n$ & a finite set of multi-indices (Definition~\ref{def:fock-coefffinite})\\
+$\bigotimes_j\chi_j$, $\psi_{j,n}$, $S_j$ & product vector, mode-$j$ fiber, a single-mode map $S$ acting
+on mode $j$ (Definition~\ref{def:fock-modes})\\
+$\bar T$, $\dom\bar T$ & maximal realization of $T$ and its domain (Definition~\ref{def:fock-maxreal})\\
+$(T_k)_{k\in\mathcal K}$, $\dom\form_\Gamma$, $\form_\Gamma$ & a finite family of maps, its form domain and
+its form (Definition~\ref{def:fock-form})\\
+$\ket{q,\kappa,\ell}$, $\mathcal P_{\kappa,\ell}$ & photon-added Gaussian state and photon-added class
+(Definition~\ref{def:fock-photon})\\
+\end{tabular}
+\end{center}
+In this section $\iota$ is any set of modes unless it is said to be finite, $T$ and $T'$ are linear
+maps on $\Fock(\iota,\C)$, $S$ is a linear map on the single-mode space $\Fock(\{1\},\C)$, whose
+multi-indices we identify with $\N$, and $p$ is a polynomial, not the exponent $p\ge1$ of
+Section~\ref{sec:fock}.
+
+\subsection{The bosonic Fock space}
+
+\begin{definition}[Squared norm; bosonic Fock space]\label{def:fock-hilbert}
+Let $\iota$ be a set of modes.
+\begin{enumerate}
+\item[(a)] For $\psi\in\Fock(\iota,\C)$ the \emph{squared norm} is $\lVert\psi\rVert^2=\sum_n\lvert
+\psi(n)\rvert^2\in[0,\infty]$, the sum of the non-negative terms over all multi-indices.
+\item[(b)] The \emph{bosonic Fock space} $\Gamma_s(\iota)=\ell^2(\N^{(\iota)})$ is the Hilbert space of
+the square-summable families $(\psi(n))_n$ over the set $\N^{(\iota)}$ of multi-indices $n$, with the inner
+product $\langle\varphi,\psi\rangle=\sum_n\overline{\varphi(n)}\,\psi(n)$, antilinear in $\varphi$. The
+\emph{embedding} $\jmath:\Gamma_s(\iota)\to\Fock(\iota,\C)$ is $\jmath(\psi)(n)=\psi(n)$.
+\end{enumerate}
+\end{definition}
+
+The number states $\ket n$ form an orthonormal basis of $\Gamma_s(\iota)$. For finite $\iota$ this is
+the space $\Gamma_s(\mathfrak h)$, $\mathfrak h=\C^\iota$, of Section~\ref{sec:fock} written in the
+number basis; for infinite $\iota$ it is in the same way the Fock space over $\ell^2(\iota)$~\cite{dg}.
+The formal vector with the coefficients $\sqrt{(2k)!}/k!$ at $\ket{2k}$ of Section~\ref{sec:fock} has
+infinite squared norm.
+
+\begin{lemma}\label{lem:fock-hilbert}
+Let $\iota$ be a set of modes.
+\begin{enumerate}
+\item[(a)] $\jmath$ is linear and injective, and $\lVert\jmath\psi\rVert^2=\lVert\psi\rVert^2$ for
+$\psi\in\Gamma_s(\iota)$, the right side being the squared Hilbert norm.
+\item[(b)] A formal vector $\varphi\in\Fock(\iota,\C)$ lies in $\jmath(\Gamma_s(\iota))$ if and only if
+$\lVert\varphi\rVert^2<\infty$.
+\item[(c)] The finitely supported vectors, the finite linear combinations of number states, are dense
+in $\Gamma_s(\iota)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+\begin{enumerate}
+\item[(a)] Linearity holds coefficientwise, and $\jmath\psi$ has the coefficients of $\psi$. The squared
+Hilbert norm $\sum_n\lvert\psi(n)\rvert^2$ is the real sum of a summable non-negative family, which
+equals its sum in $[0,\infty]$.
+\item[(b)] A sum of non-negative terms in $[0,\infty]$ is finite exactly when the family of terms is
+summable, that is, when $\varphi$ is square-summable.
+\item[(c)] For $\psi\in\Gamma_s(\iota)$ and a finite set $F$ of multi-indices,
+$\lVert\psi-\sum_{n\in F}\psi(n)\ket n\rVert^2=\sum_{n\notin F}\lvert\psi(n)\rvert^2$, which is as small
+as we like for $F$ large, by summability.\qedhere
+\end{enumerate}
+\end{proof}
+
+\subsection{Coefficient-finite maps and maximal realizations}\label{sec:fock-coefffinite}
+
+\begin{definition}[Coefficient-finite]\label{def:fock-coefffinite}
+A linear map $T$ on $\Fock(\iota,\C)$ is \emph{coefficient-finite} if for every multi-index $n$ there
+is a finite set $\mathcal S_n$ of multi-indices such that $(T\psi)(n)=(T\varphi)(n)$ whenever
+$\psi(m)=\varphi(m)$ for every $m\in\mathcal S_n$.
+\end{definition}
+
+Since $\psi$ agrees on $\mathcal S_n$ with $\sum_{m\in\mathcal S_n}\psi(m)\ket m$, linearity gives
+$(T\psi)(n)=\sum_{m\in\mathcal S_n}T_{nm}\,\psi(m)$ with $T_{nm}=(T\ket m)(n)$. A coefficient-finite map
+is thus one whose matrix in the number basis is \emph{row-finite}, and every row-finite matrix
+defines a coefficient-finite map by this formula. The ladder operators are of this kind, and so is
+every exponential of Definition~\ref{def:fock-raising} on finitely many modes.
+
+\begin{definition}[Product vectors; operators acting on one mode]\label{def:fock-modes}
+Let $\iota$ be a set of modes.
+\begin{enumerate}
+\item[(a)] For finite $\iota$ and $\chi_j\in\Fock(\{1\},\C)$, $j\in\iota$, the \emph{product vector}
+$\bigotimes_j\chi_j\in\Fock(\iota,\C)$ has the coefficients $\bigl(\bigotimes_j\chi_j\bigr)(n)=\prod_j
+\chi_j(n_j)$.
+\item[(b)] For $\psi\in\Fock(\iota,\C)$, $j\in\iota$ and a multi-index $n$, the \emph{mode-$j$ fiber}
+$\psi_{j,n}\in\Fock(\{1\},\C)$ is $\psi_{j,n}(m)=\psi\bigl(n+(m-n_j)e_j\bigr)$, the coefficient at $n$ with
+$n_j$ replaced by $m$.
+\item[(c)] For a linear map $S$ on $\Fock(\{1\},\C)$ and $j\in\iota$, the \emph{map $S$ acting on mode
+$j$} is the linear map $S_j$ on $\Fock(\iota,\C)$ with $(S_j\psi)(n)=(S\psi_{j,n})(n_j)$.
+\end{enumerate}
+\end{definition}
+
+For example, $a$ acting on mode $j$ is $a_j$: $(a\psi_{j,n})(n_j)=\sqrt{n_j+1}\,\psi(n+e_j)$. The fiber
+does not depend on $n_j$, and the fiber of a product vector along $j$ is a multiple of its factor at
+$j$.
+
+\Needspace{10\baselineskip}
+\begin{lemma}[Coefficient-finite maps]\label{lem:fock-coefffinite}
+Let $\iota$ be a set of modes.
+\begin{enumerate}
+\item[(a)] The maps $0$, $1$, $a_j$ and $a_j^\dagger$ are coefficient-finite. If $T$ and $T'$ are
+coefficient-finite, so are $T+T'$, $TT'$, $cT$ for $c\in\C$, every power $T^k$, every finite sum of
+coefficient-finite maps and $p(T)$ for every polynomial $p\in\C[X]$. If $S$ is a coefficient-finite
+map on $\Fock(\{1\},\C)$, then $S_j$ is coefficient-finite for every $j\in\iota$. If $T$ is
+coefficient-finite and raises the particle number, then $e^T$ is coefficient-finite.
+\item[(b)] If $\iota$ is finite, every linear map on $\Fock(\iota,\C)$ that raises the particle number
+is coefficient-finite.
+\item[(c)] If $T$ is coefficient-finite, then for every multi-index $n$ the map $\psi\mapsto
+(T\jmath\psi)(n)$ is continuous on $\Gamma_s(\iota)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+\begin{enumerate}
+\item[(a)] For $0$ and $1$ take $\mathcal S_n=\emptyset$ and $\{n\}$; for $a_j$ take $\{n+e_j\}$, and for
+$a_j^\dagger$ take $\{n-e_j\}$ if $n_j\ge1$ and $\emptyset$ otherwise (Definition~\ref{def:fock-ladder}).
+For $T+T'$ and $cT$ the union of the two sets serves. For $TT'$, $(TT'\psi)(n)$ depends on the
+coefficients $(T'\psi)(m)$, $m\in\mathcal S^T_n$, each of which depends on $\psi$ on
+$\mathcal S^{T'}_m$; the union of these finitely many finite sets serves. Powers follow by induction,
+and finite sums and $p(T)$ by the first claims. For $S_j$, $(S_j\psi)(n)$ depends on $\psi_{j,n}$ at the
+finitely many $m\in\mathcal S^S_{n_j}$, that is, on $\psi$ at the multi-indices $n+(m-n_j)e_j$. For
+$e^T$, $(e^T\psi)(n)=\sum_{r\le\lvert n\rvert}(T^r\psi)(n)/r!$ (Definition~\ref{def:fock-raising}) depends
+on $\psi$ on the union of the sets of the maps $T^r$, $r\le\lvert n\rvert$.
+\item[(b)] By Lemma~\ref{lem:fock-raising}(b), $(T\psi)(n)$ depends only on the coefficients $\psi(n')$
+with $\lvert n'\rvert<\lvert n\rvert$, and for finite $\iota$ there are finitely many such $n'$. In
+particular every polynomial in the creation operators with zero constant term is coefficient-finite
+(Lemma~\ref{lem:fock-raising}(c)).
+\item[(c)] $(T\jmath\psi)(n)=\sum_{m\in\mathcal S_n}T_{nm}\,\psi(m)$ is a finite linear combination of
+coordinates, and $\lvert\psi(m)-\psi'(m)\rvert\le\lVert\psi-\psi'\rVert$ in $\Gamma_s(\iota)$.\qedhere
+\end{enumerate}
+\end{proof}
+
+An operator $A$ on $\Gamma_s(\iota)$, defined on a subspace $\dom A$, is \emph{closed} if its graph
+$\{(\psi,A\psi):\psi\in\dom A\}$ is closed in $\Gamma_s(\iota)\times\Gamma_s(\iota)$, and \emph{densely
+defined} if $\dom A$ is dense~\cite[III\,\S5]{kato}.
+
+\begin{definition}[Maximal realization]\label{def:fock-maxreal}
+For a linear map $T$ on $\Fock(\iota,\C)$, the \emph{maximal realization} $\bar T$ is the operator on
+$\Gamma_s(\iota)$ with the domain $\dom\bar T=\{\psi\in\Gamma_s(\iota):\lVert T\jmath\psi\rVert^2<\infty\}$
+and $\bar T\psi$ the vector with $\jmath(\bar T\psi)=T\jmath\psi$ (Lemma~\ref{lem:fock-hilbert}(b)).
+\end{definition}
+
+The domain is a subspace, since a sum of square-summable vectors is square-summable. For a
+row-finite matrix, $\bar T$ is the maximal operator of the matrix on $\ell^2$: the largest operator on
+$\Gamma_s(\iota)$ that acts on each vector of its domain by the matrix. No domain has to be chosen.
+
+\begin{theorem}[Closedness of the maximal realization]\label{thm:fock-maxreal-closed}
+Let $T$ be coefficient-finite. Then $\bar T$ is closed: if $\psi^{(r)}\in\dom\bar T$, $\psi^{(r)}\to
+\psi$ and $\bar T\psi^{(r)}\to\chi$ in $\Gamma_s(\iota)$, then $\psi\in\dom\bar T$ and $\bar T\psi=\chi$.
+\end{theorem}
+
+\begin{proof}
+Fix $n$. By Lemma~\ref{lem:fock-coefffinite}(c), $(T\jmath\psi^{(r)})(n)\to(T\jmath\psi)(n)$, and since
+coordinates are continuous on $\Gamma_s(\iota)$, $(T\jmath\psi^{(r)})(n)=(\bar T\psi^{(r)})(n)\to\chi(n)$.
+Hence $T\jmath\psi=\jmath\chi$, which has finite squared norm; so $\psi\in\dom\bar T$ and $\bar T\psi=\chi$.
+\end{proof}
+
+\subsection{Closed forms}\label{sec:fock-closedforms}
+
+We use the forms of~\cite[VI\,\S1]{kato} with the arguments in the order of the inner product. A
+\emph{form} $\mathfrak t$ on $\Gamma_s(\iota)$ is a map $\mathfrak t(\varphi,\psi)$ on $\dom\mathfrak t\times
+\dom\mathfrak t$, for a subspace $\dom\mathfrak t$, the \emph{form domain}, antilinear in $\varphi$ and
+linear in $\psi$; it is \emph{Hermitian} if $\overline{\mathfrak t(\varphi,\psi)}=\mathfrak t(\psi,\varphi)$
+and \emph{non-negative} if $\mathfrak t(\psi,\psi)\ge0$. A non-negative Hermitian form is \emph{closed}
+if $\psi^{(r)}\in\dom\mathfrak t$, $\psi^{(r)}\to\psi$ and $\mathfrak t(\psi^{(r)}-\psi^{(s)},\psi^{(r)}-
+\psi^{(s)})\to0$ as $r,s\to\infty$ imply $\psi\in\dom\mathfrak t$ and $\mathfrak t(\psi^{(r)}-\psi,
+\psi^{(r)}-\psi)\to0$~\cite[VI\,\S1.3]{kato}; equivalently, $\dom\mathfrak t$ is complete in the norm
+$(\lVert\psi\rVert^2+\mathfrak t(\psi,\psi))^{1/2}$~\cite[VI, Theorem~1.11]{kato}. It is \emph{densely
+defined} if $\dom\mathfrak t$ is dense, and a \emph{form core} is a subspace of $\dom\mathfrak t$ dense in
+that norm.
+
+\begin{definition}[The form of a finite family]\label{def:fock-form}
+Let $(T_k)_{k\in\mathcal K}$ be a finite family of linear maps on $\Fock(\iota,\C)$. Its \emph{form
+domain} is $\dom\form_\Gamma=\bigcap_k\dom\bar T_k$, and its \emph{form} is
+\[
+ \form_\Gamma(\varphi,\psi)=\sum_{k\in\mathcal K}\langle\bar T_k\varphi,\bar T_k\psi\rangle,\qquad
+ \varphi,\psi\in\dom\form_\Gamma .
+\]
+\end{definition}
+
+On the formal Fock space the same family has the \emph{formal form} $\sum_k\lVert T_k\varphi\rVert^2\in
+[0,\infty]$, defined for every $\varphi\in\Fock(\iota,\C)$. The next lemma identifies $\form_\Gamma$ with
+the formal form read on $\Gamma_s(\iota)$.
+
+\begin{lemma}[Form domain and form]\label{lem:fock-form}
+Let $(T_k)_{k\in\mathcal K}$ be a finite family of linear maps on $\Fock(\iota,\C)$.
+\begin{enumerate}
+\item[(a)] $\dom\form_\Gamma$ is a subspace of $\Gamma_s(\iota)$, and $\dom\form_\Gamma=\{\psi\in
+\Gamma_s(\iota):\sum_k\lVert T_k\jmath\psi\rVert^2<\infty\}$.
+\item[(b)] $\form_\Gamma$ is antilinear in $\varphi$, linear in $\psi$ and Hermitian, and on the diagonal
+it is real and equals the formal form: $\form_\Gamma(\psi,\psi)=\sum_k\lVert T_k\jmath\psi\rVert^2$ for
+$\psi\in\dom\form_\Gamma$. In particular $\form_\Gamma$ is non-negative.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+\begin{enumerate}
+\item[(a)] An intersection of subspaces is a subspace, and a finite sum in $[0,\infty]$ is finite
+exactly when each term is.
+\item[(b)] Each term is the inner product composed with the linear map $\bar T_k$ in both arguments,
+which gives the linearity and $\overline{\langle\bar T_k\varphi,\bar T_k\psi\rangle}=\langle\bar
+T_k\psi,\bar T_k\varphi\rangle$. On the diagonal, by Lemma~\ref{lem:fock-hilbert}(a),
+\[
+ \langle\bar T_k\psi,\bar T_k\psi\rangle=\lVert\bar T_k\psi\rVert^2=\lVert T_k\jmath\psi\rVert^2 .\qedhere
+\]
+\end{enumerate}
+\end{proof}
+
+\begin{figure}[ht]
+\centering\vetbcolor
+\begin{tikzpicture}
+ \draw[frame] (0,0) rectangle (12,5);
+ \node[anchor=north west] at (0.1,4.95) {$\Fock(\iota,\C)$};
+ \draw[region] (5,2.4) ellipse (4.6 and 2.1);
+ \node at (5,4.05) {$\jmath(\Gamma_s(\iota))$: $\lVert\psi\rVert^2<\infty$};
+ \begin{scope}
+  \clip (3.8,2.1) ellipse (2.2 and 1.1);
+  \fill[gray!20] (5.6,2.1) ellipse (2.2 and 1.1);
+ \end{scope}
+ \draw[region] (3.8,2.1) ellipse (2.2 and 1.1);
+ \draw[region] (5.6,2.1) ellipse (2.2 and 1.1);
+ \node at (2.4,2.25) {$\dom\bar T_1$};
+ \node at (6.65,2.5) {$\dom\bar T_2$};
+ \node at (4.7,2.45) {$\dom\form_\Gamma$};
+ \node[dot] (p) at (4.7,1.7) {}; \node[right=2pt] at (p) {$\psi$};
+ \node[dot] (tp) at (4.6,0.72) {}; \node[right=2pt] at (tp) {$T_1\psi$};
+ \draw[map,shorten <=1pt,shorten >=1pt] (p) -- (tp);
+ \node[dot] (q) at (7.0,1.7) {}; \node[left=2pt] at (q) {$\psi'$};
+ \node[dot] (t1q) at (10.8,1.2) {}; \node[below right=1pt] at (t1q) {$T_1\psi'$};
+ \draw[map,shorten <=1pt,shorten >=1pt] (q) to[bend right=10] (t1q);
+ \node[dot] (t2q) at (8.05,2.65) {}; \node[right=2pt] at (t2q) {$T_2\psi'$};
+ \draw[map,shorten <=1pt,shorten >=1pt] (q) -- (t2q);
+\end{tikzpicture}
+\caption{The form domain of a family $T_1,T_2$ (Definition~\ref{def:fock-form}). The maps act on the whole
+formal Fock space; the domain of the maximal realization $\bar T_k$ consists of the vectors of
+$\Gamma_s(\iota)$ that $T_k$ maps back into $\Gamma_s(\iota)$, and the form domain is the intersection of
+these domains. Here $\psi'$ lies in $\dom\bar T_2$ but not in $\dom\bar T_1$: $T_2\psi'$ is square-summable and
+$T_1\psi'$ is not.}\label{fig:fock-formdomain}
+\end{figure}
+
+\begin{theorem}[Closed form]\label{thm:fock-form-closed}
+Let $(T_k)_{k\in\mathcal K}$ be a finite family of coefficient-finite maps on $\Fock(\iota,\C)$. If
+$\psi^{(r)}\in\dom\form_\Gamma$, $\psi^{(r)}\to\psi$ in $\Gamma_s(\iota)$ and $\sum_k\lVert
+T_k\jmath(\psi^{(r)}-\psi^{(s)})\rVert^2\to0$ as $r,s\to\infty$, then $\psi\in\dom\form_\Gamma$ and
+$\sum_k\lVert T_k\jmath(\psi^{(r)}-\psi)\rVert^2\to0$. So $\form_\Gamma$ is closed.
+\end{theorem}
+
+\begin{proof}
+Each term of the sum tends to zero, and $\lVert T_k\jmath(\psi^{(r)}-\psi^{(s)})\rVert=\lVert\bar
+T_k\psi^{(r)}-\bar T_k\psi^{(s)}\rVert$ by linearity and Lemma~\ref{lem:fock-hilbert}(a), so each sequence
+$\bar T_k\psi^{(r)}$ is Cauchy in $\Gamma_s(\iota)$ and converges to some $\chi_k$. By
+Theorem~\ref{thm:fock-maxreal-closed}, $\psi\in\dom\bar T_k$ and $\bar T_k\psi=\chi_k$. Hence
+$\psi\in\dom\form_\Gamma$, and $\lVert T_k\jmath(\psi^{(r)}-\psi)\rVert^2=\lVert\bar T_k\psi^{(r)}-\chi_k
+\rVert^2\to0$ for each of the finitely many $k$. By Lemma~\ref{lem:fock-form}(b) this is closedness in
+the sense above.
+\end{proof}
+
+\vetx{The theorem applies two results of Kato to the closed operators $\bar T_k$ of Theorem~\ref{thm:fock-maxreal-closed}: the form
+$\lVert T\psi\rVert^2$ of a closed operator $T$, on its domain, is closed~\cite{kato}, and a finite sum
+of closed non-negative forms, on the intersection of their domains, is closed~\cite{kato}; the proof
+above checks this directly.} Closedness needs no hypothesis beyond coefficient-finiteness; whether $\form_\Gamma$ is densely defined
+depends on the family.
+
+\subsection{Product vectors and the photon-added class}\label{sec:fock-photon}
+
+\begin{lemma}[Squared norm of a product vector]\label{lem:fock-tensornorm}
+\begin{enumerate}
+\item[(a)] For a finite set $\iota$, a set $A$ and functions $g_i:A\to[0,\infty]$, $i\in\iota$,
+\[
+ \sum_{f:\iota\to A}\ \prod_{i\in\iota}g_i(f(i))=\prod_{i\in\iota}\ \sum_{a\in A}g_i(a)\quad\text{in }[0,\infty],
+\]
+with the convention $0\cdot\infty=0$.
+\item[(b)] For finite $\iota$ and $\chi_j\in\Fock(\{1\},\C)$, $\lVert\bigotimes_j\chi_j\rVert^2=\prod_j
+\lVert\chi_j\rVert^2$ in $[0,\infty]$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+\begin{enumerate}
+\item[(a)] Induction on the number of elements of $\iota$. For $\iota=\emptyset$ both sides are $1$.
+Adding an element $i_0$, the functions on $\iota\cup\{i_0\}$ are the pairs of a value $a$ at $i_0$ and a
+function on $\iota$; sums of non-negative terms in $[0,\infty]$ may be taken in any order and are
+multiplied termwise by a constant factor, so the sum is $\sum_ag_{i_0}(a)$ times the sum over $\iota$.
+\item[(b)] On finitely many modes the multi-indices are the functions $\iota\to\N$, and
+$\lvert\prod_j\chi_j(n_j)\rvert^2=\prod_j\lvert\chi_j(n_j)\rvert^2$; apply (a) with $A=\N$.\qedhere
+\end{enumerate}
+\end{proof}
+
+For a single mode and $\kappa,\ell\in\C$, the map $\kappa(a^\dagger)^2+\ell a^\dagger$ raises the particle
+number (Lemma~\ref{lem:fock-raising}(c)); its exponential $e^{\kappa(a^\dagger)^2+\ell a^\dagger}$ is the
+\emph{Gaussian operator}; the name is used here only for these exponentials of creation operators, not for
+Gaussian unitaries.
+
+\begin{definition}[Photon-added Gaussian states; the photon-added class]\label{def:fock-photon}
+For $q\in\N$ and $\kappa,\ell\in\C$, the \emph{photon-added Gaussian state} is $\ket{q,\kappa,\ell}=
+(a^\dagger)^q\,e^{\kappa(a^\dagger)^2+\ell a^\dagger}\ket0\in\Fock(\{1\},\C)$, and the \emph{photon-added
+class} is $\mathcal P_{\kappa,\ell}=\operatorname{span}\{\ket{q,\kappa,\ell}:q\in\N\}$.
+\end{definition}
+
+\vetc{The state $\ket{0,\kappa,\ell}$ is a formal vector, which for $\lvert\kappa\rvert<\tfrac12$ is a multiple of a
+squeezed coherent state; the states $\ket{q,\kappa,\ell}$ are the
+photon-added Gaussian states of~\cite[Sec.~II\,A\,1]{tjoacirac}\vetx{; for $\kappa=0$ they are multiples of the photon-added
+coherent states of Agarwal and Tara~\cite{agarwaltara}}.} The maps $\kappa(a^\dagger)^2$ and
+$\ell a^\dagger$ commute, so by Theorem~\ref{thm:fock-explaw} the Gaussian operator is
+$e^{\kappa(a^\dagger)^2}e^{\ell a^\dagger}$, and by Theorems~\ref{thm:fock-exp-bargmann}
+and~\ref{thm:fock-bargmann} the Bargmann series of $\ket{q,\kappa,\ell}$ is $z^qE$ with
+$E=e^{\kappa z^2}e^{\ell z}$. So $\mathcal P_{\kappa,\ell}$ consists of the formal vectors whose Bargmann
+series are $p(z)E$, $p$ a polynomial.
+
+\begin{lemma}[The photon-added class]\label{lem:fock-photon}
+Let $\kappa,\ell\in\C$.
+\begin{enumerate}
+\item[(a)] $\ket{q,\kappa,\ell}=(a^\dagger)^q\ket{0,\kappa,\ell}$, and $\mathcal P_{\kappa,\ell}=\{p(a^\dagger)
+\ket{0,\kappa,\ell}:p\in\C[X]\}$.
+\item[(b)] $\mathcal P_{\kappa,\ell}$ is invariant under $a$ and under $a^\dagger$, hence under $p(a)$ and
+under $p(a^\dagger)$ for every polynomial $p$.
+\item[(c)] The Gaussian operator $e^{\kappa(a^\dagger)^2+\ell a^\dagger}$ maps $\mathcal P_{0,0}$ into
+$\mathcal P_{\kappa,\ell}$.
+\item[(d)] $\ket{q,0,0}=\sqrt{q!}\,\ket q$ for every $q$, so every number state lies in $\mathcal P_{0,0}$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+The Bargmann map is injective, so identities may be checked on Bargmann series, where $a^\dagger$ is
+multiplication by $z$, $a$ is the derivative $\partial$ and $p(a^\dagger)$ is multiplication by $p$
+(Theorem~\ref{thm:fock-bargmann}).
+\begin{enumerate}
+\item[(a)] The first claim is the definition, and a linear combination of the $(a^\dagger)^q\ket{0,\kappa,
+\ell}$ is $p(a^\dagger)\ket{0,\kappa,\ell}$ for the polynomial with these coefficients.
+\item[(b)] $a^\dagger p(a^\dagger)=(Xp)(a^\dagger)$. For $a$: from $e^{cz^m}=\sum_kc^kz^{mk}/k!$ the
+coefficientwise derivative is $\partial e^{cz^m}=mc\,z^{m-1}e^{cz^m}$ for $m\ge1$, so the Leibniz rule gives
+$\partial E=(2\kappa z+\ell)E$ and $\partial(pE)=\bigl(p'+(2\kappa z+\ell)p\bigr)E$. Hence $a\,p(a^\dagger)
+\ket{0,\kappa,\ell}=\bigl(p'+(2\kappa X+\ell)p\bigr)(a^\dagger)\ket{0,\kappa,\ell}$. A subspace invariant under
+a map is invariant under its powers and their linear combinations.
+\item[(c)] The Bargmann series of $e^{\kappa(a^\dagger)^2+\ell a^\dagger}p(a^\dagger)\ket0$ is $E\,p$, that of
+$p(a^\dagger)\ket{0,\kappa,\ell}$.
+\item[(d)] The exponential of the zero map is the identity (Definition~\ref{def:fock-raising}), so
+$\ket{q,0,0}=(a^\dagger)^q\ket0=\sqrt{q!}\,\ket q$ (after Theorem~\ref{thm:fock-ccr}).\qedhere
+\end{enumerate}
+\end{proof}
+
+By (b) the class is also invariant under every finite sum of products of $a$ and $a^\dagger$. It
+contains no information about norms: $\ket{0,\kappa,0}$ is square-summable exactly when
+$\lvert\kappa\rvert<\tfrac12$, its squared moduli being $\binom{2k}{k}\lvert\kappa\rvert^{2k}$ at $\ket{2k}$.
+
+\subsection*{Notes and references}
+
+Closed forms, form cores and the representation theorems that turn a closed, densely defined,
+non-negative form into a self-adjoint operator are those of Kato~\cite[VI\,\S\S1--2]{kato}. The forms here
+are built from maximal realizations, which act on every vector they can, so no dense domain has to be
+chosen and closedness reduces to the continuity of the coefficients (Lemma~\ref{lem:fock-coefffinite}(c)).
+The usual construction starts from the operators on a dense domain $\mathcal D$, such as the finitely
+supported vectors, and takes the closure of the form $\sum_k\lVert T_k\psi\rVert^2$ on $\mathcal D$. When
+$\mathcal D\subseteq\dom\form_\Gamma$, that closure is the restriction of the closed form $\form_\Gamma$ of
+Theorem~\ref{thm:fock-form-closed} to the closure of $\mathcal D$ in the norm $(\lVert\psi\rVert^2+
+\form_\Gamma(\psi,\psi))^{1/2}$, and the two forms agree exactly when $\mathcal D$ is a form core.
+\end{vetbenv}
